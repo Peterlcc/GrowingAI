@@ -13,6 +13,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
@@ -20,6 +23,29 @@ import com.alibaba.druid.support.http.WebStatFilter;
 
 @Configuration
 public class MyConfig {
+	
+	@Bean
+	public WebMvcConfigurer webMvcConfigurer() {
+		WebMvcConfigurer webMvcConfigurer=new WebMvcConfigurer() {
+
+			@Override
+			public void addViewControllers(ViewControllerRegistry registry) {
+				registry.addViewController("/").setViewName("index");
+				registry.addViewController("/home").setViewName("index");
+				registry.addViewController("/main").setViewName("index");
+				registry.addViewController("/index").setViewName("index");
+				registry.addViewController("/index.html").setViewName("index");
+			}
+			
+		};
+		return webMvcConfigurer;
+	}
+	
+	//国际化处理
+    @Bean
+    public LocaleResolver localeResolver(){
+        return new MyLocaleResolver();
+    }
 
     //配置文件加载
   	@Bean

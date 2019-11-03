@@ -13,11 +13,10 @@ public class GlobalExceptionHandler {
 
 	//
 	@ExceptionHandler(Exception.class)
-	
 	public String handlerException(Exception exception,HttpServletRequest request) {
 		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("message", exception.getMessage());
-		request.setAttribute("javax.servlet.error.status_code", 400);
+		request.setAttribute("javax.servlet.error.status_code", 404);
 		request.setAttribute("ext", map);
 		//接用springboot自身的客户端自适应
 		return "forward:/error";
