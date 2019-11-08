@@ -13,6 +13,9 @@
 	rel="stylesheet">
 <!-- Custom styles for this template -->
 <link th:href="@{/css/signin.css}" href="assets/css/signin.css">
+
+	<!-- Custom styles for this template -->
+	<link href="css/modern-business.css" rel="stylesheet">
 </head>
 
 <body class="text-center">
@@ -33,9 +36,12 @@
 			th:text="#{login.password}">Password</label> <input name="password"
 			type="password" class="form-control input"
 			th:placeholder="#{login.password}" placeholder="Password" required="">
-		<div class="checkbox mb-3">
-			<label> <input type="checkbox" value="remember-me">[[#{login.remember}]]
-			</label>
+		<div class="form-group text-left">
+			<input type="text" id="valicode" name="valicode"
+				   class="form-password" />
+			<img
+				onclick="this.src='/growningai/user/code?d='+new Date()*1"
+				src="/growningai/user/code" alt="验证码" />
 		</div>
 		<button class="btn btn-lg btn-primary btn-block" type="submit"
 			th:text="#{login.btn}">Sign in</button>
