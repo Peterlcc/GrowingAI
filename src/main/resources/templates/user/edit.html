@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Modern Business - Start Bootstrap Template</title>
+
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" href="asserts/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link th:href="@{/asserts/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<div th:replace="commons/base::topbar"></div>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">可成长系统之
+      <small>个人信息</small>
+    </h1>
+
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a th:href="@{/index}" href="index.html">首页</a>
+      </li>
+      <li class="breadcrumb-item active">个人信息</li>
+    </ol>
+
+    <div class='box-content'>
+      <p style="color: red;" th:text="${editMsg}" class="text-center"
+         th:if="${not #strings.isEmpty(editMsg)}"></p>
+      <form id="editForm" class='form form-horizontal validate-form w-25 mt-2 mb-5 mx-auto'
+            style='margin-bottom: 0;' th:action="@{/user/modify}" method="post"
+            onsubmit="return editSubmit();">
+        <div class='control-group'>
+          <label class='control-label' for='name'>用户名</label>
+          <div class='controls'>
+            <input class="profile-input" data-rule-minlength='2'
+                   data-rule-required='true' id='name' name='name'
+                   placeholder='用户名' type='text'
+                   th:value="${session.user.name}" />
+          </div>
+        </div>
+
+        <div class='control-group'>
+          <label class='control-label' for='realName'>真实姓名</label>
+          <div class='controls'>
+            <input class="profile-input" data-rule-minlength='2'
+                   data-rule-required='true' id='realName' name='realName'
+                   placeholder='真实姓名' type='text'
+                   th:value="${session.user.realName}" />
+          </div>
+        </div>
+
+        <div class='control-group'>
+          <label class='control-label' for='number'>学号</label>
+          <div class='controls'>
+            <input class="profile-input" data-rule-minlength='2'
+                   data-rule-required='true' id='number' name='number'
+                   placeholder='序号' type='text'
+                   th:value="${session.user.number}" />
+          </div>
+        </div>
+
+        <div class='control-group'>
+          <label class='control-label' for='password'>新密码</label>
+          <div class='controls'>
+            <input class="profile-input" data-rule-minlength='6'
+                   data-rule-password='true' data-rule-required='true'
+                   id='password' name='password' placeholder='新密码'
+                   type='password' />
+          </div>
+        </div>
+        <div class='control-group'>
+          <label class='control-label' for='retypePassword'>确认密码</label>
+          <div class='controls'>
+            <input class="profile-input" data-rule-minlength='6'
+                   data-rule-password='true' data-rule-required='true'
+                   id='retypePassword' name='retypePassword' placeholder='确认密码'
+                   type='password' />
+          </div>
+        </div>
+
+        <div class='control-group'>
+          <label class='control-label' for='email'>邮箱</label>
+          <div class='controls'>
+            <input class="profile-input" data-rule-email='true'
+                   data-rule-required='true' id='email' name='email'
+                   placeholder='邮箱' type="email"
+                   th:value="${session.user.email}" />
+          </div>
+        </div>
+        <div class='control-group mb-5'>
+          <label class='control-label'>性别</label>
+          <div class='controls'>
+            <select name="sex" class="profile-input">
+              <option value="0" th:selected="${session.user.sex==false?true:false}">男</option>
+              <option value="1" th:selected="${session.user.sex==true?true:false}">女</option>
+            </select>
+          </div>
+        </div>
+        <div class='form-actions' style='margin-bottom: 0'>
+          <button class='btn btn-info' type="button"
+                  onclick="profileEnable();">
+            <i class='icon-edit-sign'></i>修改
+          </button>
+          &nbsp;
+          <button class='btn btn-primary' type='submit'>
+            <i class='icon-eraser'></i>提交修改
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <div th:replace="commons/base::footbar"></div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
+
+  <script th:src="@{/asserts/js/profileReadOnly.js}"></script>
+  <script type="text/javascript">
+    window.onload = function() {
+      profileReadOnly();
+    };
+  </script>
+  <script type="text/javascript">
+    function editSubmit() {
+      var password=$("#password").val();
+      if(password==''){
+        alert("密码不能为空");
+        return false;
+      }
+    };
+  </script>
+
+</body>
+
+</html>

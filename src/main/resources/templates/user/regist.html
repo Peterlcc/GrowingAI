@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>注册</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}"
+          rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/asserts/css/signin.css}" href="assets/css/signin.css">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/asserts/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+<div th:replace="commons/base::topbar"></div>
+<form class="form-signin w-25 mt-5 mx-auto" method="post"
+      action="dashboard.html" th:action="@{/user/regist}">
+    <img class="mb-4" th:src="@{/asserts/img/logo.png}"
+         src="asserts/img/bootstrap-solid.svg" alt="" width="140" height="140">
+    <h1 class="h3 mb-3 font-weight-normal" th:text="#{regist.tip}">Please
+        sign in</h1>
+    <p style="color: red;" th:text="${msg}"
+       th:if="${not #strings.isEmpty(msg)}"></p>
+    <input
+            name="name" type="text" class="form-control input-sm"
+            placeholder="Username" th:placeholder="#{regist.nickName}" required=""
+            autofocus="">
+    <input
+            name="realName" type="text" class="form-control input-sm"
+            placeholder="realName" th:placeholder="#{regist.realName}" required=""
+            autofocus="">
+    <input
+            name="number" type="number" class="form-control input-sm"
+            placeholder="number" th:placeholder="#{regist.number}" required=""
+            autofocus="">
+	<input
+            name="email" type="email" class="form-control input-sm"
+            placeholder="email" th:placeholder="#{regist.email}" required=""
+            autofocus="">
+	<select class="form-control" name="sex">
+		<option value="0" selected="selected">男</option>
+		<option value="1">女</option>
+	</select>
+	<input name="password"
+		   type="password" class="form-control input"
+		   th:placeholder="#{regist.password}" placeholder="Password" required="">
+	<input name="retypePassword"
+		   type="password" class="form-control input"
+		   th:placeholder="#{regist.retypePassword}" placeholder="Password" required="">
+	<div class="form-group text-left">
+        <input type="text" id="valicode" name="valicode"
+               class="form-password"/>
+        <img
+                onclick="this.src='/growningai/user/code?d='+new Date()*1"
+                src="/growningai/user/code" alt="验证码"/>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit"
+            th:text="#{regist.btn}">Sign in
+    </button>
+	<div class="m-5 text-center">已注册？去<a class="hyperlink" th:href="@{/login}">登录</a></div>
+    <p class="mt-5 mb-3 text-muted">© 2019 北航</p>
+    <a class="btn btn-sm" th:href="@{/regist(lan='zh_CN')}">中文</a> <a
+        class="btn btn-sm" th:href="@{/regist(lan='en_US')}">English</a>
+</form>
+</body>
+
+</html>

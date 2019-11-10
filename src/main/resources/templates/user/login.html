@@ -12,28 +12,27 @@
 	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}"
 	rel="stylesheet">
 <!-- Custom styles for this template -->
-<link th:href="@{/css/signin.css}" href="assets/css/signin.css">
+<link th:href="@{/asserts/css/signin.css}" href="assets/css/signin.css">
 
 	<!-- Custom styles for this template -->
-	<link href="css/modern-business.css" rel="stylesheet">
+	<link th:href="@{/asserts/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
 </head>
 
 <body class="text-center">
 	<div th:replace="commons/base::topbar"></div>
-	<div> </div>
 	<form class="form-signin w-25 mt-5 mx-auto" method="post"
 		action="dashboard.html" th:action="@{/user/login}">
-		<img class="mb-4" th:src="@{/img/logo.png}"
+		<img class="mb-4" th:src="@{/asserts/img/logo.png}"
 			src="asserts/img/bootstrap-solid.svg" alt="" width="140" height="140">
 		<h1 class="h3 mb-3 font-weight-normal" th:text="#{login.tip}">Please
 			sign in</h1>
-		<p style="color: red;" th:text="${msg}"
-			th:if="${not #strings.isEmpty(msg)}"></p>
-		<label class="sr-only" th:text="#{login.username}">Username</label> <input
+		<p style="color: red;" th:text="${loginMsg}"
+			th:if="${not #strings.isEmpty(loginMsg)}"></p>
+		<input
 			name="username" type="text" class="form-control input-sm"
 			placeholder="Username" th:placeholder="#{login.username}" required=""
-			autofocus=""> <label class="sr-only"
-			th:text="#{login.password}">Password</label> <input name="password"
+			autofocus="">
+		<input name="password"
 			type="password" class="form-control input"
 			th:placeholder="#{login.password}" placeholder="Password" required="">
 		<div class="form-group text-left">
@@ -45,6 +44,7 @@
 		</div>
 		<button class="btn btn-lg btn-primary btn-block" type="submit"
 			th:text="#{login.btn}">Sign in</button>
+		<div class="m-5 text-center">为注册？去<a class="hyperlink" th:href="@{/regist}">注册</a></div>
 		<p class="mt-5 mb-3 text-muted">© 2019 北航</p>
 		<a class="btn btn-sm" th:href="@{/login(lan='zh_CN')}">中文</a> <a
 			class="btn btn-sm" th:href="@{/login(lan='en_US')}">English</a>

@@ -11,10 +11,10 @@
   <title>Modern Business - Start Bootstrap Template</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" href="asserts/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/modern-business.css" rel="stylesheet">
+  <link th:href="@{/asserts/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
 
 </head>
 
@@ -27,15 +27,15 @@
   <div class="container">
 
     <!-- Page Heading/Breadcrumbs -->
-    <h1 class="mt-4 mb-3">Blog Home Two
-      <small>Subheading</small>
+    <h1 class="mt-4 mb-3">可成长系统之
+      <small>个人项目</small>
     </h1>
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="index.html">Home</a>
+        <a th:href="@{/index}" href="index.html">首页</a>
       </li>
-      <li class="breadcrumb-item active">Blog Home 2</li>
+      <li class="breadcrumb-item active">个人项目</li>
     </ol>
 
     <!-- Blog Post -->
@@ -142,16 +142,11 @@
   <!-- /.container -->
 
   <!-- Footer -->
-  <footer class="py-5 bg-dark">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
-    </div>
-    <!-- /.container -->
-  </footer>
+  <div th:replace="commons/base::footbar"></div>
 
   <!-- Bootstrap core JavaScript -->
   <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-  <script th:src="@{/webjars/bootstrap/4.3.1/css/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
 
 </body>
 

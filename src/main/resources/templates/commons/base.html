@@ -24,32 +24,32 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarResponsive">
-				<ul class="navbar-nav ml-auto">
+				<ul class="navbar-nav ml-auto" th:if="${session.user!=null}">
 					<li class="nav-item"><a class="nav-link" th:href="@{/about}"
 						href="about.html">关于</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/services}" href="services.html">服务</a></li>
+<!--					<li class="nav-item"><a class="nav-link"-->
+<!--						th:href="@{/services}" href="services.html">服务</a></li>-->
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" href="#"
 						id="navbarDropdownPortfolio" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false"> 项目 </a>
+						aria-haspopup="true" aria-expanded="false">项目</a>
 						<div class="dropdown-menu dropdown-menu-right"
 							aria-labelledby="navbarDropdownPortfolio">
-							<a class="dropdown-item" th:href="@{/project/add}"
-								href="portfolio-1-col.html">增加 </a>
-							<a class="dropdown-item" th:href="@{/project/list}"
-								href="portfolio-1-col.html">列表 </a> <a class="dropdown-item"
+							<a class="dropdown-item" th:href="@{/add}"
+								href="portfolio-1-col.html">增加</a>
+							<a class="dropdown-item" th:href="@{/list}"
+								href="portfolio-1-col.html">列表</a> <a class="dropdown-item"
 								th:href="@{/project/top}" href="portfolio-3-col.html">排名</a>
 						</div></li>
-					<li class="nav-item dropdown"><a
+					<li class="nav-item dropdown"><a th:text="${session.user.name}"
 						class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							用户名</a>
 						<div class="dropdown-menu dropdown-menu-right"
 							aria-labelledby="navbarDropdownBlog">
-							<a class="dropdown-item" href="faq.html">个人项目</a> 
-								<a class="dropdown-item" href="404.html">个人信息</a> 
-								<a class="dropdown-item" href="pricing.html">退出登录</a>
+							<a class="dropdown-item" th:href="@{/userList}" href="faq.html">个人项目</a>
+								<a class="dropdown-item" th:href="@{/userEdit}" href="404.html">个人信息</a>
+								<a class="dropdown-item" th:href="@{/user/loginOut}" href="pricing.html">退出登录</a>
 						</div></li>
 				</ul>
 			</div>
@@ -291,8 +291,7 @@
 	<!-- Footer -->
 	<footer th:fragment="footbar" class="py-5 bg-dark">
 		<div class="container">
-			<p class="m-0 text-center text-white">Copyright &copy; Your
-				Website 2019</p>
+			<p class="m-0 text-center text-white">可成长系统团队&copy;北航 2019</p>
 		</div>
 		<!-- /.container -->
 	</footer>

@@ -15,6 +15,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Object user = request.getSession().getAttribute("user");
         if (user==null){
+            LOG.info(request.getRequestURL()+" is Intercepted");
             LOG.error("没有权限访问，请登录");
             request.setAttribute(MessageUtil.LOGIN_MSG,"没有权限访问，请登录");
             request.getRequestDispatcher("/login").forward(request,response);

@@ -31,16 +31,21 @@ public class MyConfig {
 			@Override
 			public void addInterceptors(InterceptorRegistry registry) {
 				registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**")
-						.excludePathPatterns("/druid/*","*.ico","/asserts/**","/register","/user/code","/login","/webjars/**");
+						.excludePathPatterns("/druid/*","*.ico","/asserts/**","*.css","*.js","/webjars/**",
+                                "/error",
+								"/regist","/login","list","userList","show","userEdit",
+								"/user/regist/**","/user/code/**","/user/login/**"
+								);
 			}
 
 			@Override
 			public void addViewControllers(ViewControllerRegistry registry) {
-				registry.addViewController("/").setViewName("index");
-				registry.addViewController("/home").setViewName("index");
-				registry.addViewController("/main").setViewName("index");
-				registry.addViewController("/index").setViewName("index");
-				registry.addViewController("/index.html").setViewName("index");
+				registry.addViewController("/").setViewName("/index");
+				registry.addViewController("/home").setViewName("/index");
+				registry.addViewController("/main").setViewName("/index");
+				registry.addViewController("/index").setViewName("/index");
+				registry.addViewController("/index.html").setViewName("/index");
+				registry.addViewController("/about").setViewName("/index");
 			}
 			
 		};
