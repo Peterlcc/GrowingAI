@@ -70,10 +70,10 @@ public class UserController {
                 request.getSession().setAttribute("user", user);
                 return "redirect:/index";
             } else {
-                model.addFlashAttribute("msg", "用户名或密码错误");
+                model.addFlashAttribute(MessageUtil.LOGIN_MSG, "用户名或密码错误");
             }
         } else {
-            model.addFlashAttribute("msg", "用户名或密码错误");
+            model.addFlashAttribute(MessageUtil.LOGIN_MSG, "用户名或密码错误");
         }
         LOG.info("用户名或密码错误");
         return "redirect:/login";
@@ -86,19 +86,19 @@ public class UserController {
         LOG.info("user regist:" + user + ", valicode:" + valicode + ", retypePassword" + retypePassword);
         String valicodeFromSession = (String) request.getSession().getAttribute("valicode");
         if (!StringUtils.equalsIgnoreCase(valicode, valicodeFromSession)) {
-            model.addFlashAttribute("msg", "验证码不正确");
+            model.addFlashAttribute(MessageUtil.LOGIN_MSG, "验证码不正确");
             return "redirect:/regist";
         }
         if (!StringUtils.equals(retypePassword, user.getPassword())) {
-            model.addFlashAttribute("msg", "两次密码不一致");
+            model.addFlashAttribute(MessageUtil.REGIST_MSG, "两次密码不一致");
             return "redirect:/regist";
         }
         String registMsg = userService.regist(user);
         if (StringUtils.equals(registMsg, "注册成功")) {
-            model.addFlashAttribute("msg", "注册成功，请登录");
+            model.addFlashAttribute(MessageUtil.REGIST_MSG, "注册成功，请登录");
             return "redirect:/login";
         } else {
-            model.addFlashAttribute("msg", registMsg);
+            model.addFlashAttribute(MessageUtil.REGIST_MSG, registMsg);
             return "redirect:/regist";
         }
     }

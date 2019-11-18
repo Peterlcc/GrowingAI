@@ -39,8 +39,8 @@
     </ol>
 
     <div class='box-content'>
-      <p style="color: red;" th:text="${editMsg}" class="text-center"
-         th:if="${not #strings.isEmpty(editMsg)}"></p>
+      <p style="color: red;" th:text="${msg}" class="text-center"
+         th:if="${not #strings.isEmpty(msg)}"></p>
       <form id="editForm" class='form form-horizontal validate-form w-25 mt-2 mb-5 mx-auto'
             style='margin-bottom: 0;' th:action="@{/user/modify}" method="post"
             onsubmit="return editSubmit();">

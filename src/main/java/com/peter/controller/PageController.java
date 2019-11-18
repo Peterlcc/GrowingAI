@@ -1,5 +1,6 @@
 package com.peter.controller;
 
+import com.peter.utils.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,17 +25,17 @@ public class PageController {
         return "index";
     }
 
-    private void checkMsg(Model model) {
+    private void checkMsg(String msgName,Model model) {
         String msg = (String) request.getAttribute("msg");
         if (!StringUtils.isEmpty(msg)) {
-            model.addAttribute("msg", msg);
+            model.addAttribute(msgName, msg);
         }
     }
 
     @GetMapping("login")
     public String login(Model model) {
         LOG.info("login.html requested!");
-        checkMsg(model);
+        checkMsg(MessageUtil.LOGIN_MSG,model);
         return "user/login";
     }
 
@@ -63,13 +64,19 @@ public class PageController {
     @GetMapping("regist")
     public String regist(Model model) {
         LOG.info("regist.html requested!");
-        checkMsg(model);
+        checkMsg(MessageUtil.REGIST_MSG,model);
         return "user/regist";
     }
     @GetMapping("userEdit")
     public String userEdit(Model model) {
         LOG.info("user.edit.html requested!");
-        checkMsg(model);
+        checkMsg(MessageUtil.EDIT_MSG,model);
         return "user/edit";
+    }
+    @GetMapping("projectAdd")
+    public String addProject(Model model){
+        LOG.info("project.upload.html requested!");
+        checkMsg(MessageUtil.EDIT_MSG,model);
+        return "project/upload";
     }
 }

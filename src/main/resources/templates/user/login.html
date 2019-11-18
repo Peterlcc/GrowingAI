@@ -26,8 +26,8 @@
 			src="asserts/img/bootstrap-solid.svg" alt="" width="140" height="140">
 		<h1 class="h3 mb-3 font-weight-normal" th:text="#{login.tip}">Please
 			sign in</h1>
-		<p style="color: red;" th:text="${loginMsg}"
-			th:if="${not #strings.isEmpty(loginMsg)}"></p>
+		<p style="color: red;" th:text="${msg}"
+			th:if="${not #strings.isEmpty(msg)}"></p>
 		<input
 			name="username" type="text" class="form-control input-sm"
 			placeholder="Username" th:placeholder="#{login.username}" required=""
