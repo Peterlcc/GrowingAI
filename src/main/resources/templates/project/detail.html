@@ -8,14 +8,39 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Modern Business - Start Bootstrap Template</title>
+  <title>项目详情</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" href="asserts/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/modern-business.css" rel="stylesheet">
-
+  <link th:href="@{/asserts/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
+<!--  <link th:href="@{/asserts/css/font-awesome.min.css}" href="css/modern-business.css" rel="stylesheet">-->
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    *{
+      font-family: 微软雅黑;
+    }
+    .a{
+      /*width: 80%;
+      border: 2px dashed #666;*/
+      margin: 0 auto;
+    }
+    h2{
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    pre{
+      width: 80%;
+      margin: 0 auto;
+      border: 1px solid #ddd;
+      color: #000;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+  </style>
 </head>
 
 <body>
@@ -26,81 +51,121 @@
   <div class="container">
 
     <!-- Page Heading/Breadcrumbs -->
-    <h1 class="mt-4 mb-3">Portfolio Item
-      <small>Subheading</small>
+    <h1 class="mt-4 mb-3">可成长系统之
+      <small>项目详情</small>
     </h1>
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="index.html">Home</a>
+        <a th:href="@{/index}" href="index.html">首页</a>
       </li>
-      <li class="breadcrumb-item active">Portfolio Item</li>
+      <li class="breadcrumb-item active">项目详情</li>
     </ol>
 
     <!-- Portfolio Item Row -->
     <div class="row">
 
-      <div class="col-md-8">
-        <img class="img-fluid" src="http://placehold.it/750x500" alt="">
-      </div>
 
       <div class="col-md-4">
-        <h3 class="my-3">Project Description</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
-        <h3 class="my-3">Project Details</h3>
-        <ul>
-          <li>Lorem Ipsum</li>
-          <li>Dolor Sit Amet</li>
-          <li>Consectetur</li>
-          <li>Adipiscing Elit</li>
-        </ul>
+        <p class="text-hide" id="pid" th:text="${project.id}" th:attr="url=@{/project/struct},fileUrl=@{/project/file}"></p>
+        <h3 class="my-3" th:text="'项目名称：'+${project.name}">Project Description</h3>
+        <p th:text="'项目描述：'+${project.description}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
+        <h3 class="my-3">项目文件</h3>
+        <div class="a" id="struct"></div>
       </div>
+      <textarea readonly="readonly" class="col-md-8" rows="10" id="fileDetail">
+
+      </textarea>
 
     </div>
     <!-- /.row -->
 
     <!-- Related Projects Row -->
-    <h3 class="my-4">Related Projects</h3>
+<!--    <h3 class="my-4">Related Projects</h3>-->
 
-    <div class="row">
+<!--    <div class="row">-->
 
-      <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
-      </div>
+<!--      <div class="col-md-3 col-sm-6 mb-4">-->
+<!--        <a href="#">-->
+<!--          <img class="img-fluid" src="http://placehold.it/500x300" alt="">-->
+<!--        </a>-->
+<!--      </div>-->
 
-      <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
-      </div>
+<!--      <div class="col-md-3 col-sm-6 mb-4">-->
+<!--        <a href="#">-->
+<!--          <img class="img-fluid" src="http://placehold.it/500x300" alt="">-->
+<!--        </a>-->
+<!--      </div>-->
 
-      <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
-      </div>
+<!--      <div class="col-md-3 col-sm-6 mb-4">-->
+<!--        <a href="#">-->
+<!--          <img class="img-fluid" src="http://placehold.it/500x300" alt="">-->
+<!--        </a>-->
+<!--      </div>-->
 
-      <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
-      </div>
+<!--      <div class="col-md-3 col-sm-6 mb-4">-->
+<!--        <a href="#">-->
+<!--          <img class="img-fluid" src="http://placehold.it/500x300" alt="">-->
+<!--        </a>-->
+<!--      </div>-->
 
-    </div>
+<!--    </div>-->
     <!-- /.row -->
 
   </div>
   <!-- /.container -->
 
-  <!-- Footer -->
-<div th:replace="commons/base::footbar"></div>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
+  <script th:src="@{/asserts/js/LuTree.js}"></script>
+  <script type="text/javascript">
+    function isNumber(val){
 
+      var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+      var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+      if(regPos.test(val) || regNeg.test(val)){
+        return true;
+      }else{
+        return false;
+      }
+
+    }
+    //预加载数据格式
+    console.log($("#pid").attr("url"))
+    console.log($("#pid").text())
+    $.ajax({
+      url: $("#pid").attr("url"),
+      data: {"id":$("#pid").text()},
+      type:"GET",
+      success:function (result) {
+        console.log(result);
+        //无限级菜单生成
+        $("#struct").LuTree({
+          arr: result,
+          sign:true,
+          simIcon: "fa fa-file-o",//叶子图标
+          mouIconOpen: " fa fa-folder-open",//展开图标
+          mouIconClose:"fa fa-folder",//关闭图标
+          callback: function(id) {
+            if(!isNumber(id)){
+              $.ajax({
+                url: $("#pid").attr("fileUrl"),
+                data: {"path":id},
+                type:"GET",
+                success:function (result) {
+                    $("#fileDetail").text(result);
+                }
+              });
+            }
+            console.log("你选择的id是" + id);
+          }
+        });
+      }
+    });
+
+    </script>
 </body>
 
 </html>

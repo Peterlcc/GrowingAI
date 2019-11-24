@@ -1,8 +1,12 @@
 package com.peter.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.peter.bean.Project;
 import com.peter.bean.User;
+import com.peter.service.ProjectService;
 import com.peter.service.UserService;
 import com.peter.utils.MessageUtil;
+import com.peter.utils.ObjectUtils;
 import com.peter.utils.VerifyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -11,10 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
@@ -32,7 +33,8 @@ public class UserController {
     private Log LOG = LogFactory.getLog(UserController.class);
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private ProjectService projectService;
     @GetMapping("/code")
     public void getCode(HttpServletResponse response, HttpServletRequest request) throws IOException {
         Object[] images = VerifyUtil.createImage();
@@ -103,20 +105,26 @@ public class UserController {
         }
     }
 
-    @PostMapping("modify")
-    public String modify(User user, HttpServletRequest request,
+    @PutMapping("modify")
+    public String modify(User user, HttpServletRequest request, @RequestParam("oldPassword") String oldPassword,
                          @RequestParam("retypePassword") String retypePassword, RedirectAttributes model) {
         User loginUser = (User) request.getSession().getAttribute("user");
-        if (loginUser.equals(user)){
-            model.addFlashAttribute(MessageUtil.EDIT_MSG,"用户信息未作修改");
-        }else if(!StringUtils.equals(user.getPassword(),retypePassword)){
-            model.addFlashAttribute(MessageUtil.EDIT_MSG,"两次输入密码不一致");
-        }else {
-            user.setId(loginUser.getId());
-            user.setLoginTime(new Date());
-            userService.update(user);
-            request.getSession().setAttribute("user",user);
-            model.addFlashAttribute(MessageUtil.EDIT_MSG,"用户信息修改成功");
+
+
+        if (!StringUtils.equals(loginUser.getPassword(), oldPassword)) {
+            model.addFlashAttribute(MessageUtil.EDIT_MSG, "用户密码输入错误，请确认是本人操作");
+        } else if (loginUser.equalsWithModify(user)) {
+            model.addFlashAttribute(MessageUtil.EDIT_MSG, "用户信息未作修改");
+        } else if (StringUtils.isEmpty(user.getEmail()) || StringUtils.isEmpty(user.getName())) {
+            model.addFlashAttribute(MessageUtil.EDIT_MSG, "用户名或邮箱不能为空");
+        } else if (!StringUtils.equals(user.getPassword(), retypePassword)) {
+            model.addFlashAttribute(MessageUtil.EDIT_MSG, "两次输入密码不一致");
+        } else {
+            loginUser.setName(user.getName());
+            loginUser.setEmail(user.getEmail());
+            if (!StringUtils.isEmpty(user.getPassword())) loginUser.setPassword(user.getPassword());
+            userService.update(loginUser);
+            model.addFlashAttribute(MessageUtil.EDIT_MSG, "用户信息修改成功");
         }
         return "redirect:/userEdit";
     }
@@ -125,5 +133,32 @@ public class UserController {
     public String loginOut(HttpServletRequest request) {
         request.getSession().setAttribute("user", null);
         return "redirect:/login";
+    }
+
+    @GetMapping("projects")
+    public String projects(HttpServletRequest request, Model model){
+        String pcstr = request.getParameter("pc");
+        if (pcstr == null || pcstr.equals("")) {
+            pcstr = "1";
+        }
+        int pc = Integer.parseInt(pcstr);
+        String psstr = request.getParameter("ps");
+        if (psstr == null || psstr.equals("")) {
+            psstr = "10";
+        }
+        int ps = Integer.parseInt(psstr);
+        User user = (User) request.getSession().getAttribute("user");
+        PageInfo<Project> pageInfo = projectService.getProjectsByUserId(pc, ps, user.getId());
+        LOG.info("list:"+pageInfo.getList());
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("fieldNames", ObjectUtils.getFieldNames(Project.class));
+        return "user/list";
+    }
+    @DeleteMapping("project")
+    @ResponseBody
+    public String deleteProject(@RequestParam("id")Integer id){
+        LOG.info("deleteProject , id is:"+id);
+        //projectService.delete(id);
+        return "删除成功";
     }
 }

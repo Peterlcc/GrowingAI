@@ -1,5 +1,7 @@
 package com.peter.bean;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -229,7 +231,7 @@ public class Project {
                 ", path='" + path + '\'' +
                 ", userId=" + userId +
                 ", user=" + user +
-                ", createTime=" + createTime +
+                ", createTime=" + DateFormatUtils.format(createTime,"yyyy-MM-dd") +
                 '}';
     }
 }

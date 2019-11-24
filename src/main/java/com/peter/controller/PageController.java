@@ -76,7 +76,13 @@ public class PageController {
     @GetMapping("projectAdd")
     public String addProject(Model model){
         LOG.info("project.upload.html requested!");
-        checkMsg(MessageUtil.EDIT_MSG,model);
+        checkMsg(MessageUtil.UPLOAD_MSG,model);
         return "project/upload";
+    }
+    @GetMapping("projectDetail")
+    public String projectDetail(Model model){
+        LOG.info("project.detail.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        return "project/detail";
     }
 }

@@ -44,31 +44,32 @@
     <!-- In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
     <div class="row">
       <div class="col-lg-8 mb-4">
+        <p style="color: red;" th:text="${msg}"
+           th:if="${not #strings.isEmpty(msg)}"></p>
         <h3>添加你的新项目</h3>
-        <form name="sentMessage" id="contactForm" enctype="multipart/form-data">
+        <form name="sentMessage" id="contactForm" method="post" enctype="multipart/form-data" th:action="@{project/project}">
           <input type="hidden" name="_method" value="put" th:if="${project!=null}"/>
           <div class="control-group form-group">
             <div class="controls">
               <label>项目名称：</label>
-              <input type="text" class="form-control" id="name" required data-validation-required-message="Please enter your name.">
+              <input type="text" name="name" class="form-control" required data-validation-required-message="请输入项目名称">
               <p class="help-block"></p>
             </div>
           </div>
           <div class="control-group form-group">
             <div class="controls">
               <label>项目描述：</label>
-              <input type="tel" class="form-control" id="phone" required data-validation-required-message="Please enter your phone number.">
+              <input type="text" name="description" class="form-control" required data-validation-required-message="请输入项目描述">
             </div>
           </div>
           <div class="control-group form-group">
             <div class="controls">
-              <label>选择你的项目</label>
+              <label>选择你的项目文件夹</label>
               <input class="form-control-file" type="file" name="dire" multiple="multiple" webkitdirectory>
             </div>
           </div>
-          <div id="success"></div>
           <!-- For success/fail messages -->
-          <button type="submit" class="btn btn-primary" id="sendMessageButton">上传</button>
+          <button type="submit" class="btn btn-primary">上传</button>
         </form>
       </div>
 
@@ -85,7 +86,7 @@
   <!-- Contact form JavaScript -->
   <!-- Do not edit these files! In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
   <script th:src="@{/asserts/js/jqBootstrapValidation.js}" src="js/jqBootstrapValidation.js"></script>
-  <script th:src="@{/asserts/js/contact_me.js}" src="js/contact_me.js"></script>
+<!--  <script th:src="@{/asserts/js/contact_me.js}" src="js/contact_me.js"></script>-->
 
 </body>
 

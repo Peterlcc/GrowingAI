@@ -7,6 +7,7 @@ import com.peter.bean.ProjectExample;
 import com.peter.mapper.ProjectMapper;
 import com.peter.mapper.UserMapper;
 import com.peter.service.ProjectService;
+import com.peter.utils.FileUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -62,6 +64,23 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public PageInfo<Project> getProjectsByUserId(int pc, int ps,Integer userId) {
+        ProjectExample example = new ProjectExample();
+        ProjectExample.Criteria criteria = example.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        PageHelper.startPage(pc, ps);
+        List<Project> projects = projectMapper.selectByExample(example);
+        projects.stream().forEach(project -> project.setUser(userMapper.selectByPrimaryKey(project.getUserId())));
+        LOG.info("getProjectsByUserId pc:"+pc+" ps:"+ps+" size:"+projects.size());
+        if (projects==null||projects.size()==0) {
+            LOG.info("getProjectByUserId,no project of user :"+userId);
+            return null;
+        }
+        PageInfo<Project> pageInfo = new PageInfo<Project>(projects);
+        return pageInfo;
+    }
+
+    @Override
     public PageInfo<Project> getProjects(int pc, int ps) {
         PageHelper.startPage(pc, ps);
         List<Project> projects = projectMapper.selectByExample(null);
@@ -69,6 +88,18 @@ public class ProjectServiceImpl implements ProjectService {
         projects.stream().forEach(project -> project.setUser(userMapper.selectByPrimaryKey(project.getUserId())));
         PageInfo<Project> pageInfo = new PageInfo<Project>(projects);
         return pageInfo;
+    }
+
+    @Override
+    public List<Map<String, Object>> getStructById(Integer id) {
+        Project project = projectMapper.selectByPrimaryKey(id);
+        if (project==null){
+            LOG.info("getStructById selectByPrimaryKey is null!");
+            return null;
+        }
+        List<Map<String, Object>> struct = FileUtil.getPathStruct(project.getPath());
+        LOG.info("getStructById project struct is:"+struct);
+        return struct;
     }
 
     @Override
@@ -80,7 +111,9 @@ public class ProjectServiceImpl implements ProjectService {
         }
         String name = project.getName();
         String path = project.getPath();
+        File src = new File(path);
         try {
+            FileUtils.copyDirectoryToDirectory(src,FileUtil.deleteDir);
             FileUtils.deleteDirectory(new File(path));
             LOG.info("project "+name+" in path:"+path+" is deleted");
         } catch (IOException e) {
@@ -90,4 +123,5 @@ public class ProjectServiceImpl implements ProjectService {
         LOG.info("project "+name+" is deleted");
         projectMapper.deleteByPrimaryKey(id);
     }
+
 }

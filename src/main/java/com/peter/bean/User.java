@@ -2,6 +2,7 @@ package com.peter.bean;
 
 import com.peter.utils.RegexUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -277,7 +278,7 @@ public class User {
                 ", number='" + number + '\'' +
                 ", email='" + email + '\'' +
                 ", sex=" + sex +
-                ", loginTime=" + loginTime +
+                ", loginTime=" + DateFormatUtils.format(loginTime,"yyyy-MM-dd") +
                 '}';
     }
 
@@ -292,6 +293,14 @@ public class User {
                 number.equals(user.number) &&
                 email.equals(user.email) &&
                 sex.equals(user.sex);
+    }
+    public boolean equalsWithModify(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return name.equals(user.name) &&
+                (StringUtils.isEmpty(user.password)?true:password.equals(user.password)) &&
+                email.equals(user.email);
     }
 
     @Override

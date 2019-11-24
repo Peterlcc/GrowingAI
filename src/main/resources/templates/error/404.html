@@ -14,7 +14,7 @@
   <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" href="asserts/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/modern-business.css" rel="stylesheet">
+  <link th:href="@{/asserts/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
 
 </head>
 
@@ -39,70 +39,13 @@
 
     <div class="jumbotron">
       <h1 class="display-1">404</h1>
-      <p>The page you're looking for could not be found. Here are some helpful links to get you back on track:</p>
+      <p>你找的页面不见了。。。</p>
       <ul>
         <li>
-          <a href="index.html">Home</a>
+          <a th:href="@{/index}" href="index.html">首页</a>
         </li>
         <li>
-          <a href="about.html">About</a>
-        </li>
-        <li>
-          <a href="services.html">Services</a>
-        </li>
-        <li>
-          <a href="contact.html">Contact</a>
-        </li>
-        <li>
-          Portfolio
-          <ul>
-            <li>
-              <a href="portfolio-1-col.html">1 Column Portfolio</a>
-            </li>
-            <li>
-              <a href="portfolio-2-col.html">2 Column Portfolio</a>
-            </li>
-            <li>
-              <a href="portfolio-3-col.html">3 Column Portfolio</a>
-            </li>
-            <li>
-              <a href="portfolio-4-col.html">4 Column Portfolio</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          Blog
-          <ul>
-            <li>
-              <a href="blog-home-1.html">Blog Home 1</a>
-            </li>
-            <li>
-              <a href="blog-home-2.html">Blog Home 2</a>
-            </li>
-            <li>
-              <a href="blog-post.html">Blog Post</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          Other Pages
-          <ul>
-            <li>
-              <a href="full-width-page.html">Full Width Page</a>
-            </li>
-            <li>
-              <a href="sidebar.html">Sidebar Page</a>
-            </li>
-            <li>
-              <a href="faq.html">FAQ</a>
-            </li>
-            <li>
-              <a href="404.html">404 Page</a>
-            </li>
-            <li>
-              <a href="pricing-table.html">Pricing Table</a>
-            </li>
-          </ul>
+          <a th:href="@{/project/projects}" href="about.html">项目列表</a>
         </li>
       </ul>
     </div>
@@ -116,7 +59,7 @@
 
   <!-- Bootstrap core JavaScript -->
   <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-  <script th:src="@{/webjars/bootstrap/4.3.1/css/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
 
 </body>
 
