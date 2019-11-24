@@ -158,7 +158,7 @@ public class UserController {
     @ResponseBody
     public String deleteProject(@RequestParam("id")Integer id){
         LOG.info("deleteProject , id is:"+id);
-        //projectService.delete(id);
+        projectService.delete(id);
         return "删除成功";
     }
 }

@@ -81,7 +81,7 @@
             <h2 class="card-title" th:text="${project.name}">Post Title</h2>
             <p class="card-text" th:text="${project.description}">项目描述</p>
             <a href="#" th:href="@{'/project/project/'+${project.id}}" class="btn btn-primary">查看详情&rarr;</a>
-            <a href="javascript:void(0);" th:attr="data=${project.id},url=@{/project/project}" id="del" class="btn btn-primary">删除&rarr;</a>
+            <button onclick="delPro();" th:attr="data=${project.id},url=@{/user/project}" id="del" class="btn btn-primary">删除&rarr;</button>
           </div>
         </div>
       </div>
@@ -114,6 +114,19 @@
   <script type="text/javascript" th:src="@{/asserts/js/jq-paginator.js}" src="asserts/js/feather.min.js" ></script>
 
   <script type="text/javascript">
+    //异步提交删除请求
+    function delPro() {
+      console.log("delpro");
+      $.ajax({
+        type: "POST",
+        url: $("#del").attr("url"),
+        data: {_method: "DELETE", id: $("#del").attr("data")},
+        success: function (result) {
+          alert(result);
+          location.reload();
+        }
+      });
+    }
     var first=true;
     var pages=$("#pages").attr("num");
     var pageSize=$("#pageSize").attr("num");
@@ -139,35 +152,6 @@
       }
     });
   </script>
-<script type="javascript">
-  //异步提交删除请求
-// function delPro () {
-//     console.log("delpro");
-//     $.ajax({
-//       type: "POST",
-//       dataType: "json",
-//       url: $("#del").attr("url"),
-//       data: {_method: "DELETE", id: $("#del").attr("data")},
-//       success: function (result) {
-//         console.log(result);
-//         //location.reload();
-//       }
-//     });
-//   }
-  $("#del").on("click",function (event) {
-    event.preventDefault();
-    $.ajax({
-      type:"POST",
-      dataType:"json",
-      url:$("#del").attr("href"),
-      data:{_method:"DELETE",id:$("#del").attr("data")},
-      success:function (result) {
-        console.log(result);
-        location.reload();
-      }
-    });
-  });
-</script>
 </body>
 
 </html>

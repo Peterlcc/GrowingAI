@@ -72,11 +72,10 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> projects = projectMapper.selectByExample(example);
         projects.stream().forEach(project -> project.setUser(userMapper.selectByPrimaryKey(project.getUserId())));
         LOG.info("getProjectsByUserId pc:"+pc+" ps:"+ps+" size:"+projects.size());
+        PageInfo<Project> pageInfo = new PageInfo<Project>(projects);
         if (projects==null||projects.size()==0) {
             LOG.info("getProjectByUserId,no project of user :"+userId);
-            return null;
         }
-        PageInfo<Project> pageInfo = new PageInfo<Project>(projects);
         return pageInfo;
     }
 

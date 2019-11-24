@@ -48,6 +48,7 @@ public class ProjectController {
         }
         int ps = Integer.parseInt(psstr);
         PageInfo<Project> pageInfo = projectService.getProjects(pc, ps);
+        LOG.info("list:"+pageInfo.getList());
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("fieldNames", ObjectUtils.getFieldNames(Project.class));
         return "project/list";
