@@ -3,6 +3,7 @@ package com.peter.controller;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Project;
 import com.peter.bean.User;
+import com.peter.component.GrowningAiConfig;
 import com.peter.service.ProjectService;
 import com.peter.utils.FileUtil;
 import com.peter.utils.MessageUtil;
@@ -32,8 +33,10 @@ public class ProjectController {
     private Log LOG = LogFactory.getLog(ProjectController.class);
     @Autowired
     private ProjectService projectService;
-    @Value("${growingai.upload.path}")
-    private String basePath;
+//    @Value("${growingai.upload-path}")
+//    private String basePath;
+    @Autowired
+    private GrowningAiConfig growningAiConfig;
 
     @GetMapping("projects")
     public String getProjects(HttpServletRequest request, Model model) {
@@ -60,7 +63,7 @@ public class ProjectController {
         User user = (User) request.getSession().getAttribute("user");
         project.setUserId(user.getId());
         project.setCreateTime(new Date());
-        String path=basePath + File.separator+ "src"+File.separator+user.getRealName()+File.separator;
+        String path=growningAiConfig.getUploadPath() + File.separator+ "src"+File.separator+user.getRealName()+File.separator;
         String pname = dire[0].getOriginalFilename().substring(0, dire[0].getOriginalFilename().indexOf("/"));
         project.setPath(path+ pname);
         System.out.println(project);

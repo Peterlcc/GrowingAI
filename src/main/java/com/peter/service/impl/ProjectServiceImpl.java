@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Project;
 import com.peter.bean.ProjectExample;
+import com.peter.component.GrowningAiConfig;
 import com.peter.mapper.ProjectMapper;
 import com.peter.mapper.UserMapper;
 import com.peter.service.ProjectService;
@@ -27,6 +28,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private GrowningAiConfig growningAiConfig;
+
+    private File deleteDir=null;
     @Override
     public void save(Project project) {
         ProjectExample example = new ProjectExample();
@@ -103,6 +109,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void delete(Integer id) {
+        if (deleteDir==null)
+        {
+            deleteDir=new File(growningAiConfig.getTmpDir());
+        }
         Project project = projectMapper.selectByPrimaryKey(id);
         if (project==null){
             LOG.info("can't find project by id:"+id+" delete failed!");
@@ -112,7 +122,7 @@ public class ProjectServiceImpl implements ProjectService {
         String path = project.getPath();
         File src = new File(path);
         try {
-            FileUtils.copyDirectoryToDirectory(src,FileUtil.deleteDir);
+            FileUtils.copyDirectoryToDirectory(src,deleteDir);
             FileUtils.deleteDirectory(new File(path));
             LOG.info("project "+name+" in path:"+path+" is deleted");
         } catch (IOException e) {
