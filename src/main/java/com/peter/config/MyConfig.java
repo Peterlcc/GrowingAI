@@ -34,6 +34,7 @@ public class MyConfig {
 						.excludePathPatterns("/druid/*","*.ico","*.jpg","/asserts/**","*.css","*.js","/webjars/**",
 								"/error",
 								"/regist","/login","list","userList","show","userEdit",
+								"/result/save",
 								"/user/regist/**","/user/code/**","/user/login/**"
 						);
 			}

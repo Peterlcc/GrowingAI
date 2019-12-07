@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.peter.bean.Project;
 import com.peter.bean.User;
 import com.peter.component.GrowningAiConfig;
+import com.peter.component.ProjectTaskQueue;
 import com.peter.service.ProjectService;
 import com.peter.utils.FileUtil;
 import com.peter.utils.MessageUtil;
@@ -33,10 +34,12 @@ public class ProjectController {
     private Log LOG = LogFactory.getLog(ProjectController.class);
     @Autowired
     private ProjectService projectService;
-//    @Value("${growingai.upload-path}")
-//    private String basePath;
+
     @Autowired
     private GrowningAiConfig growningAiConfig;
+
+    @Autowired
+    private ProjectTaskQueue projectTaskQueue;
 
     @GetMapping("projects")
     public String getProjects(HttpServletRequest request, Model model) {
@@ -87,6 +90,7 @@ public class ProjectController {
         }
 
         projectService.save(project);
+        projectTaskQueue.addTask(project);
         LOG.info("save project:" + project.toString());
         return "redirect:/project/projects";
     }
