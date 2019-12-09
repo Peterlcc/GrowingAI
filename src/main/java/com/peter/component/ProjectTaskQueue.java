@@ -30,6 +30,12 @@ public class ProjectTaskQueue {
     public int getTaskSize(){
         return tasks.size();
     }
+    public int getRemaining(){
+        return tasks.remainingCapacity();
+    }
+    public boolean isFull(){
+        return tasks.remainingCapacity()==0;
+    }
     public boolean isEmpty(){
         return tasks.isEmpty();
     }

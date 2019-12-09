@@ -4,17 +4,15 @@ import com.github.pagehelper.PageInfo;
 import com.peter.bean.Project;
 import com.peter.bean.User;
 import com.peter.component.GrowningAiConfig;
-import com.peter.component.ProjectTaskQueue;
 import com.peter.service.ProjectService;
+import com.peter.service.TaskUploadService;
 import com.peter.utils.FileUtil;
 import com.peter.utils.MessageUtil;
 import com.peter.utils.ObjectUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +37,7 @@ public class ProjectController {
     private GrowningAiConfig growningAiConfig;
 
     @Autowired
-    private ProjectTaskQueue projectTaskQueue;
+    private TaskUploadService taskUploadService;
 
     @GetMapping("projects")
     public String getProjects(HttpServletRequest request, Model model) {
@@ -90,7 +88,7 @@ public class ProjectController {
         }
 
         projectService.save(project);
-        projectTaskQueue.addTask(project);
+        taskUploadService.upload(project);
         LOG.info("save project:" + project.toString());
         return "redirect:/project/projects";
     }
