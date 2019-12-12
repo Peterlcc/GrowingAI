@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 24/11/2019 09:56:34
+ Date: 12/12/2019 17:11:14
 */
 
 SET NAMES utf8mb4;
@@ -57,6 +57,21 @@ CREATE TABLE `projects`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for results
+-- ----------------------------
+DROP TABLE IF EXISTS `results`;
+CREATE TABLE `results`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `length` double NULL DEFAULT NULL COMMENT '路径长度',
+  `points` int(255) NULL DEFAULT NULL COMMENT '点数',
+  `steps` int(255) NULL DEFAULT NULL COMMENT '步数',
+  `project_id` int(11) NULL DEFAULT NULL COMMENT '项目id',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `project_id`(`project_id`) USING BTREE,
+  CONSTRAINT `results_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

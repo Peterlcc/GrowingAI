@@ -23,7 +23,7 @@ public class TestTask {
      * 0 * * * * * 每分钟
      * 0 0 * * * * 每小时
      */
-    @Scheduled(cron ="${system.growingai.cron}")
+    @Scheduled(cron ="${scheduler.cron}")
     public void testProject() {
         Project project = projectTaskQueue.getTask();
         if (project==null) {
@@ -31,7 +31,7 @@ public class TestTask {
             return;
         }
         LOG.info("---------TestTask running :project:"+project);
-        Result result = testService.testProject(project);
-        LOG.info("---------TestTask finished :result:"+result);
+        testService.testProject(project);
+        LOG.info("---------TestTask finished!");
     }
 }

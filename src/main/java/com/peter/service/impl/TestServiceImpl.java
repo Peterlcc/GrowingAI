@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
@@ -20,14 +21,15 @@ public class TestServiceImpl implements TestService {
     private GrowningAiConfig growningAiConfig;
 
     @Override
-    public Result testProject(Project project) {
+    @Async
+    public void testProject(Project project) {
         LOG.info("test project:" + project);
         String projectPath = project.getPath();
         File launchFile = new File(projectPath + File.separator + "fake_move_base_amcl.launch");
         //检测launch文件是否存在，不存在不能启动测试
         if (!launchFile.exists()){
             LOG.error("no fake_move_base_amcl.launch file in "+project);
-            return null;
+            return;
         }
         //将rbx1的launch文件替换为项目自带的launch文件
         try {
@@ -35,7 +37,7 @@ public class TestServiceImpl implements TestService {
                         "rbx1/rbx1_nav/launch/fake_move_base_amcl.launch"));
         } catch (IOException e) {
             LOG.error("切换launch文件失败:"+e.getMessage());
-            return null;
+            return;
         }
         //保存项目id信息
         try {
@@ -43,14 +45,23 @@ public class TestServiceImpl implements TestService {
                     project.getId()+"","utf-8");
         } catch (IOException e) {
             LOG.error("写入project id 失败："+e.getMessage());
-            return null;
+            return;
         }
         //编译所有node
-
-        //执行测试命令
-        LinuxCmdUtils.executeLinuxCmd("sh /root/WorkSpaces/shell.sh");
-
-        return null;
+        String compileCommand="source /root/.bashrc && catkin_make";
+        if(LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand,growningAiConfig.getUploadPath())){
+            LOG.info("编译成功");
+            //执行测试命令
+            if(LinuxCmdUtils.executeLinuxCmd("source /root/.bashrc && sh /root/WorkSpaces/shell.sh")){
+                LOG.info("运行测试命令成功");
+            }else {
+                LOG.error("运行测试命令失败："+project);
+                return;
+            }
+        }else {
+            LOG.error("编译出错："+project);
+            return;
+        }
     }
 
 }

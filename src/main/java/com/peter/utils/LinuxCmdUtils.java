@@ -3,10 +3,7 @@ package com.peter.utils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
+import java.io.*;
 
 public class LinuxCmdUtils {
     private static Log logger = LogFactory.getLog(LinuxCmdUtils.class);
@@ -23,7 +20,7 @@ public class LinuxCmdUtils {
             //执行结果 0 表示正常退出
             int exeResult=process.waitFor();
             if(exeResult==0){
-                logger.info("执行成功");
+                logger.info("命令执行成功:"+cmd);
                 result=true;
             }
 
@@ -33,7 +30,28 @@ public class LinuxCmdUtils {
         }
         return result;
     }
+    public  static boolean executeLinuxCmdWithPath(String cmd,String basePath) {
 
+        boolean result=false;
+
+        logger.info("got cmd : " + cmd);
+        Runtime run = Runtime.getRuntime();
+        //InputStream in=null;
+        try {
+            Process process = run.exec(new String[] {"/bin/bash","-c",cmd},null,new File(basePath));
+            //执行结果 0 表示正常退出
+            int exeResult=process.waitFor();
+            if(exeResult==0){
+                logger.info("命令执行成功:"+cmd);
+                result=true;
+            }
+
+        }
+        catch (Exception e) {
+            logger.error("LinuxCmdUtils.executeLinuxCmd error",e);
+        }
+        return result;
+    }
     /**
      * 获取linux命令执行的结果,cat 之类
      * @param cmd
