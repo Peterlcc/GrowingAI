@@ -35,6 +35,8 @@ public class TestServiceImpl implements TestService {
         try {
             FileUtils.forceDelete(new File(growningAiConfig.getUploadPath()+File.separator+
                         "rbx1/rbx1_nav/launch/fake_move_base_amcl.launch"));
+            FileUtils.copyFileToDirectory(launchFile,new File(growningAiConfig.getUploadPath()+File.separator+
+                    "rbx1/rbx1_nav/launch"));
         } catch (IOException e) {
             LOG.error("切换launch文件失败:"+e.getMessage());
             return;
@@ -48,20 +50,16 @@ public class TestServiceImpl implements TestService {
             return;
         }
         //编译所有node
-        String compileCommand="source /root/.bashrc && catkin_make";
-        if(LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand,growningAiConfig.getUploadPath())){
+        String compileCommand="source /opt/ros/kinetic/setup.bash && source /root/WorkSpaces/catkin_ws/devel/setup.sh && catkin_make";
+        if(LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand,growningAiConfig.getCatkinPath())){
             LOG.info("编译成功");
             //执行测试命令
-            if(LinuxCmdUtils.executeLinuxCmd("source /root/.bashrc && sh /root/WorkSpaces/shell.sh")){
-                LOG.info("运行测试命令成功");
-            }else {
-                LOG.error("运行测试命令失败："+project);
-                return;
-            }
+            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source /root/WorkSpaces/catkin_ws/devel/setup.sh && sh /root/WorkSpaces/shell.sh",growningAiConfig.getCatkinPath());
+            LOG.info("运行测试命令成功");
+            return;
         }else {
             LOG.error("编译出错："+project);
             return;
         }
     }
-
 }

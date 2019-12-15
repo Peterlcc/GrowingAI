@@ -32,7 +32,7 @@ public class MyConfig {
 			public void addInterceptors(InterceptorRegistry registry) {
 				registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**")
 						.excludePathPatterns("/druid/*","*.ico","*.jpg","/asserts/**","*.css","*.js","/webjars/**",
-								"/error",
+								"/error","/test",
 								"/regist","/login","list","userList","show","userEdit",
 								"/result/save",
 								"/user/regist/**","/user/code/**","/user/login/**"

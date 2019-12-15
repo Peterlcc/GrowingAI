@@ -39,11 +39,22 @@ public class LinuxCmdUtils {
         //InputStream in=null;
         try {
             Process process = run.exec(new String[] {"/bin/bash","-c",cmd},null,new File(basePath));
+            InputStreamReader ir = new InputStreamReader(process.getInputStream());
+            InputStreamReader ie = new InputStreamReader(process.getErrorStream());
+            LineNumberReader input = new LineNumberReader(ir);
+            LineNumberReader error = new LineNumberReader(ie);
             //执行结果 0 表示正常退出
             int exeResult=process.waitFor();
             if(exeResult==0){
                 logger.info("命令执行成功:"+cmd);
                 result=true;
+            }
+            String line;
+            while ((line = input.readLine()) != null){
+                logger.info("get result:"+line);
+            }
+            while ((line = error.readLine()) != null){
+                logger.error("get result:"+line);
             }
 
         }

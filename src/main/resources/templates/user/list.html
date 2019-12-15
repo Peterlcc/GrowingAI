@@ -81,6 +81,7 @@
             <h2 class="card-title" th:text="${project.name}">Post Title</h2>
             <p class="card-text" th:text="${project.description}">项目描述</p>
             <a href="#" th:href="@{'/project/project/'+${project.id}}" class="btn btn-primary">查看详情&rarr;</a>
+<!--            <a href="#" th:href="@{'/project/test/'+${project.id}}" class="btn btn-primary">手动测试&rarr;</a>-->
             <button onclick="delPro();" th:attr="data=${project.id},url=@{/user/project}" id="del" class="btn btn-primary">删除&rarr;</button>
           </div>
         </div>

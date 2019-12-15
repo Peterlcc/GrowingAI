@@ -61,18 +61,18 @@ public class ProjectController {
     @PostMapping("project")
     public String upload(@RequestParam("dire") MultipartFile[] dire, Project project, HttpServletRequest request,
                          RedirectAttributes model) {
+        if (dire == null || dire.length == 0) {
+            LOG.info("files in project to upload is null,upload failed!");
+            model.addFlashAttribute(MessageUtil.UPLOAD_MSG,"上传项目的文件为空，请确认上传的项目！");
+            return "redirect:/projectAdd";
+        }
         User user = (User) request.getSession().getAttribute("user");
         project.setUserId(user.getId());
         project.setCreateTime(new Date());
-        String path=growningAiConfig.getUploadPath() + File.separator+ "src"+File.separator+user.getRealName()+File.separator;
+        String path=growningAiConfig.getUploadPath() +File.separator;
         String pname = dire[0].getOriginalFilename().substring(0, dire[0].getOriginalFilename().indexOf("/"));
         project.setPath(path+ pname);
         System.out.println(project);
-        if (dire == null || dire.length == 0) {
-            LOG.info("files in project to upload is null,upload failed!");
-            model.addFlashAttribute(MessageUtil.UPLOAD_MSG,"上传项目的文件为空，请选中项目的文件！");
-            return "redirect:/projectAdd";
-        }
         StringBuilder uploadFiles = new StringBuilder();
         uploadFiles.append("upload files:[");
         for (MultipartFile file : dire) {
