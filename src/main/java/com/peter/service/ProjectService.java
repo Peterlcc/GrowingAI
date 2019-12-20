@@ -14,4 +14,6 @@ public interface ProjectService {
     PageInfo<Project> getProjects(int pc, int ps);
     List<Map<String,Object>> getStructById(Integer id);
     void delete(Integer id);
+
+    Project getProjectDetail(Integer id);
 }

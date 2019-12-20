@@ -40,7 +40,11 @@ public class TestController {
     @ResponseBody
     public String add(@RequestParam("id")Integer id){
         Project project = projectService.getProjectById(id);
-        taskUploadService.upload(project);
-        return "uploaded";
+        if (project!=null) {
+            taskUploadService.upload(project);
+            return "uploaded";
+        }else {
+            return "project id:"+id+" not found!";
+        }
     }
 }

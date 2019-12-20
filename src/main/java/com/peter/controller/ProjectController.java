@@ -94,7 +94,7 @@ public class ProjectController {
     }
     @GetMapping("project/{id}")
     public String getProjectDetail(@PathVariable("id") Integer id, Model model){
-        Project project = projectService.getProjectById(id);
+        Project project = projectService.getProjectDetail(id);
         if (project==null){
             model.addAttribute(MessageUtil.DETAIL_MSG,"项目查询失败！");
         }else {

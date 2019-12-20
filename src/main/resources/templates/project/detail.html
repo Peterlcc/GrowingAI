@@ -70,6 +70,7 @@
         <p class="text-hide" id="pid" th:text="${project.id}" th:attr="url=@{/project/struct},fileUrl=@{/project/file}"></p>
         <h3 class="my-3" th:text="'项目名称：'+${project.name}">Project Description</h3>
         <p th:text="'项目描述：'+${project.description}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
+        <p th:if="${project.results!=null}" th:text="'测试结果：[length：'+${project.results[0].getLength()}+',points:'+${project.results[0].getPoints()}+',time:'+${project.results[0].getTime()+'s]'}"></p>
         <h3 class="my-3">项目文件</h3>
         <div class="a" id="struct"></div>
       </div>

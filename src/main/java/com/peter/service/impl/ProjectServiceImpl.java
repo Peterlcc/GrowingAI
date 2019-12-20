@@ -4,8 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Project;
 import com.peter.bean.ProjectExample;
+import com.peter.bean.Result;
+import com.peter.bean.ResultExample;
 import com.peter.component.GrowningAiConfig;
 import com.peter.mapper.ProjectMapper;
+import com.peter.mapper.ResultMapper;
 import com.peter.mapper.UserMapper;
 import com.peter.service.ProjectService;
 import com.peter.utils.FileUtil;
@@ -30,9 +33,13 @@ public class ProjectServiceImpl implements ProjectService {
     private UserMapper userMapper;
 
     @Autowired
+    private ResultMapper resultMapper;
+
+    @Autowired
     private GrowningAiConfig growningAiConfig;
 
-    private File deleteDir=null;
+    private File deleteDir = null;
+
     @Override
     public void save(Project project) {
         ProjectExample example = new ProjectExample();
@@ -59,28 +66,28 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectExample.Criteria criteria = example.createCriteria();
         criteria.andNameEqualTo(name);
         List<Project> list = projectMapper.selectByExample(example);
-        if (list==null||list.size()==0){
-            LOG.info("get project by name:"+name+" is not existed! return null");
+        if (list == null || list.size() == 0) {
+            LOG.info("get project by name:" + name + " is not existed! return null");
             return null;
-        }else {
+        } else {
             Project project = list.get(0);
-            LOG.info("get project by name:"+name+" is existed! return list[0]:"+project);
+            LOG.info("get project by name:" + name + " is existed! return list[0]:" + project);
             return project;
         }
     }
 
     @Override
-    public PageInfo<Project> getProjectsByUserId(int pc, int ps,Integer userId) {
+    public PageInfo<Project> getProjectsByUserId(int pc, int ps, Integer userId) {
         ProjectExample example = new ProjectExample();
         ProjectExample.Criteria criteria = example.createCriteria();
         criteria.andUserIdEqualTo(userId);
         PageHelper.startPage(pc, ps);
         List<Project> projects = projectMapper.selectByExample(example);
         projects.stream().forEach(project -> project.setUser(userMapper.selectByPrimaryKey(project.getUserId())));
-        LOG.info("getProjectsByUserId pc:"+pc+" ps:"+ps+" size:"+projects.size());
+        LOG.info("getProjectsByUserId pc:" + pc + " ps:" + ps + " size:" + projects.size());
         PageInfo<Project> pageInfo = new PageInfo<Project>(projects);
-        if (projects==null||projects.size()==0) {
-            LOG.info("getProjectByUserId,no project of user :"+userId);
+        if (projects == null || projects.size() == 0) {
+            LOG.info("getProjectByUserId,no project of user :" + userId);
         }
         return pageInfo;
     }
@@ -89,7 +96,7 @@ public class ProjectServiceImpl implements ProjectService {
     public PageInfo<Project> getProjects(int pc, int ps) {
         PageHelper.startPage(pc, ps);
         List<Project> projects = projectMapper.selectByExample(null);
-        LOG.info("getProjects pc:"+pc+" ps:"+ps+" size:"+projects.size());
+        LOG.info("getProjects pc:" + pc + " ps:" + ps + " size:" + projects.size());
         projects.stream().forEach(project -> project.setUser(userMapper.selectByPrimaryKey(project.getUserId())));
         PageInfo<Project> pageInfo = new PageInfo<Project>(projects);
         return pageInfo;
@@ -98,39 +105,51 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Map<String, Object>> getStructById(Integer id) {
         Project project = projectMapper.selectByPrimaryKey(id);
-        if (project==null){
+        if (project == null) {
             LOG.info("getStructById selectByPrimaryKey is null!");
             return null;
         }
         List<Map<String, Object>> struct = FileUtil.getPathStruct(project.getPath());
-        LOG.info("getStructById project struct is:"+struct);
+        LOG.info("getStructById project struct is:" + struct);
         return struct;
     }
 
     @Override
     public void delete(Integer id) {
-        if (deleteDir==null)
-        {
-            deleteDir=new File(growningAiConfig.getTmpDir());
+        if (deleteDir == null) {
+            deleteDir = new File(growningAiConfig.getTmpDir());
         }
         Project project = projectMapper.selectByPrimaryKey(id);
-        if (project==null){
-            LOG.info("can't find project by id:"+id+" delete failed!");
+        if (project == null) {
+            LOG.info("can't find project by id:" + id + " delete failed!");
             return;
         }
         String name = project.getName();
         String path = project.getPath();
         File src = new File(path);
         try {
-            FileUtils.copyDirectoryToDirectory(src,deleteDir);
+            FileUtils.copyDirectoryToDirectory(src, deleteDir);
             FileUtils.deleteDirectory(new File(path));
-            LOG.info("project "+name+" in path:"+path+" is deleted");
+            LOG.info("project " + name + " in path:" + path + " is deleted");
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
-        LOG.info("project "+name+" is deleted");
+        LOG.info("project " + name + " is deleted");
         projectMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Project getProjectDetail(Integer id) {
+        Project project = projectMapper.selectByPrimaryKey(id);
+        if (project == null) return null;
+        ResultExample resultExample = new ResultExample();
+        ResultExample.Criteria criteria = resultExample.createCriteria();
+        criteria.andProjectIdEqualTo(project.getId());
+        List<Result> results = resultMapper.selectByExample(resultExample);
+        if (results == null || results.size() == 0) project.setResults(null);
+        else project.setResults(results);
+        return project;
     }
 
 }
