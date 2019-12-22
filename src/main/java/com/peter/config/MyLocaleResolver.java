@@ -14,10 +14,13 @@ public class MyLocaleResolver implements LocaleResolver {
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
         String lan = request.getParameter("lan");
-        Locale locale=Locale.getDefault();
+//        Locale locale=Locale.getDefault();
+        Locale locale=null;
         if (!StringUtils.isEmpty(lan)){
             String[] split = lan.split("_");
             locale = new Locale(split[0], split[1]);
+        }else {
+            locale=new Locale("zh","CN");
         }
         return locale;
     }

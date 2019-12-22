@@ -124,6 +124,12 @@
             <artifactId>json</artifactId>
             <version>20160810</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.62</version>
+        </dependency>
+
         <!-- 工具类 -->
         <dependency>
             <groupId>commons-io</groupId>

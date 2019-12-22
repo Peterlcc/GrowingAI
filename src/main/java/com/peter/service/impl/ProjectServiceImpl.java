@@ -132,8 +132,7 @@ public class ProjectServiceImpl implements ProjectService {
             FileUtils.deleteDirectory(new File(path));
             LOG.info("project " + name + " in path:" + path + " is deleted");
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
+            LOG.error(e.getMessage());
         }
         LOG.info("project " + name + " is deleted");
         projectMapper.deleteByPrimaryKey(id);

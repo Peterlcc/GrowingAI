@@ -1,7 +1,6 @@
 package com.peter.component;
 
 import com.peter.bean.Project;
-import com.peter.bean.Result;
 import com.peter.service.TestService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
