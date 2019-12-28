@@ -2,13 +2,11 @@ package com.peter.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.peter.bean.Project;
-import com.peter.bean.ProjectExample;
-import com.peter.bean.Result;
-import com.peter.bean.ResultExample;
+import com.peter.bean.*;
 import com.peter.component.GrowningAiConfig;
 import com.peter.mapper.ProjectMapper;
 import com.peter.mapper.ResultMapper;
+import com.peter.mapper.ScoreMapper;
 import com.peter.mapper.UserMapper;
 import com.peter.service.ProjectService;
 import com.peter.utils.FileUtil;
@@ -36,6 +34,9 @@ public class ProjectServiceImpl implements ProjectService {
     private ResultMapper resultMapper;
 
     @Autowired
+    private ScoreMapper scoreMapper;
+
+    @Autowired
     private GrowningAiConfig growningAiConfig;
 
     private File deleteDir = null;
@@ -61,19 +62,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project getProjectByName(String name) {
-        ProjectExample example = new ProjectExample();
-        ProjectExample.Criteria criteria = example.createCriteria();
-        criteria.andNameEqualTo(name);
-        List<Project> list = projectMapper.selectByExample(example);
-        if (list == null || list.size() == 0) {
-            LOG.info("get project by name:" + name + " is not existed! return null");
-            return null;
-        } else {
-            Project project = list.get(0);
-            LOG.info("get project by name:" + name + " is existed! return list[0]:" + project);
-            return project;
+    public Project getProjectByIdWithUser(Integer id) {
+        Project project = projectMapper.selectByPrimaryKey(id);
+        if (project==null) {
+            LOG.info("get project by id:" + id + " is not existed! return null");
         }
+        project.setUser(userMapper.selectByPrimaryKey(project.getUserId()));
+        LOG.info("get project by id:" + id + " with user:"+project.getUser());
+        return project;
     }
 
     @Override
@@ -150,5 +146,6 @@ public class ProjectServiceImpl implements ProjectService {
         else project.setResults(results);
         return project;
     }
+
 
 }

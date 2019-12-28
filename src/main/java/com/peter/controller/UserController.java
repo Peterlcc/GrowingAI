@@ -152,7 +152,7 @@ public class UserController {
         PageInfo<Project> pageInfo = projectService.getProjectsByUserId(pc, ps, user.getId());
         LOG.info("list:"+pageInfo.getList());
         model.addAttribute("pageInfo", pageInfo);
-        model.addAttribute("fieldNames", ObjectUtils.getFieldNames(Project.class));
+        //model.addAttribute("fieldNames", ObjectUtils.getFieldNames(Project.class));
         return "user/list";
     }
     @DeleteMapping("project")

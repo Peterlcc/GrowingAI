@@ -2,9 +2,11 @@ package com.peter.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Project;
+import com.peter.bean.Score;
 import com.peter.bean.User;
 import com.peter.component.GrowningAiConfig;
 import com.peter.service.ProjectService;
+import com.peter.service.ScoreService;
 import com.peter.service.TaskUploadService;
 import com.peter.utils.FileUtil;
 import com.peter.utils.MessageUtil;
@@ -30,8 +32,12 @@ import java.util.Map;
 @RequestMapping("project")
 public class ProjectController {
     private Log LOG = LogFactory.getLog(ProjectController.class);
+
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private ScoreService scoreService;
 
     @Autowired
     private GrowningAiConfig growningAiConfig;
@@ -54,7 +60,7 @@ public class ProjectController {
         PageInfo<Project> pageInfo = projectService.getProjects(pc, ps);
         LOG.info("list:"+pageInfo.getList());
         model.addAttribute("pageInfo", pageInfo);
-        model.addAttribute("fieldNames", ObjectUtils.getFieldNames(Project.class));
+        //model.addAttribute("fieldNames", ObjectUtils.getFieldNames(Project.class));
         return "project/list";
     }
 
@@ -123,6 +129,27 @@ public class ProjectController {
             LOG.error("getFileDetail error "+e.getMessage());
             return "打开文件失败";
         }
+    }
+
+    @GetMapping("top")
+    public String selectAllprojects(HttpServletRequest request, Model model) {
+        String pcstr = request.getParameter("pc");
+        if (pcstr == null || pcstr.equals("")) {
+            pcstr = "1";
+        }
+        int pc = Integer.parseInt(pcstr);
+        String psstr = request.getParameter("ps");
+        if (psstr == null || psstr.equals("")) {
+            psstr = "10";
+        }
+        int ps = Integer.parseInt(psstr);
+
+        //排过序的分数，分数有project的信息，project有用户的信息
+        PageInfo<Score> pageInfo = scoreService.getOrderedScores(pc, ps);
+        LOG.info("ordered score list:"+pageInfo.getList());
+        model.addAttribute("pageInfo", pageInfo);
+        //model.addAttribute("fieldNames", ObjectUtils.getFieldNames(Project.class));
+        return "project/top";
     }
 }
 
