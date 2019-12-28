@@ -11,10 +11,10 @@
   <title>排名页面</title>
 
   <!-- Bootstrap core CSS -->
-  <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" href="asserts/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link th:href="@{/asserts/css/modern-business.css}" rel="stylesheet">
+  <link th:href="@{/asserts/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
   <style type="text/css">
     .pagination-demo {
       text-align:center;
@@ -98,15 +98,15 @@
   </div>
 
   <span id="pageNum" class="text-hide" th:attr="num=${pageInfo.pageNum}"></span>
-  <span id="pages" class="text-hide" th:attr="num=${pageInfo.pages},url=@{/project/projects}"></span>
+  <span id="pages" class="text-hide" th:attr="num=${pageInfo.pages},url=@{/project/top}"></span>
   <span id="pageSize" class="text-hide" th:attr="num=${pageInfo.pageSize}" th:text="${pageInfo.pageSize}"></span>
 
   </div>
   <!-- /.container -->
 
   <!-- Bootstrap core JavaScript -->
-  <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
   <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
   <!-- paginator -->
   <script type="text/javascript" th:src="@{/asserts/js/jq-paginator.js}" src="asserts/js/feather.min.js" ></script>
 
