@@ -25,6 +25,7 @@ public class TestServiceImpl implements TestService {
     public void testProject(Project project) {
         LOG.info("test project:" + project);
         String projectPath = project.getPath();
+        String[] pathNames = projectPath.split("/");
         File launchFile = new File(projectPath + File.separator + "fake_move_base_amcl.launch");
         //检测launch文件是否存在，不存在不能启动测试
         if (!launchFile.exists()){
@@ -39,6 +40,13 @@ public class TestServiceImpl implements TestService {
                     "rbx1/rbx1_nav/launch"));
         } catch (IOException e) {
             LOG.error("切换launch文件失败:"+e.getMessage());
+            return;
+        }
+        //将项目文件复制到src下
+        try {
+            FileUtils.copyDirectoryToDirectory(new File(project.getPath()),new File(growningAiConfig.getCatkinSrcPath()));
+        } catch (IOException e) {
+            LOG.error("复制项目到src下失败:"+e.getMessage());
             return;
         }
         //保存项目id信息
@@ -56,6 +64,13 @@ public class TestServiceImpl implements TestService {
             //执行测试命令
             LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source /root/WorkSpaces/catkin_ws/devel/setup.sh && sh /root/WorkSpaces/shell.sh",growningAiConfig.getCatkinPath());
             LOG.info("运行测试命令成功");
+            //删除src下测试项目的文件
+            try {
+                FileUtils.deleteDirectory(new File(growningAiConfig.getCatkinSrcPath()+File.separator+pathNames[0]));
+            } catch (IOException e) {
+                LOG.error("删除src下测试项目的文件失败："+e.getMessage());
+                return;
+            }
             return;
         }else {
             LOG.error("编译出错："+project);

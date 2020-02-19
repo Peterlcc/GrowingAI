@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskUploadServiceImpl implements TaskUploadService {
     private Log LOG = LogFactory.getLog(TaskUploadServiceImpl.class);
@@ -24,4 +26,10 @@ public class TaskUploadServiceImpl implements TaskUploadService {
         projectTaskQueue.addTask(project);
         LOG.info("task uploaded with project:"+project);
     }
+
+    @Override
+    public int getProjectsInTask() {
+        return projectTaskQueue.getRemaining();
+    }
+
 }

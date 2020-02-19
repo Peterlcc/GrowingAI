@@ -47,4 +47,10 @@ public class TestController {
             return "project id:"+id+" not found!";
         }
     }
+
+    @GetMapping("taskSize")
+    @ResponseBody
+    public Integer getTaskQueueSize(){
+        return taskUploadService.getProjectsInTask();
+    }
 }
