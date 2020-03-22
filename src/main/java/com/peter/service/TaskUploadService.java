@@ -4,4 +4,5 @@ import com.peter.bean.Project;
 
 public interface TaskUploadService {
     void upload(Project project);
+    int getProjectsInTask();
 }

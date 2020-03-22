@@ -1,6 +1,7 @@
 package com.peter.controller;
 
 import com.peter.service.TestService;
+import com.peter.service.TypeService;
 import com.peter.utils.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -20,6 +21,9 @@ public class PageController {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private TypeService typeService;
 
     @GetMapping("index")
     public String index() {
@@ -78,6 +82,7 @@ public class PageController {
     @GetMapping("projectAdd")
     public String addProject(Model model){
         LOG.info("project.upload.html requested!");
+        model.addAttribute("types",typeService.getTypes());
         checkMsg(MessageUtil.UPLOAD_MSG,model);
         return "project/upload";
     }

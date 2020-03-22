@@ -10,7 +10,6 @@ import com.peter.service.ScoreService;
 import com.peter.service.TaskUploadService;
 import com.peter.utils.FileUtil;
 import com.peter.utils.MessageUtil;
-import com.peter.utils.ObjectUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -58,7 +57,7 @@ public class ProjectController {
         }
         int ps = Integer.parseInt(psstr);
         PageInfo<Project> pageInfo = projectService.getProjects(pc, ps);
-        LOG.info("list:"+pageInfo.getList());
+        LOG.info("get projects list,size:"+pageInfo.getList().size());
         model.addAttribute("pageInfo", pageInfo);
         //model.addAttribute("fieldNames", ObjectUtils.getFieldNames(Project.class));
         return "project/list";
@@ -75,10 +74,11 @@ public class ProjectController {
         User user = (User) request.getSession().getAttribute("user");
         project.setUserId(user.getId());
         project.setCreateTime(new Date());
-        String path=growningAiConfig.getUploadPath() +File.separator;
-        String pname = dire[0].getOriginalFilename().substring(0, dire[0].getOriginalFilename().indexOf("/"));
-        project.setPath(path+ pname);
-        System.out.println(project);
+        String path=growningAiConfig.getUploadPath() +File.separator+user.getNumber()+File.separator;
+//        String pname = dire[0].getOriginalFilename().substring(0, dire[0].getOriginalFilename().indexOf("/"));
+        String[] pathNames = dire[0].getOriginalFilename().split("/");
+        project.setPath(path+ pathNames[0]);
+        //System.out.println(project);
         StringBuilder uploadFiles = new StringBuilder();
         uploadFiles.append("upload files:[");
         for (MultipartFile file : dire) {
@@ -152,4 +152,3 @@ public class ProjectController {
         return "project/top";
     }
 }
-

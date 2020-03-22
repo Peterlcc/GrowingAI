@@ -4,10 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.*;
 import com.peter.component.GrowningAiConfig;
-import com.peter.mapper.ProjectMapper;
-import com.peter.mapper.ResultMapper;
-import com.peter.mapper.ScoreMapper;
-import com.peter.mapper.UserMapper;
+import com.peter.mapper.*;
 import com.peter.service.ProjectService;
 import com.peter.utils.FileUtil;
 import org.apache.commons.io.FileUtils;
@@ -35,6 +32,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ScoreMapper scoreMapper;
+
+    @Autowired
+    private TypeMapper typeMapper;
 
     @Autowired
     private GrowningAiConfig growningAiConfig;
@@ -79,7 +79,10 @@ public class ProjectServiceImpl implements ProjectService {
         criteria.andUserIdEqualTo(userId);
         PageHelper.startPage(pc, ps);
         List<Project> projects = projectMapper.selectByExample(example);
-        projects.stream().forEach(project -> project.setUser(userMapper.selectByPrimaryKey(project.getUserId())));
+        projects.stream().forEach(project -> {
+            project.setUser(userMapper.selectByPrimaryKey(project.getUserId()));
+            project.setType(typeMapper.selectByPrimaryKey(project.getTypeId()));
+        });
         LOG.info("getProjectsByUserId pc:" + pc + " ps:" + ps + " size:" + projects.size());
         PageInfo<Project> pageInfo = new PageInfo<Project>(projects);
         if (projects == null || projects.size() == 0) {
@@ -93,7 +96,10 @@ public class ProjectServiceImpl implements ProjectService {
         PageHelper.startPage(pc, ps);
         List<Project> projects = projectMapper.selectByExample(null);
         LOG.info("getProjects pc:" + pc + " ps:" + ps + " size:" + projects.size());
-        projects.stream().forEach(project -> project.setUser(userMapper.selectByPrimaryKey(project.getUserId())));
+        projects.stream().forEach(project -> {
+            project.setUser(userMapper.selectByPrimaryKey(project.getUserId()));
+            project.setType(typeMapper.selectByPrimaryKey(project.getTypeId()));
+        });
         PageInfo<Project> pageInfo = new PageInfo<Project>(projects);
         return pageInfo;
     }
@@ -137,6 +143,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project getProjectDetail(Integer id) {
         Project project = projectMapper.selectByPrimaryKey(id);
+        project.setType(typeMapper.selectByPrimaryKey(project.getTypeId()));
         if (project == null) return null;
         ResultExample resultExample = new ResultExample();
         ResultExample.Criteria criteria = resultExample.createCriteria();

@@ -64,6 +64,14 @@
           </div>
           <div class="control-group form-group">
             <div class="controls">
+              <label>项目类型：</label>
+              <select class="custom-select" name="typeId">
+                <option th:each="type,typeStat:${types}" th:selected="${typeStat.index==0?true:false}" th:value="${typeStat.index+1}" th:text="${type.name}">Open this select menu</option>
+              </select>
+            </div>
+          </div>
+          <div class="control-group form-group">
+            <div class="controls">
               <label>选择你的项目文件夹</label>
               <input class="form-control-file" type="file" name="dire" multiple="multiple" webkitdirectory>
             </div>

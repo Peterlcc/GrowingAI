@@ -69,7 +69,9 @@
       <div class="col-md-5">
         <p class="text-hide" id="pid" th:text="${project.id}" th:attr="url=@{/project/struct},fileUrl=@{/project/file}"></p>
         <h3 class="my-3" th:text="'项目名称：'+${project.name}">Project Description</h3>
-        <p th:text="'项目描述：'+${project.description}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
+        <p th:text="'项目描述：'+${project.description}">que urna variustricies, jus</p>
+        <p th:text="'项目类型：'+${project.type.name}">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        <p style="color: #ff7332" th:if="${project.results==null}" th:text="暂无测试结果">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         <div th:if="${project.results!=null}" th:each="result,resultStat:${project.results}">
 
           <p th:text="'测试结果'+${resultStat.count}+'：[length:'+${result.getLength()}+',points:'+${result.getPoints()}+',time:'+${result.getTime()+'s]'}"></p>

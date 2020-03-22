@@ -17,6 +17,9 @@ public class GrowningAiConfig {
     public String getCatkinPath() {
         return catkinPath;
     }
+    public String getCatkinSrcPath() {
+        return catkinPath+File.separator+"src";
+    }
 
     public void setCatkinPath(String catkinPath) {
         this.catkinPath = catkinPath;
