@@ -94,7 +94,7 @@ public class ProjectController {
         }
 
         projectService.save(project);
-        taskUploadService.upload(project);
+//        taskUploadService.upload(project);
         LOG.info("save project:" + project.toString());
         return "redirect:/project/projects";
     }

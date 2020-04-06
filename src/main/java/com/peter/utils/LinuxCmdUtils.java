@@ -8,6 +8,11 @@ import java.io.*;
 public class LinuxCmdUtils {
     private static Log logger = LogFactory.getLog(LinuxCmdUtils.class);
 
+    public static void killShell(){
+        System.out.println(getGrepCmdReturn("ps -ef | grep \"shell.sh\" | grep -v grep | awk '{print $2}' |xargs kill"));
+        System.out.println(getGrepCmdReturn("pgrep launch|xargs kill"));
+    }
+
     public  static boolean executeLinuxCmd(String cmd) {
 
         boolean result=false;
@@ -23,7 +28,6 @@ public class LinuxCmdUtils {
                 logger.info("命令执行成功:"+cmd);
                 result=true;
             }
-
         }
         catch (Exception e) {
             logger.error("LinuxCmdUtils.executeLinuxCmd error",e);
@@ -156,6 +160,6 @@ public class LinuxCmdUtils {
 
     public static void main(String[] args) {
 
-        System.out.println(LinuxCmdUtils.getGrepCmdReturn("dmidecode -s system-serial-number|grep -v \"#\""));
+        LinuxCmdUtils.killShell();
     }
 }

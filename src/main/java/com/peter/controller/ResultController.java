@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.peter.bean.Result;
 import com.peter.service.ResultService;
+import com.peter.utils.LinuxCmdUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,8 +28,18 @@ public class ResultController {
     @PostMapping("save")
     @ResponseBody
     public String saveResult(@RequestParam("results")  String results){
+        LinuxCmdUtils.killShell();
+        LOG.info("shell.sh was killed!");
+        LOG.info("json:"+results);
         List<Result> res = JSONObject.parseArray(results, Result.class);
         LOG.info("get results:"+res);
+        for (Result result:res)
+        {
+            if (result.getDatasetId()==0)
+            {
+                LOG.info("result of project "+result.getProjectId()+" has no dataset!");
+            }
+        }
         if(resultService.save(res)){
             return "保存成功";
         }else {

@@ -26,6 +26,6 @@ public class TaskUploadServiceImpl implements TaskUploadService {
     }
     @Override
     public int getProjectsInTask() {
-        return projectTaskQueue.getRemaining();
+        return projectTaskQueue.getTaskSize();
     }
 }

@@ -30,7 +30,11 @@ public class TestTask {
             return;
         }
         LOG.info("---------TestTask running :project:"+project);
-        testService.testProject(project);
+        if (project.getTypeId()==1) {
+            testService.testProject(project);
+        }else{
+            testService.testProjectWithDatasets(project);
+        }
         LOG.info("---------TestTask finished!");
     }
 }

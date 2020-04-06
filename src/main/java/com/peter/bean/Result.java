@@ -194,21 +194,21 @@ public class Result {
     public void setDatasetId(Integer datasetId) {
         this.datasetId = datasetId;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Result)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Result result = (Result) o;
-        return getId().equals(result.getId()) &&
-                getLength().equals(result.getLength()) &&
-                getPoints().equals(result.getPoints()) &&
-                getTime().equals(result.getTime()) &&
-                getProjectId().equals(result.getProjectId());
+        return length.equals(result.length) &&
+                points.equals(result.points) &&
+                projectId.equals(result.projectId) &&
+                datasetId.equals(result.datasetId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLength(), getPoints(), getTime());
+        return Objects.hash(length, points, projectId, datasetId);
     }
 
     @Override
@@ -219,6 +219,7 @@ public class Result {
                 ", points=" + points +
                 ", time=" + time +
                 ", projectId=" + projectId +
+                ", datasetId=" + datasetId +
                 '}';
     }
 }

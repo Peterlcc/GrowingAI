@@ -28,8 +28,8 @@ public class TestController {
     @ResponseBody
     public String testCmd(@RequestParam("cmd")String cmd){
         //编译所有node
-        String compileCommand="source /opt/ros/kinetic/setup.bash && source /root/WorkSpaces/catkin_ws/devel/setup.sh && "+cmd;
-        if(LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand,"/root/WorkSpaces/catkin_ws")){
+        String compileCommand="source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && "+cmd;
+        if(LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand,"/home/peter/WorkSpaces/catkin_ws")){
             LOG.info("命令运行成功");
         }else {
             LOG.error("命令运行出错");
