@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>系统设计</title>
+
+    <!-- Styles -->
+    <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" href="asserts/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/asserts/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
+</head>
+
+<body>
+<div th:replace="commons/base::topbar"></div>
+
+<div class="container">
+
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">可成长系统之
+        <small>系统设计</small>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/index}" href="index.html">首页</a>
+        </li>
+        <li class="breadcrumb-item active">系统设计</li>
+    </ol>
+    <div class="container">
+        <div class="row mb-4">
+
+        </div>
+        <div class="row mt-2" id="systemDesignTitle">
+            <div class="col-2 mb-2">
+                <button class="button btn btn-primary" onclick="modelDesignCreate()">
+                    <svg class="bi bi-plus-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" clip-rule="evenodd"/>
+                    </svg>
+                    添加节点
+                </button>
+            </div>
+            <hr style="filter: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color="#6f5499" size="3" />
+        </div>
+        <div class="row" id="systemDesign">
+
+            <div class="col model" id="modelDesign">
+                <div class="card" style="width: 8rem">
+                    <div class="card-header">
+                        <h5>节点选择</h5>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle"
+                                    type="button" data-toggle="dropdown">
+                                sys1<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item btnoption" href="#">sys1</a></li>
+                                <li><a class="dropdown-item btnoption" href="#">sys2</a></li>
+                                <li><a class="dropdown-item btnoption" href="#">sys3</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-danger" onclick="modelDesignDelete(this)">
+                            <svg class="bi bi-x-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z" clip-rule="evenodd"/>
+                            </svg> 删除
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<span id="mNum" hidden="hidden" modelNum="1"></span>
+<span id="sNum" hidden="hidden" systemNum="1"></span>
+<!-- /.container -->
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
+<script>
+    $(".btnoption").click(function(){
+        $(this).parent().parent().children().removeClass("active");
+        $(this).parent().addClass("active");
+        $(this).parent().parent().parent().children("button").html($(this).text()+"<span class='caret'></span>");
+    });
+    //创建模型的选择框
+    function modelDesignCreate() {
+        var modelNum=parseInt($("#mNum").attr("modelNum"))
+        if(modelNum==10){
+            alert("一个节点的模型最多创建十个")
+        }
+        $("#mNum").attr("modelNum",modelNum+1)
+        var model=$("#modelDesign").clone(true).attr("id","modelDesign"+modelNum)
+        $("#modelDesign").parent().append(model)
+    }
+    //删除模型的选择框
+    function modelDesignDelete(btn) {
+        modelNum=parseInt($("#mNum").attr("modelNum"))
+        if (modelNum==1){
+            alert("最后一个模型了，不可以再删除了")
+            return
+        }
+        $("#mNum").attr("modelNum",modelNum-1)
+        var footer=btn.parentElement
+        var card=footer.parentElement
+        var col=card.parentElement
+
+        var row=col.parentElement
+        row.removeChild(col)
+    }
+
+    //创建节点
+    function systemDesignCreate() {
+        var systemNum=parseInt($("#mNum").attr("systemNum"))
+        $("#sNum").attr("systemNum",systemNum+1)
+        var sys=$("#systemDesign").clone(true).attr("id","systemDesign"+systemNum)
+        var sysTitle=$("#systemDesignTitle").clone(true).attr("id","systemDesignTitle"+systemNum)
+        $("#systemDesign").parent().append(sysTitle)
+        $("#systemDesign").parent().append(sys)
+    }
+</script>
+</body>
+</html>

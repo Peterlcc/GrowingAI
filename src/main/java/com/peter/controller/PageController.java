@@ -92,4 +92,52 @@ public class PageController {
         checkMsg(MessageUtil.DETAIL_MSG,model);
         return "project/detail";
     }
+    @GetMapping("design/model")
+    public String designModel(Model model){
+        LOG.info("design/model.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        return "design/model";
+    }
+    @GetMapping("design/node")
+    public String designNode(Model model){
+        LOG.info("design/node.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        return "design/node";
+    }
+    @GetMapping("design/system")
+    public String designSystem(Model model){
+        LOG.info("design/system.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        return "design/system";
+    }
+    @GetMapping("design/move")
+    public String designMove(Model model){
+        LOG.info("design/move.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        return "design/move";
+    }
+    @GetMapping("design/move1")
+    public String plumb(Model model){
+        LOG.info("design/move1.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        return "design/move1";
+    }
+    @GetMapping("design/movetest")
+    public String plumbtest(Model model){
+        LOG.info("design/movetest.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        return "design/movetest";
+    }
+    @GetMapping("design/moveevent")
+    public String moveevent(Model model){
+        LOG.info("design/moveevent.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        return "design/moveevent";
+    }
+    @GetMapping("design/osate")
+    public String osate(Model model){
+        LOG.info("design/osate.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        return "design/osate";
+    }
 }

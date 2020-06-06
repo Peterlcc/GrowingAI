@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -35,6 +36,8 @@ public class MyConfig {
 								"/error","/test",
 								"/regist","/login","list","userList","show","userEdit",
 								"/result/save",
+//								"/design/**",
+								"/model/**",
 								"/user/regist/**","/user/code/**","/user/login/**"
 						);
 			}
@@ -48,7 +51,12 @@ public class MyConfig {
 				registry.addViewController("/index.html").setViewName("/index");
 				registry.addViewController("/about").setViewName("/index");
 			}
-			
+
+			@Override
+			public void addResourceHandlers(ResourceHandlerRegistry registry) {
+				registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+				registry.addResourceHandler("/templates/**").addResourceLocations("classpath:/templates/");
+			}
 		};
 		return webMvcConfigurer;
 	}

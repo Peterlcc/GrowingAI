@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>movetest</title>
+    <script src="../../gojs/go-debug.js" th:src="@{/asserts/go/go-debug.js}"></script>
+    <script src="../../gojs/go-debug.js" th:src="@{/asserts/go/Figures.js}"></script>
+</head>
+<body>
+<div id="myDiagramDiv" style="margin:auto;width:800px; height:600px; background-color:#ddd;"></div>
+
+
+</body>
+<script>
+    var make=go.GraphObject.make;
+    var myDiagramDiv=make(go.Diagram,"myDiagramDiv");
+    myDiagramDiv.initialContentAlignment=go.Spot.Center;
+    myDiagramDiv.undoManager.isEnabled=true;
+    myDiagramDiv.layout=make(go.TreeLayout,{angle:90,layerSpacing:35});
+
+
+
+    myDiagramDiv.nodeTemplate=make(go.Node, "Horizontal", // second argument of a Node (or any Panel) can be a Panel type
+        /* set Node properties here */
+        { // the Node.location point will be at the center of each node
+            locationSpot: go.Spot.Center,
+            background: "#44CCFF"
+        },
+        /* add Bindings here */
+        // example Node binding sets Node.location to the value of Node.data.loc
+        new go.Binding("location", "loc"),
+
+        make(go.Picture,
+            // Pictures should normally have an explicit width and height.
+            // This picture has a red background, only visible when there is no source set
+            // or when the image is partially transparent.
+            { margin: 10, width: 50, height: 50, background: "red" },
+            // Picture.source is data bound to the "source" attribute of the model data
+            new go.Binding("source")),
+
+        make(go.TextBlock,
+            "default text",  // string argument can be initial text string
+            { /* set TextBlock properties here */ margin: 12, stroke: "white", font: "bold 16px sans-serif"},
+            // example TextBlock binding sets TextBlock.text to the value of Node.data.text
+            new go.Binding("text","name"))
+    );
+
+    myDiagramDiv.linkTemplate=make(go.Link,
+        // default routing is go.Link.Normal
+        // default corner is 0
+        { routing: go.Link.Orthogonal, corner: 5 },
+        // the link path, a Shape
+        make(go.Shape, { strokeWidth: 3, stroke: "#555" })
+        // if we wanted an arrowhead we would also add another Shape with toArrow defined:
+        // make(go.Shape, { toArrow: "Standard", stroke: null })
+    );
+
+    myDiagramDiv.add(make(go.Part,go.Panel.Position,
+        {
+            background: '#eee'
+        },
+        make(go.TextBlock,
+            {text: '0, 0', background: '#6bc1ff' }
+        ),
+        make(go.TextBlock,
+            {text: '100, 100', background: '#6bc1ff', position: new go.Point(100, 100) }
+        ),
+        make(go.Shape,
+            {width: 50,height: 50,stroke: "#3385ff",fill: '#6bc1ff', position: new go.Point(100, 0) }
+        )
+        //position: new go.Point(0, 0), //定位面板相对diagram的位置}
+    ));
+
+    var myModel=make(go.GraphLinksModel);
+    myModel.nodeDataArray=[
+        {key:"AI",name:"AIName"},
+        {key:"BigData"},
+        {key:"CloudCompute"}
+    ];
+    myModel.linkDataArray=[
+        {from:"AI",to:"BigData"},
+        {from:"AI",to:"CloudCompute"},
+    ];
+    myDiagramDiv.model=myModel;
+    // var model = make(go.Model);
+    // model.nodeDataArray =
+    //     [ // note that each node data object holds whatever properties it needs;
+    //       // for this app we add the "name" and "source" properties
+    //         { name: "Don Meow", source: "/growningai/asserts/cat1.png" },
+    //         { name: "Copricat", source: "/growningai/asserts/cat2.png" },
+    //         { name: "Demeter",  source: "/growningai/asserts/cat3.png" },
+    //         { /* Empty node data */  }
+    //     ];
+    // myDiagramDiv.model = model;
+
+
+</script>
+<!--<script>-->
+<!--    //创建画布-->
+<!--    var objGo = go.GraphObject.make;-->
+<!--    var myDiagram = objGo(go.Diagram, "myDiagramDiv",-->
+<!--        {-->
+<!--            //模型图的中心位置所在坐标-->
+<!--            initialContentAlignment: go.Spot.Center,-->
+
+<!--            //允许用户操作图表的时候使用Ctrl-Z撤销和Ctrl-Y重做快捷键-->
+<!--            "undoManager.isEnabled": true,-->
+
+<!--            //不运行用户改变图表的规模-->
+<!--            allowZoom: false,-->
+
+<!--            //画布上面是否出现网格-->
+<!--            "grid.visible": true,-->
+
+<!--            //允许在画布上面双击的时候创建节点-->
+<!--            "clickCreatingTool.archetypeNodeData": {text: "Node"},-->
+
+<!--            //允许使用ctrl+c、ctrl+v复制粘贴-->
+<!--            "commandHandler.copiesTree": true,-->
+
+<!--            //允许使用delete键删除节点-->
+<!--            "commandHandler.deletesTree": true,-->
+
+<!--            // dragging for both move and copy-->
+<!--            "draggingTool.dragsTree": true,-->
+<!--        });-->
+<!--    // var myModel = objGo(go.Model);//创建Model对象-->
+<!--    // // model中的数据每一个js对象都代表着一个相应的模型图中的元素-->
+<!--    // myModel.nodeDataArray = [-->
+<!--    //     { key: "工厂" },-->
+<!--    //     { key: "车间" },-->
+<!--    //     { key: "工人" },-->
+<!--    //     { key: "岗位" },-->
+<!--    // ];-->
+<!--    // myDiagram.model = myModel; //将模型数据绑定到画布图上-->
+
+<!--    // 定义一个简单的节点模板-->
+<!--    myDiagram.nodeTemplate =-->
+<!--        objGo(go.Node, "Horizontal",//横向布局的面板-->
+<!--            // 节点淡蓝色背景-->
+<!--            { background: "#44CCFF" },-->
+<!--            objGo(go.Shape,-->
+<!--                "RoundedRectangle", //定义形状，这是圆角矩形-->
+<!--                { /* Shape的参数。宽高颜色等等*/figure: "Club", width: 40, height: 60, margin: 4, fill: 'red' },-->
+<!--                // 绑定 Shape.figure属性为Node.data.fig的值，Model对象可以通过Node.data.fig 获取和设置Shape.figure（修改形状）-->
+<!--                new go.Binding("figure", "fig"), new go.Binding('fill', 'fill2')),-->
+<!--            objGo(go.TextBlock,-->
+<!--                "Default Text",  // 默认文本-->
+<!--                // 设置字体大小颜色以及边距-->
+<!--                { margin: 12, stroke: "white", font: "bold 16px sans-serif" },-->
+<!--                //绑定TextBlock.text 属性为Node.data.name的值，Model对象可以通过Node.data.name获取和设置TextBlock.text-->
+<!--                new go.Binding("text", "name"))-->
+<!--        );-->
+
+<!--    // var myModel = objGo(go.Model);//创建Model对象-->
+<!--    var myModel = objGo(go.GraphLinksModel);//创建Model对象-->
+<!--    // model中的数据每一个js对象都代表着一个相应的模型图中的元素-->
+<!--    myModel.nodeDataArray = [-->
+<!--        { key:"a",name: "生物", fig: 'YinYang', fill2: 'blue' },-->
+<!--        { key:"b",name: "动物", fig: 'Peace', fill2: 'red' },-->
+<!--        { key:"c",name: "猫", fig: 'NotAllowed', fill2: 'green' },-->
+<!--        { key:"d",name: "狗", fig: 'Fragile', fill2: 'yellow' },-->
+<!--    ];-->
+<!--    myModel.linkDataArray=[-->
+<!--        {from:"a",to:"b"},-->
+<!--        {from:"a",to:"d"},-->
+<!--        {from:"b",to:"d"},-->
+<!--        {from:"b",to:"c"},-->
+<!--    ]-->
+<!--    myDiagram.model = myModel; //将模型数据绑定到画布图上-->
+<!--</script>-->
+</html>
