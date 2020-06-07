@@ -92,4 +92,99 @@ public class PageController {
         checkMsg(MessageUtil.DETAIL_MSG,model);
         return "project/detail";
     }
+
+
+    /**
+     * 后台首页
+     * @param model
+     * @return
+     */
+    @GetMapping("/admin/index")
+    public String adminIndex(Model model){
+        LOG.info("admin.index.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        return "admin/index";
+    }
+
+    /**
+     * 数据集列表
+     * @param model
+     * @return
+     */
+    @GetMapping("/admin/dataset/list")
+    public String adminDataSetList(Model model){
+        LOG.info("admin.dataset.list.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        model.addAttribute("title","数据集列表");
+        model.addAttribute("searchName","名称");
+        return "admin/common/list";
+    }
+
+    /**
+     * 项目列表
+     * @param model
+     * @return
+     */
+    @GetMapping("/admin/project/list")
+    public String adminProjectList(Model model){
+        LOG.info("admin.project.list.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        model.addAttribute("title","项目列表");
+        model.addAttribute("searchName","项目名");
+        return "admin/common/list";
+    }
+
+    /**
+     * 系统用户列表
+     * @param model
+     * @return
+     */
+    @GetMapping("/admin/user/list")
+    public String adminUserList(Model model){
+        LOG.info("admin.user.list.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        model.addAttribute("title","用户列表");
+        model.addAttribute("searchName","用户名");
+        return "admin/common/list";
+    }
+
+    /**
+     * 测试结果列表
+     * @param model
+     * @return
+     */
+    @GetMapping("/admin/result/list")
+    public String adminResultList(Model model){
+        LOG.info("admin.result.list.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        model.addAttribute("title","测试结果列表");
+        model.addAttribute("searchName","项目名称");
+        return "admin/common/list";
+    }
+
+    /**
+     * 公告列表
+     * @param model
+     * @return
+     */
+    @GetMapping("/admin/announcement/list")
+    public String adminAnnouncementList(Model model){
+        LOG.info("admin.announcement.list.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        model.addAttribute("title","公告列表");
+        model.addAttribute("searchName","公告标题");
+        return "admin/common/list";
+    }
+
+    /**
+     * 分数列表
+     */
+    @GetMapping("/admin/score/list")
+    public String adminScoreList(Model model){
+        LOG.info("admin.score.list.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        model.addAttribute("title","分数列表");
+        model.addAttribute("searchName","用户名");
+        return "admin/common/list";
+    }
 }
