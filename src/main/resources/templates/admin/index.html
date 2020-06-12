@@ -132,5 +132,14 @@
 <script th:src="@{/admin/plugin/fullcalendar/fullcalendar.min.js}" src="assets/plugin/fullcalendar/fullcalendar.min.js"></script>
 <script th:src="@{/admin/scripts/fullcalendar.init.js}" src="assets/scripts/fullcalendar.init.js"></script>
 
+<script>
+	jQuery(document).ready(function () {
+		$("#userHtml").click(function (event) {
+			var link = $("#userHtml").attr("link");
+			console.log(link);
+			$("#wrapper").load(link);
+		});
+	});
+</script>
 </body>
 </html>

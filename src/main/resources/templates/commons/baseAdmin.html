@@ -12,7 +12,7 @@
 
 	<title>Home</title>
 	<div th:fragment="cssImport">
-		<link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+		<link rel="shortcut icon" type="image/x-icon" th:href="@{/favicon.ico}">
 	<!-- Main Styles -->
 	<link rel="stylesheet" th:href="@{/admin/styles/style.min.css}" href="assets/styles/style.min.css">
 
@@ -69,10 +69,10 @@
 				<li class="current">
 					<a class="waves-effect" th:href="@{/admin/index}" href="index.html"><i class="menu-icon mdi mdi-view-dashboard"></i><span>状态监控</span></a>
 				</li>
-				<li>
+				<li th:class="${parentTag=='user'?'active':''}">
 					<a class="waves-effect parent-item js__control" href="#"><i class="menu-icon fa fa-user"></i><span>用户</span><span class="menu-arrow fa fa-angle-down"></span></a>
-					<ul class="sub-menu js__content">
-						<li><a th:href="@{/admin/user/list}" href="ui-notification.html">用户列表</a></li>
+					<ul class="sub-menu js__content" th:style="'dispaly:'+${parentTag=='user'?'block':'none'}">
+						<li><a id="userHtml" th:attr="link=@{/admin/user/list}" href="javascript:void(0);">用户列表</a></li>
 						<li><a href="profile.html">添加用户</a></li>
 					</ul>
 					<!-- /.sub-menu js__content -->
@@ -422,5 +422,7 @@
 
 	<script th:src="@{/admin/scripts/main.min.js}" src="assets/scripts/main.min.js"></script>
 </div>
+
 </body>
+
 </html>

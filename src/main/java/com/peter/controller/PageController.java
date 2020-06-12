@@ -161,6 +161,14 @@ public class PageController {
         model.addAttribute("searchName","项目名称");
         return "admin/common/list";
     }
+    @GetMapping("/admin/result/list1")
+    public String adminResultList1(Model model){
+        LOG.info("admin.result.list.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+//        model.addAttribute("title","测试结果列表");
+//        model.addAttribute("searchName","项目名称");
+        return "admin/list";
+    }
 
     /**
      * 公告列表
