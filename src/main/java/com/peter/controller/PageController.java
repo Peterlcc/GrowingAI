@@ -1,8 +1,11 @@
 package com.peter.controller;
 
+import com.peter.bean.*;
 import com.peter.service.TestService;
 import com.peter.service.TypeService;
+import com.peter.utils.BeanEnum;
 import com.peter.utils.MessageUtil;
+import com.peter.utils.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class PageController {
@@ -56,9 +60,9 @@ public class PageController {
         LOG.info("user.list.html requested!");
         return "user/list";
     }
-    @GetMapping("show")
+    @GetMapping("modal")
     public String show() {
-        return "show";
+        return "admin/common/modal";
     }
 
     @GetMapping("exception")
@@ -117,7 +121,13 @@ public class PageController {
         checkMsg(MessageUtil.DETAIL_MSG,model);
         model.addAttribute("title","数据集列表");
         model.addAttribute("searchName","名称");
-        return "admin/common/list";
+
+        List<String> attrs = ObjectUtils.getFieldNames(Dataset.class);
+        List<String> chinaAttrs = ObjectUtils.getChinaAttrs(BeanEnum.DATASET, attrs);
+        chinaAttrs.add("操作");
+        model.addAttribute("attrs",chinaAttrs);
+
+        return "admin/dataset/datasetList";
     }
 
     /**
@@ -131,7 +141,14 @@ public class PageController {
         checkMsg(MessageUtil.DETAIL_MSG,model);
         model.addAttribute("title","项目列表");
         model.addAttribute("searchName","项目名");
-        return "admin/common/list";
+        List<String> attrs = ObjectUtils.getFieldNames(Project.class);
+        attrs.remove("user");
+        attrs.remove("type");
+        attrs.remove("results");
+        List<String> chinaAttrs = ObjectUtils.getChinaAttrs(BeanEnum.PROJECT, attrs);
+        chinaAttrs.add("操作");
+        model.addAttribute("attrs",chinaAttrs);
+        return "admin/project/projectList";
     }
 
     /**
@@ -145,7 +162,13 @@ public class PageController {
         checkMsg(MessageUtil.DETAIL_MSG,model);
         model.addAttribute("title","用户列表");
         model.addAttribute("searchName","用户名");
-        return "admin/common/list";
+        List<String> attrs = ObjectUtils.getFieldNames(User.class);
+        attrs.remove("password");
+        attrs.remove("LOG");
+        List<String> chinaAttrs = ObjectUtils.getChinaAttrs(BeanEnum.USER, attrs);
+        chinaAttrs.add("操作");
+        model.addAttribute("attrs",chinaAttrs);
+        return "admin/user/userList";
     }
 
     /**
@@ -159,15 +182,11 @@ public class PageController {
         checkMsg(MessageUtil.DETAIL_MSG,model);
         model.addAttribute("title","测试结果列表");
         model.addAttribute("searchName","项目名称");
-        return "admin/common/list";
-    }
-    @GetMapping("/admin/result/list1")
-    public String adminResultList1(Model model){
-        LOG.info("admin.result.list.html requested!");
-        checkMsg(MessageUtil.DETAIL_MSG,model);
-//        model.addAttribute("title","测试结果列表");
-//        model.addAttribute("searchName","项目名称");
-        return "admin/list";
+        List<String> attrs = ObjectUtils.getFieldNames(Result.class);
+        List<String> chinaAttrs = ObjectUtils.getChinaAttrs(BeanEnum.RESULT, attrs);
+        chinaAttrs.add("操作");
+        model.addAttribute("attrs",chinaAttrs);
+        return "admin/result/resultList";
     }
 
     /**
@@ -181,7 +200,11 @@ public class PageController {
         checkMsg(MessageUtil.DETAIL_MSG,model);
         model.addAttribute("title","公告列表");
         model.addAttribute("searchName","公告标题");
-        return "admin/common/list";
+        List<String> attrs = ObjectUtils.getFieldNames(Announce.class);
+        List<String> chinaAttrs = ObjectUtils.getChinaAttrs(BeanEnum.ANNOUNCEMENT, attrs);
+        chinaAttrs.add("操作");
+        model.addAttribute("attrs",chinaAttrs);
+        return "admin/announcement/announcementList";
     }
 
     /**
@@ -193,6 +216,11 @@ public class PageController {
         checkMsg(MessageUtil.DETAIL_MSG,model);
         model.addAttribute("title","分数列表");
         model.addAttribute("searchName","用户名");
-        return "admin/common/list";
+        List<String> attrs = ObjectUtils.getFieldNames(Score.class);
+        attrs.remove("project");
+        List<String> chinaAttrs = ObjectUtils.getChinaAttrs(BeanEnum.SCORE, attrs);
+        chinaAttrs.add("操作");
+        model.addAttribute("attrs",chinaAttrs);
+        return "admin/score/scoreList";
     }
 }

@@ -30,13 +30,14 @@ public class MyConfig {
 		WebMvcConfigurer webMvcConfigurer=new WebMvcConfigurer() {
 			@Override
 			public void addInterceptors(InterceptorRegistry registry) {
-				registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**")
-						.excludePathPatterns("/druid/*","*.ico","*.jpg","/admin/**","*.png","*.css","*.js","/webjars/**",
-								"/error","/test",
-								"/regist","/login","list","userList","show","userEdit",
-								"/result/save",
-								"/user/regist/**","/user/code/**","/user/login/**"
-						);
+//				registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**")
+//						.excludePathPatterns("/druid/*","*.ico","*.jpg","/admin/**","*.png","*.css","*.js","/webjars/**",
+//								"/error","/test",
+//								"/user/**",
+//								"/regist","/login","list","userList","show","userEdit",
+//								"/result/save",
+//								"/user/regist/**","/user/code/**","/user/login/**"
+//						);
 			}
 
 			@Override

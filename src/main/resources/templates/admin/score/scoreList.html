@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="commons/baseAdmin::headSettings"></div>
+	<title th:text="${title}"></title>
+	<!-- Data Tables -->
+	<link rel="stylesheet" th:href="@{/admin/plugin/datatables/media/css/jquery.dataTables.min.css}" href="assets/plugin/datatables/media/css/jquery.dataTables.min.css">
+	<div th:replace="commons/baseAdmin::cssImport"></div>
+</head>
+
+<body>
+<div th:replace="commons/baseAdmin::leftBar"></div>
+<div th:replace="commons/baseAdmin::navbar"></div>
+<div id="wrapper">
+	<div class="main-content">
+		<div class="row small-spacing">
+			<div class="col-xs-12">
+				<div class="box-content">
+                    <table th:attr="requestUrl=@{/score/list}" id="example-edit" class="display" style="width: 100%">
+						<thead>
+							<tr>
+								<th th:each="attr:${attrs}" th:text="${attr}">id</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+							<tr>
+                                <th th:each="attr:${attrs}" th:text="${attr}">id</th>
+							</tr>
+						</tfoot>
+                    </table>
+
+                </div>
+				<!-- /.box-content -->
+			</div>
+			<!-- /.col-xs-12 -->
+		</div>
+		<!-- /.row small-spacing -->
+	</div>
+	<!-- /.main-content -->
+</div><!--/#wrapper -->
+<div th:replace="commons/baseAdmin::scriptImport"></div>
+<!-- Data Tables -->
+<script th:src="@{/admin/plugin/datatables/media/js/jquery.dataTables.min.js}" src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+<script th:src="@{/admin/plugin/datatables/media/js/dataTables.bootstrap.min.js}" src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+<script th:src="@{/admin/plugin/editable-table/mindmup-editabletable.js}" src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
+<!--<script th:src="@{/admin/scripts/datatables.demo.min.js}" src="assets/scripts/datatables.demo.min.js"></script>-->
+<script  th:inline="javascript">
+	var nameSearch=[[${searchName}]];
+	var requestUrl=$("#example-edit").attr("requestUrl");
+	var deleteUrl=$("#example-edit").attr("deleteUrl");
+	var updateUrl=$("#example-edit").attr("updateUrl");
+	$('#example-edit').DataTable({
+        stateSave: true,
+        pagingType: "full_numbers",
+        "scrollX": true, //水平滚动，配合dataTables_wrapper{width:指定像素宽;}使用
+        paging: true,
+        "ordering": false,
+		"oLanguage": {
+			"sLengthMenu": "每页显示 _MENU_ 条记录",
+			"sZeroRecords": "对不起，没有匹配的数据",
+			"sInfo": "第 _START_ - _END_ 条 / 共 _TOTAL_ 条数据",
+			"sInfoEmpty": "没有匹配的数据",
+			"sInfoFiltered": "(数据表中共 _MAX_ 条记录)",
+			"sProcessing": "正在加载中...",
+			"sSearch": nameSearch+"模糊搜索：",
+			"oPaginate": {
+				"sFirst": "第一页",
+				"sPrevious": " 上一页 ",
+				"sNext": " 下一页 ",
+				"sLast": " 最后一页 "
+			}
+		},
+        pageLength: 10,//每页显示10条数据
+        bFilter: false, //去掉搜索框方法
+        serverSide: true, //启用服务器端分页，要进行后端分页必须的环节
+		"ajax": {
+            url:requestUrl,
+            type:"POST",
+            data:function (param) {
+                console.log("param：",param);
+                return  param;
+            },
+            dataSrc:function (resultJson) {
+                return resultJson.data;
+            }
+        },
+		"columns": [
+			{ "data": "id" },
+			{ "data": "projectId" },
+			{ "data": "score"}
+		],
+		"columnDefs":[
+			{
+				targets:[3],
+				data:"time",
+				render:function (data, type, row) {
+					return "<a id='sal-warning' type='button' class='btn btn-danger waves-effect waves-light' href='"+deleteUrl+"?id="+row.id+"'>删除</a>&nbsp;<a type='button' class='btn btn-info waves-effect waves-light' href='"+updateUrl+"?id="+row.id+"'>修改</a>";
+				}
+			}
+		]
+	});
+	$('#example-edit').editableTableWidget();
+</script>
+</body>
+</html>

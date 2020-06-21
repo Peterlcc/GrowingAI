@@ -1,5 +1,7 @@
 package com.peter.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.peter.bean.Dataset;
 import com.peter.mapper.DatasetMapper;
 import com.peter.service.DatasetService;
@@ -13,14 +15,18 @@ public class DatasetServiceImpl implements DatasetService {
 
     @Autowired
     private DatasetMapper datasetMapper;
+
     @Override
     public Dataset getDatasetById(Integer id) {
         return datasetMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public List<Dataset> getDatasets() {
+    public PageInfo<Dataset> getDatasets(int pc, int ps) {
+        PageHelper.startPage(pc,ps);
         List<Dataset> datasets = datasetMapper.selectByExample(null);
-        return datasets;
+        PageInfo<Dataset> datasetPageInfo = new PageInfo<>();
+        datasetPageInfo.setList(datasets);
+        return datasetPageInfo;
     }
 }

@@ -1,5 +1,7 @@
 package com.peter.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.peter.bean.Result;
 import com.peter.bean.ResultExample;
 import com.peter.mapper.ResultMapper;
@@ -16,6 +18,16 @@ public class ResultServiceImpl implements ResultService {
     private Log LOG = LogFactory.getLog(ResultServiceImpl.class);
     @Autowired
     private ResultMapper resultMapper;
+
+    @Override
+    public PageInfo<Result> getResults(int pc, int ps) {
+        PageHelper.startPage(pc,ps);
+        List<Result> results = resultMapper.selectByExample(null);
+        PageInfo<Result> resultPageInfo = new PageInfo<>();
+        resultPageInfo.setList(results);
+        return resultPageInfo;
+    }
+
     @Override
     public boolean save(Result result) {
         if (result.getProjectId()==null){

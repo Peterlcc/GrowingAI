@@ -1,5 +1,6 @@
 package com.peter.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Project;
 import com.peter.bean.Score;
@@ -152,6 +153,23 @@ public class ProjectController {
         return "project/top";
     }
 
+    @PostMapping("list")
+    @ResponseBody
+    public String adminProjectList(@RequestParam("draw") int draw,@RequestParam("length") int length,@RequestParam("start") int start){
+        int pageCurrent = start / length + 1;
+        int pageSize=length;
+        PageInfo<Project> projectPageInfo = projectService.getProjects(pageCurrent, pageSize);
+        JSONObject result = new JSONObject();
+        result.put("draw",draw);
+        result.put("recordsTotal",projectPageInfo.getTotal());
+        result.put("recordsFiltered",projectPageInfo.getTotal());
+        result.put("data",projectPageInfo.getList());
+        return result.toString();
+    }
 
-
+    @GetMapping("delete")
+    public String adminDelete(@RequestParam("id") int id){
+        System.out.println("delete result id="+id);
+        return "redirect:/admin/project/list";
+    }
 }

@@ -1,5 +1,6 @@
 package com.peter.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Project;
 import com.peter.bean.User;
@@ -25,7 +26,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -161,5 +165,39 @@ public class UserController {
         LOG.info("deleteProject , id is:"+id);
         projectService.delete(id);
         return "删除成功";
+    }
+
+    @PostMapping("list")
+    @ResponseBody
+    public String adminUserList(@RequestParam("draw") int draw,@RequestParam("length") int length,@RequestParam("start") int start){
+        int pageCurrent = start / length + 1;
+        int pageSize=length;
+        PageInfo<User> userPageInfo = userService.getUsers(pageCurrent,pageSize);
+        JSONObject result = new JSONObject();
+        result.put("draw",draw);
+        result.put("recordsTotal",userPageInfo.getTotal());
+        result.put("recordsFiltered",userPageInfo.getTotal());
+        result.put("data",userPageInfo.getList());
+        return result.toString();
+    }
+
+    @GetMapping("attrs")
+    @ResponseBody
+    public String adminUserAttrs(){
+        Class<User> userClass = User.class;
+        Field[] declaredFields = userClass.getDeclaredFields();
+        JSONObject jsonObject = new JSONObject();
+        List<String> attrs = ObjectUtils.getFieldNames(User.class);
+        attrs.remove("password");
+        attrs.remove("LOG");
+        jsonObject.put("attrs",attrs);
+        System.out.println(attrs);
+        return jsonObject.toString();
+    }
+
+    @GetMapping("delete")
+    public String adminDelete(@RequestParam("id") int id){
+        System.out.println("delete result id="+id);
+        return "redirect:/admin/user/list";
     }
 }

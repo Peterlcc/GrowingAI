@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="commons/baseAdmin::headSettings"></div>
+    <title th:text="${title}"></title>
+    <!-- Data Tables -->
+    <link rel="stylesheet" th:href="@{/admin/plugin/datatables/media/css/jquery.dataTables.min.css}"
+          href="assets/plugin/datatables/media/css/jquery.dataTables.min.css">
+    <div th:replace="commons/baseAdmin::cssImport"></div>
+</head>
+
+<body>
+<div th:replace="commons/baseAdmin::leftBar"></div>
+<div th:replace="commons/baseAdmin::navbar"></div>
+<div id="wrapper">
+    <div class="main-content">
+        <div class="row small-spacing">
+            <div class="col-xs-12">
+                <div class="box-content">
+                    <div class="btn-group" role="group">
+                        <button data-toggle="modal" data-target="#addTask" class="btn btn-primary m-5 p-5"><i
+                                class="fa fa-plus-circle" aria-hidden="true"></i>添加
+                        </button>
+                    </div>
+                    <table th:attr="requestUrl=@{/result/list},deleteUrl=@{/result/delete},updateUrl=@{/result/update}"
+                           id="example-edit" class="display" style="width: 100%">
+                        <thead>
+                        <tr>
+                            <th th:each="attr:${attrs}" th:text="${attr}">id</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th th:each="attr:${attrs}" th:text="${attr}">id</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+                <!-- /.box-content -->
+            </div>
+            <!-- /.col-xs-12 -->
+        </div>
+        <!-- /.row small-spacing -->
+    </div>
+    <!-- /.main-content -->
+</div><!--/#wrapper -->
+<!--modal start -->
+<div class="modal fade in" id="addResult" tabindex="-1" role="dialog" aria-labelledby="addResultLabel">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="addResultLabel">手动添加测试结果</h4>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/result/add}" method="post" id="addResultFrom">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="length">Length</label>
+                                <input type="text" id="length"
+                                       name="length"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="points">Points</label>
+                                <input type="text" id="points"
+                                       name="points"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="time">Time(s)</label>
+                                <input type="text" id="time"
+                                       name="time"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="projectId">Project</label>
+                                <input type="text"
+                                       id="projectId"
+                                       name="projectId"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="datasetId">DataSet</label>
+                                <input type="text"
+                                       id="datasetId"
+                                       name="datasetId"
+                                       class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal">取消</button>
+                <button type="button" onclick="addResult();" class="btn btn-primary waves-effect waves-light">添加
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal end -->
+<div th:replace="commons/baseAdmin::scriptImport"></div>
+<!-- Data Tables -->
+<script th:src="@{/admin/plugin/datatables/media/js/jquery.dataTables.min.js}"
+        src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+<script th:src="@{/admin/plugin/datatables/media/js/dataTables.bootstrap.min.js}"
+        src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+<script th:src="@{/admin/plugin/editable-table/mindmup-editabletable.js}"
+        src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
+<script th:src="@{/admin/scripts/sweetalert.init.min.js}"
+        src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
+<!--<script th:src="@{/admin/scripts/datatables.demo.min.js}" src="assets/scripts/datatables.demo.min.js"></script>-->
+<script th:inline="javascript">
+
+    function addResult(event) {
+        console.log("111");
+        var targetUrl = $("#addResultFrom").attr("action");
+        var data = $("#addResultFrom").serialize();
+        console.log("url:"+targetUrl);
+        console.log("data:"+data);
+
+        $.ajax({
+            type: 'post',
+            url: targetUrl,
+            cache: false,
+            data: data,
+            success: function (data) {
+            	$("#addResult").modal("hide");
+                alert(data);
+            },
+            error: function () {
+                alert("请求失败")
+            }
+        });
+    }
+
+    var nameSearch = [[${searchName}]];
+    var requestUrl = $("#example-edit").attr("requestUrl");
+    var deleteUrl = $("#example-edit").attr("deleteUrl");
+    var updateUrl = $("#example-edit").attr("updateUrl");
+    $('#example-edit').DataTable({
+        stateSave: true,
+        pagingType: "full_numbers",
+        "scrollX": true, //水平滚动，配合dataTables_wrapper{width:指定像素宽;}使用
+        paging: true,
+        "ordering": false,
+        "oLanguage": {
+            "sLengthMenu": "每页显示 _MENU_ 条记录",
+            "sZeroRecords": "对不起，没有匹配的数据",
+            "sInfo": "第 _START_ - _END_ 条 / 共 _TOTAL_ 条数据",
+            "sInfoEmpty": "没有匹配的数据",
+            "sInfoFiltered": "(数据表中共 _MAX_ 条记录)",
+            "sProcessing": "正在加载中...",
+            "sSearch": nameSearch + "模糊搜索：",
+            "oPaginate": {
+                "sFirst": "第一页",
+                "sPrevious": " 上一页 ",
+                "sNext": " 下一页 ",
+                "sLast": " 最后一页 "
+            }
+        },
+        pageLength: 10,//每页显示10条数据
+        bFilter: false, //去掉搜索框方法
+        serverSide: true, //启用服务器端分页，要进行后端分页必须的环节
+        "ajax": {
+            url: requestUrl,
+            type: "POST",
+            data: function (param) {
+                console.log("param：", param);
+                return param;
+            },
+            dataSrc: function (resultJson) {
+                var datas = resultJson.data;
+                for (var i = 0; i < datas.length; i++) {
+                    var item = datas[i];
+                    item.time = item.time + "s";
+                }
+                return resultJson.data;
+            }
+        },
+        "columns": [
+            {"data": "id"},
+            {"data": "length"},
+            {"data": "points"},
+            {"data": "time"},
+            {"data": "projectId"},
+            {"data": "datasetId"},
+            {"data": "operation"}
+        ],
+        "columnDefs": [
+            {
+                targets: [6],
+                data: "id",
+                render: function (data, type, row) {
+                    return "<a id='sal-warning' type='button' class='btn btn-danger waves-effect waves-light' href='" + deleteUrl + "?id=" + row.id + "'>删除</a>&nbsp;<a type='button' class='btn btn-info waves-effect waves-light' href='" + updateUrl + "?id=" + row.id + "'>修改</a>";
+                }
+            }
+        ]
+    });
+    $('#example-edit').editableTableWidget();
+</script>
+</body>
+</html>

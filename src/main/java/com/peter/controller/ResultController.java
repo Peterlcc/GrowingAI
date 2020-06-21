@@ -3,6 +3,7 @@ package com.peter.controller;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.peter.bean.Result;
 import com.peter.service.ResultService;
 import com.peter.utils.LinuxCmdUtils;
@@ -45,5 +46,34 @@ public class ResultController {
         }else {
             return "保存失败";
         }
+    }
+
+    @PostMapping("list")
+    @ResponseBody
+    public String adminResultList(@RequestParam("draw") int draw, @RequestParam("length") int length, @RequestParam("start") int start){
+        int pageCurrent = start / length + 1;
+        int pageSize=length;
+        PageInfo<Result> resultPageInfo = resultService.getResults(pageCurrent, pageSize);
+        JSONObject result = new JSONObject();
+        result.put("draw",draw);
+        result.put("recordsTotal",resultPageInfo.getTotal());
+        result.put("recordsFiltered",resultPageInfo.getTotal());
+        result.put("data",resultPageInfo.getList());
+        return result.toString();
+    }
+
+    @GetMapping("delete")
+    public String adminDelete(@RequestParam("id") int id){
+        System.out.println("delete result id="+id);
+        return "redirect:/admin/result/list";
+    }
+
+    @PostMapping("add")
+    @ResponseBody
+    public String add(Result result){
+//        boolean save = resultService.save(result);
+//        return save?"succeed":"failed";
+        System.out.println(result);
+        return "ok";
     }
 }

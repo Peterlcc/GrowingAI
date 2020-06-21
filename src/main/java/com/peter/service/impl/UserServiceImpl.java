@@ -1,5 +1,7 @@
 package com.peter.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.peter.bean.User;
 import com.peter.bean.UserExample;
 import com.peter.mapper.UserMapper;
@@ -88,5 +90,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(User user) {
         userMapper.updateByPrimaryKey(user);
+    }
+
+    @Override
+    public PageInfo<User> getUsers(int pc, int ps) {
+        PageHelper.startPage(pc, ps);
+        List<User> users = userMapper.selectByExample(null);
+        users.forEach(user -> user.setPassword(null));
+        LOG.info("get users pc:"+pc+" ps:"+ps+" size:"+users.size());
+        PageInfo<User> userPageInfo = new PageInfo<>(users);
+        return userPageInfo;
     }
 }

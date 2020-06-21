@@ -1,5 +1,6 @@
 package com.peter.service;
 
+import com.github.pagehelper.PageInfo;
 import com.peter.bean.User;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface UserService {
     String regist(User user);
 
     void update(User user);
+    PageInfo<User> getUsers(int pc,int ps);
 }
