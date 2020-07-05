@@ -225,7 +225,11 @@ public class UserController {
     @PostMapping("update")
     @ResponseBody
     public String adminUpdate(User user){
-        user.setLoginTime(new Date());
+        User userSource = userService.get(user.getId());
+        if (StringUtils.isEmpty(user.getPassword())){
+            user.setPassword(userSource.getPassword());
+        }
+        user.setLoginTime(userSource.getLoginTime());
         LOG.info(user);
         boolean update = userService.update(user);
         return update?"succeed":"error";

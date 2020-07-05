@@ -13,6 +13,15 @@ public class GrowningAiConfig {
     //删除的临时目录
     private String tmpDir;
     private String catkinPath;
+    private String datasetRoot;
+
+    public String getDatasetRoot() {
+        return datasetRoot;
+    }
+
+    public void setDatasetRoot(String datasetRoot) {
+        this.datasetRoot = datasetRoot;
+    }
 
     public String getCatkinPath() {
         return catkinPath;

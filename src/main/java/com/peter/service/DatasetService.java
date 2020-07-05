@@ -6,7 +6,11 @@ import com.peter.bean.Dataset;
 import java.util.List;
 
 public interface DatasetService {
-    Dataset getDatasetById(Integer id);
     PageInfo<Dataset> getDatasets(int pc, int ps);
     List<Dataset> getAllSimpleDatasets();
+
+    Dataset get(Integer id);
+    boolean update(Dataset dataset);
+    boolean add(Dataset dataset);
+    boolean delete(Integer id);
 }

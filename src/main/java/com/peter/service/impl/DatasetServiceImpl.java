@@ -3,8 +3,10 @@ package com.peter.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Dataset;
+import com.peter.bean.DatasetExample;
 import com.peter.mapper.DatasetMapper;
 import com.peter.service.DatasetService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,34 @@ public class DatasetServiceImpl implements DatasetService {
     private DatasetMapper datasetMapper;
 
     @Override
-    public Dataset getDatasetById(Integer id) {
-        return datasetMapper.selectByPrimaryKey(id);
+    public Dataset get(Integer id) {
+        Dataset dataset=datasetMapper.selectByPrimaryKey(id);
+        return dataset;
+    }
+
+    @Override
+    public boolean update(Dataset dataset) {
+        int i = datasetMapper.updateByPrimaryKeySelective(dataset);
+        return i==1;
+    }
+
+    @Override
+    public boolean add(Dataset dataset) {
+        DatasetExample datasetExample = new DatasetExample();
+        DatasetExample.Criteria criteria = datasetExample.createCriteria();
+        criteria.andNameEqualTo(dataset.getName());
+        List<Dataset> datasets = datasetMapper.selectByExample(datasetExample);
+        if (!CollectionUtils.isEmpty(datasets)){
+            return false;
+        }
+        int i = datasetMapper.insertSelective(dataset);
+        return i==1;
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        int i = datasetMapper.deleteByPrimaryKey(id);
+        return i==1;
     }
 
     @Override

@@ -16,7 +16,13 @@
 		<div class="row small-spacing">
 			<div class="col-xs-12">
 				<div class="box-content">
-                    <table th:attr="requestUrl=@{/dataset/list}" id="example-edit" class="display" style="width: 100%">
+                    <div class="btn-group" role="group">
+                        <button data-toggle="modal" data-target="#addProject" class="btn btn-primary m-5 p-5"><i
+                                class="fa fa-plus-circle" aria-hidden="true"></i>添加
+                        </button>
+                    </div>
+                    <table th:attr="requestUrl=@{/dataset/list},deleteUrl=@{/dataset/delete},updateUrl=@{/dataset/update}"
+                           id="example-edit" class="display" style="width: 100%">
 						<thead>
 							<tr>
 								<th th:each="attr:${attrs}" th:text="${attr}">id</th>
@@ -38,6 +44,111 @@
 	</div>
 	<!-- /.main-content -->
 </div><!--/#wrapper -->
+
+<!--modal start -->
+<div class="modal fade in" id="addDataset" tabindex="-1" role="dialog" aria-labelledby="addDatasetLabel">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="addDatasetLabel">手动添加数据集</h4>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/dataset/add}" method="post" id="addDatasetForm" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">数据集名称</label>
+                                <input type="text" id="name"
+                                       name="name" required
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="description">项目描述</label>
+                                <input type="text" id="description"
+                                       name="description" required
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="dire">数据集文件</label>
+                                <input type="file" id="dire"
+                                       name="dire" multiple="multiple" webkitdirectory
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="typeId">数据集类型</label>
+                                <select class="custom-select form-control" id="typeId" name="typeId">
+                                    <option th:each="type,typeStat:${types}" th:selected="${typeStat.index==0?true:false}" th:value="${type.id}" th:text="${type.id}+' -- '+${type.name}">Open this select menu</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal">取消</button>
+                <button type="button" onclick="addDataset();" class="btn btn-primary waves-effect waves-light">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal end -->
+<!--modal start -->
+<div class="modal fade in" id="updateDataset" tabindex="-1" role="dialog" aria-labelledby="updateDatasetLabel">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="updateDatasetLabel">手动修改数据集</h4>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/dataset/update}" method="post" id="updateProjectForm" th:attr="getUrl=@{/dataset/dataset},deleteUrl=@{/dataset/delete}">
+                    <input hidden="hidden" id="datasetId" name="id">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="updateName">数据集名称</label>
+                                <input type="text" id="updateName"
+                                       name="name"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="updateDire">数据集文件</label>
+                                <input type="file" id="updateDire"
+                                       name="dire" multiple="multiple" webkitdirectory
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="updateTypeId">数据集类型</label>
+                                <select class="custom-select form-control" id="updateTypeId" name="typeId">
+                                    <option th:each="type,typeStat:${types}" th:selected="${typeStat.index==0?true:false}" th:value="${type.id}" th:text="${type.id}+' -- '+${type.name}">Open this select menu</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal">取消</button>
+                <button type="button" onclick="updateDataset();" class="btn btn-primary waves-effect waves-light">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal end -->
+
 <div th:replace="commons/baseAdmin::scriptImport"></div>
 <!-- Data Tables -->
 <script th:src="@{/admin/plugin/datatables/media/js/jquery.dataTables.min.js}" src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
@@ -45,10 +156,129 @@
 <script th:src="@{/admin/plugin/editable-table/mindmup-editabletable.js}" src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
 <!--<script th:src="@{/admin/scripts/datatables.demo.min.js}" src="assets/scripts/datatables.demo.min.js"></script>-->
 <script  th:inline="javascript">
-	var nameSearch=[[${searchName}]];
-	var requestUrl=$("#example-edit").attr("requestUrl");
-	var deleteUrl=$("#example-edit").attr("deleteUrl");
-	var updateUrl=$("#example-edit").attr("updateUrl");
+    var nameSearch = [[${searchName}]];
+    var requestUrl = $("#example-edit").attr("requestUrl");
+    var deleteUrl = $("#example-edit").attr("deleteUrl");
+
+    function addDataset(event) {
+        var targetUrl = $("#addDatasetForm").attr("action");
+        // var data = $("#addProjectForm").serialize();
+        var form=new FormData(document.getElementById("addDatasetForm"));
+        var values = form.values();
+        for (var i = 0; i < values.length; i++) {
+            console.log(values[i]);
+        }
+        $.ajax({
+            type: 'post',
+            url: targetUrl,
+            cache: false,
+            data: form,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#addProject").modal("hide");
+                if (data=="succeed") {
+                    swalTextWithType("添加成功","",swalType.SUCCEED);
+                    setTimeout(function(){ window.location.reload(); }, 1000);
+
+                }else{
+                    swalTextWithType("添加失败","请检查您的参数",swalType.ERROR);
+                }
+            },
+            error: function () {
+                swalTextWithType("添加失败","请检查您的参数",swalType.ERROR);
+            }
+        });
+    }
+
+    function showDatasetInfo(id) {
+        var getUrl=$("#updateDatasetForm").attr("getUrl");
+        $("#datasetId").val(id);
+        $.ajax({
+            type: 'get',
+            url: getUrl,
+            cache: false,
+            data: {id:id},
+            success: function (result) {
+                result=eval(result);
+                console.log(result);
+
+                $("#updateName").val(result.name);
+
+                $("#updateTypeId option").each(function () {
+                    var cid=$(this).val();
+                    console.log(cid+"-"+result.typeId);
+                    if (cid==result.typeId){
+                        $(this).attr("selected",true);
+                    }else {
+                        $(this).attr("selected",false);
+                    }
+                });
+
+            },
+            error: function (data) {
+                swalTextWithType("系统错误","请稍后再试",swalType.ERROR);
+            }
+        });
+    }
+
+    function updateDataset(event) {
+        var targetUrl = $("#updateDatasetForm").attr("action");
+        // var data = $("#updateProjectForm").serialize();
+        var form=new FormData(document.getElementById("updateDatasetForm"));
+        console.log("url:"+targetUrl);
+
+        $.ajax({
+            type: 'post',
+            url: targetUrl,
+            cache: false,
+            data: form,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#updateDataset").modal("hide");
+                if (data=="succeed"){
+                    swalTextWithType("修改成功","",swalType.SUCCEED);
+                    setTimeout(function(){ window.location.reload(); }, 1000);
+                }
+                else {
+                    swalTextWithType("修改失败","请检查您的参数",swalType.ERROR);
+                }
+            },
+            error: function (data) {
+                swalTextWithType("修改失败","请检查您的参数",swalType.ERROR);
+            }
+        });
+    }
+
+    function deleteDataset(id) {
+        swalTextWithFunction("确定要删除吗？","删除后不可恢复！",swalType.WARN,function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: 'get',
+                    url: deleteUrl,
+                    cache: false,
+                    data: {id: id},
+                    success: function (data) {
+                        if (data == "succeed") {
+                            swalTextWithType("删除成功", "", swalType.SUCCEED);
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000);
+                        } else {
+                            swalTextWithType("删除失败", "请检查您的参数", swalType.ERROR);
+                        }
+                    },
+                    error: function (data) {
+                        swalTextWithType("删除失败", "请检查您的参数", swalType.ERROR);
+                    }
+                });
+            }else {
+                swalTextWithType("操作取消", "", swalType.ERROR);
+            }
+        });
+
+    }
 	$('#example-edit').DataTable({
         stateSave: true,
         pagingType: "full_numbers",
@@ -71,6 +301,7 @@
 			}
 		},
         pageLength: 10,//每页显示10条数据
+        lengthMenu: [ 5,10],
         bFilter: false, //去掉搜索框方法
         serverSide: true, //启用服务器端分页，要进行后端分页必须的环节
 		"ajax": {
@@ -83,14 +314,14 @@
             dataSrc:function (resultJson) {
                 var datas=resultJson.data;
                 // for (var i = 0; i < datas.length; i++) {
-				//     var item=datas[i];
-				//     var date = new Date(item.createTime);
-				//     Y = date.getFullYear() + '-';
-				//     M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-				//     D = date.getDate();
-				// 	item.createTime=Y+M+D;
-				// }
-                return resultJson.data;
+                //     var item=datas[i];
+                //     var date = new Date(item.createTime);
+                //     Y = date.getFullYear() + '-';
+                //     M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+                //     D = date.getDate();
+                // 	item.createTime=Y+M+D;
+                // }
+                return datas;
             }
         },
 		"columns": [
@@ -104,7 +335,7 @@
 				targets:[4],
 				data:"time",
 				render:function (data, type, row) {
-					return "<a id='sal-warning' type='button' class='btn btn-danger waves-effect waves-light' href='"+deleteUrl+"?id="+row.id+"'>删除</a>&nbsp;<a type='button' class='btn btn-info waves-effect waves-light' href='"+updateUrl+"?id="+row.id+"'>修改</a>";
+                    return "<a type='button' class='btn btn-danger' href='javascript:void(0);' onclick='deleteDataset(" + row.id + ")'>删除</a>&nbsp;<a type='button' class='btn btn-info waves-effect waves-light' href='javascript:void(0);' onclick='showDatasetInfo("+row.id+");'  data-toggle='modal' data-target='#updateDataset'>修改</a>";
 				}
 			}
 		]
