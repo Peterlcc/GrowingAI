@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Result;
+import com.peter.service.ProjectService;
 import com.peter.service.ResultService;
 import com.peter.utils.LinuxCmdUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +27,8 @@ public class ResultController {
 
     @Autowired
     private ResultService resultService;
+
+
     @PostMapping("save")
     @ResponseBody
     public String saveResult(@RequestParam("results")  String results){
@@ -63,17 +66,33 @@ public class ResultController {
     }
 
     @GetMapping("delete")
+    @ResponseBody
     public String adminDelete(@RequestParam("id") int id){
-        System.out.println("delete result id="+id);
-        return "redirect:/admin/result/list";
+        boolean res = resultService.deleteResult(id);
+        LOG.info("result "+id+" deleted!");
+        return res?"succeed":"error";
     }
 
     @PostMapping("add")
     @ResponseBody
-    public String add(Result result){
-//        boolean save = resultService.save(result);
-//        return save?"succeed":"failed";
-        System.out.println(result);
-        return "ok";
+    public String adminAdd(Result result){
+        boolean add = resultService.add(result);
+        LOG.info(result);
+        return add?"succeed":"failed";
+    }
+
+    @PostMapping("update")
+    @ResponseBody
+    public String adminUpdate(Result result){
+        LOG.info(result);
+        boolean save = resultService.updateResult(result);
+        return save?"succeed":"failed";
+    }
+    @GetMapping("result")
+    @ResponseBody
+    public Result adminResult(Integer id){
+        Result result = resultService.getResult(id);
+        LOG.info(result);
+        return result;
     }
 }

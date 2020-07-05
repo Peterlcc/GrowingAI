@@ -18,10 +18,11 @@
             <div class="col-xs-12">
                 <div class="box-content">
                     <div class="btn-group" role="group">
-                        <button data-toggle="modal" data-target="#addTask" class="btn btn-primary m-5 p-5"><i
+                        <button data-toggle="modal" data-target="#addResult" class="btn btn-primary m-5 p-5"><i
                                 class="fa fa-plus-circle" aria-hidden="true"></i>添加
                         </button>
                     </div>
+                    <p></p>
                     <table th:attr="requestUrl=@{/result/list},deleteUrl=@{/result/delete},updateUrl=@{/result/update}"
                            id="example-edit" class="display" style="width: 100%">
                         <thead>
@@ -60,7 +61,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="length">Length</label>
-                                <input type="text" id="length"
+                                <input type="number" id="length"
                                        name="length"
                                        class="form-control">
                             </div>
@@ -68,7 +69,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="points">Points</label>
-                                <input type="text" id="points"
+                                <input type="number" id="points"
                                        name="points"
                                        class="form-control">
                             </div>
@@ -76,7 +77,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="time">Time(s)</label>
-                                <input type="text" id="time"
+                                <input type="number" id="time"
                                        name="time"
                                        class="form-control">
                             </div>
@@ -84,19 +85,17 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="projectId">Project</label>
-                                <input type="text"
-                                       id="projectId"
-                                       name="projectId"
-                                       class="form-control">
+                                <select class="custom-select form-control" id="projectId" name="projectId">
+                                    <option th:each="project,projectStat:${projects}" th:selected="${projectStat.index==0?true:false}" th:value="${project.id}" th:text="${project.id}+' -- '+${project.name}">Open this select menu</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="datasetId">DataSet</label>
-                                <input type="text"
-                                       id="datasetId"
-                                       name="datasetId"
-                                       class="form-control">
+                                <select class="custom-select form-control" id="datasetId" name="datasetId">
+                                    <option th:each="dataset,datasetStat:${datasets}" th:selected="${datasetStat.index==0?true:false}" th:value="${dataset.id}" th:text="${dataset.id}+' -- '+${dataset.name}">Open this select menu</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -104,8 +103,71 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal">取消</button>
-                <button type="button" onclick="addResult();" class="btn btn-primary waves-effect waves-light">添加
+                <button type="button" id="btnAddResult" onclick="addResult();" class="btn btn-primary waves-effect waves-light">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal end -->
+<!--modal start -->
+<div class="modal fade in" id="updateResult" tabindex="-1" role="dialog" aria-labelledby="updateResultLabel">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
+                <h4 class="modal-title" id="updateResultLabel">手动修改测试结果</h4>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/result/update}" method="post" id="updateResultFrom" th:attr="getUrl=@{/result/result},deleteUrl=@{/result/delete}">
+                    <input hidden="hidden" id="resultId" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="updateLength">Length</label>
+                                <input type="number" id="updateLength"
+                                       name="length"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="updatePoints">Points</label>
+                                <input type="number" id="updatePoints"
+                                       name="points"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="updateTime">Time(s)</label>
+                                <input type="number" id="updateTime"
+                                       name="time"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="updateProjectId">Project</label>
+                                <select class="custom-select form-control" name="projectId" id="updateProjectId">
+                                    <option th:each="project,projectStat:${projects}" th:selected="${projectStat.index==0?true:false}" th:value="${project.id}" th:text="${project.id}+' -- '+${project.name}">Open this select menu</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="updateDatasetId">DataSet</label>
+                                <select class="custom-select form-control" name="datasetId" id="updateDatasetId">
+                                    <option th:each="dataset,datasetStat:${datasets}" th:selected="${datasetStat.index==0?true:false}" th:value="${dataset.id}" th:text="${dataset.id}+' -- '+${dataset.name}">Open this select menu</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal">取消</button>
+                <button type="button" onclick="updateResult();" class="btn btn-primary waves-effect waves-light">修改</button>
             </div>
         </div>
     </div>
@@ -121,13 +183,83 @@
         src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
 <script th:src="@{/admin/scripts/sweetalert.init.min.js}"
         src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
+<script th:src="@{/admin/scripts/utils/swalUtil.js}"></script>
 <!--<script th:src="@{/admin/scripts/datatables.demo.min.js}" src="assets/scripts/datatables.demo.min.js"></script>-->
 <script th:inline="javascript">
+    var nameSearch = [[${searchName}]];
+    var requestUrl = $("#example-edit").attr("requestUrl");
+    var deleteUrl = $("#example-edit").attr("deleteUrl");
 
     function addResult(event) {
-        console.log("111");
         var targetUrl = $("#addResultFrom").attr("action");
         var data = $("#addResultFrom").serialize();
+        $.ajax({
+            type: 'post',
+            url: targetUrl,
+            cache: false,
+            data: data,
+            success: function (data) {
+            	$("#addResult").modal("hide");
+            	if (data=="succeed") {
+                    swalTextWithType("添加成功","",swalType.SUCCEED);
+                    setTimeout(function(){ window.location.reload(); }, 1000);
+
+                }else{
+                    swalTextWithType("添加失败","请检查您的参数",swalType.ERROR);
+                }
+            },
+            error: function () {
+                swalTextWithType("添加失败","请检查您的参数",swalType.ERROR);
+            }
+        });
+    }
+
+    function showResultInfo(id) {
+        var getUrl=$("#updateResultFrom").attr("getUrl");
+        $("#resultId").val(id);
+        $.ajax({
+            type: 'get',
+            url: getUrl,
+            cache: false,
+            data: {id:id},
+            success: function (result) {
+                result=eval(result);
+                console.log(result);
+                $("#updateLength").val(result.length);
+                $("#updatePoints").val(result.points);
+                $("#updateTime").val(result.time);
+
+                $("#updateProjectId option").each(function () {
+                    var cid=$(this).val();
+                    console.log(cid+"-"+result.projectId);
+                    if (cid==result.projectId){
+                        $(this).attr("selected",true);
+                    }else {
+                        $(this).attr("selected",false);
+                    }
+                });
+
+                $("#updateDatasetId option").each(function () {
+                    var cid=$(this).val();
+                    console.log(cid+"-"+result.datasetId);
+                    if (cid==result.datasetId){
+                        console.log("matched");
+                        $(this).attr("selected",true);
+                    }else {
+                        $(this).attr("selected",false);
+                    }
+                });
+
+            },
+            error: function (data) {
+                swalTextWithType("系统错误","请稍后再试",swalType.ERROR);
+            }
+        });
+    }
+
+    function updateResult(event) {
+        var targetUrl = $("#updateResultFrom").attr("action");
+        var data = $("#updateResultFrom").serialize();
         console.log("url:"+targetUrl);
         console.log("data:"+data);
 
@@ -137,19 +269,52 @@
             cache: false,
             data: data,
             success: function (data) {
-            	$("#addResult").modal("hide");
-                alert(data);
+                $("#updateResult").modal("hide");
+                if (data=="succeed"){
+                    swalTextWithType("修改成功","",swalType.SUCCEED);
+                    setTimeout(function(){ window.location.reload(); }, 1000);
+                }
+                else {
+                    swalTextWithType("修改失败","请检查您的参数",swalType.ERROR);
+                }
             },
-            error: function () {
-                alert("请求失败")
+            error: function (data) {
+                swalTextWithType("修改失败","请检查您的参数",swalType.ERROR);
             }
         });
     }
 
-    var nameSearch = [[${searchName}]];
-    var requestUrl = $("#example-edit").attr("requestUrl");
-    var deleteUrl = $("#example-edit").attr("deleteUrl");
-    var updateUrl = $("#example-edit").attr("updateUrl");
+    function deleteResult(id) {
+        console.log("delete "+id)
+        swalTextWithFunction("确定要删除吗？","删除后不可恢复！",swalType.WARN,function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: 'get',
+                    url: deleteUrl,
+                    cache: false,
+                    data: {id: id},
+                    success: function (data) {
+                        if (data == "succeed") {
+                            swalTextWithType("删除成功", "", swalType.SUCCEED);
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000);
+                        } else {
+                            swalTextWithType("删除失败", "请检查您的参数", swalType.ERROR);
+                        }
+                    },
+                    error: function (data) {
+                        swalTextWithType("删除失败", "请检查您的参数", swalType.ERROR);
+                    }
+                });
+            }else {
+                swalTextWithType("操作取消", "", swalType.ERROR);
+            }
+        });
+
+    }
+
+
     $('#example-edit').DataTable({
         stateSave: true,
         pagingType: "full_numbers",
@@ -172,6 +337,7 @@
             }
         },
         pageLength: 10,//每页显示10条数据
+        lengthMenu: [ 5,10],
         bFilter: false, //去掉搜索框方法
         serverSide: true, //启用服务器端分页，要进行后端分页必须的环节
         "ajax": {
@@ -204,7 +370,7 @@
                 targets: [6],
                 data: "id",
                 render: function (data, type, row) {
-                    return "<a id='sal-warning' type='button' class='btn btn-danger waves-effect waves-light' href='" + deleteUrl + "?id=" + row.id + "'>删除</a>&nbsp;<a type='button' class='btn btn-info waves-effect waves-light' href='" + updateUrl + "?id=" + row.id + "'>修改</a>";
+                    return "<a type='button' class='btn btn-danger' href='javascript:void(0);' onclick='deleteResult(" + row.id + ")'>删除</a>&nbsp;<a type='button' class='btn btn-info waves-effect waves-light' href='javascript:void(0);' onclick='showResultInfo("+row.id+");'  data-toggle='modal' data-target='#updateResult'>修改</a>";
                 }
             }
         ]

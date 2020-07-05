@@ -25,8 +25,14 @@ public class DatasetServiceImpl implements DatasetService {
     public PageInfo<Dataset> getDatasets(int pc, int ps) {
         PageHelper.startPage(pc,ps);
         List<Dataset> datasets = datasetMapper.selectByExample(null);
-        PageInfo<Dataset> datasetPageInfo = new PageInfo<>();
-        datasetPageInfo.setList(datasets);
+        PageInfo<Dataset> datasetPageInfo = new PageInfo<>(datasets);
+//        datasetPageInfo.setList(datasets);
         return datasetPageInfo;
+    }
+
+    @Override
+    public List<Dataset> getAllSimpleDatasets() {
+        List<Dataset> datasets = datasetMapper.selectSimpleByExample(null);
+        return datasets;
     }
 }

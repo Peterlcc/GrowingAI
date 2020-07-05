@@ -9,6 +9,7 @@ import com.peter.component.GrowningAiConfig;
 import com.peter.service.ProjectService;
 import com.peter.service.ScoreService;
 import com.peter.service.TaskUploadService;
+import com.peter.service.UserService;
 import com.peter.utils.FileUtil;
 import com.peter.utils.MessageUtil;
 import org.apache.commons.io.FileUtils;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,9 @@ public class ProjectController {
 
     @Autowired
     private TaskUploadService taskUploadService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("projects")
     public String getProjects(HttpServletRequest request, Model model) {
@@ -168,8 +173,91 @@ public class ProjectController {
     }
 
     @GetMapping("delete")
-    public String adminDelete(@RequestParam("id") int id){
-        System.out.println("delete result id="+id);
-        return "redirect:/admin/project/list";
+    @ResponseBody
+    public String adminDelete(int id){
+        LOG.info("id:"+id);
+        boolean delete = projectService.delete(id);
+        return delete?"succeed":"error";
+    }
+    @GetMapping("project")
+    @ResponseBody
+    public Project adminGet(Integer id){
+        Project project = projectService.getProjectById(id);
+        return project;
+    }
+    @PostMapping("add")
+    @ResponseBody
+    public String adminAdd(@RequestParam("dire") MultipartFile[] dire, Project project){
+//        projectService.save(project);
+        if (dire == null || dire.length == 0) {
+            LOG.info("files in project to upload is null,upload failed!");
+            return "error";
+        }
+        User user = userService.get(project.getUserId());
+        String path=growningAiConfig.getUploadPath() +File.separator+user.getNumber()+File.separator;
+//        String pname = dire[0].getOriginalFilename().substring(0, dire[0].getOriginalFilename().indexOf("/"));
+        String[] pathNames = dire[0].getOriginalFilename().split("/");
+        project.setPath(path+ pathNames[0]);
+        File projectPath = new File(project.getPath());
+        if (projectPath.exists()){
+            LOG.info("project path in "+project.getPath()+" is existed!");
+            return "error";
+        }
+        //System.out.println(project);
+        StringBuilder uploadFiles = new StringBuilder();
+        uploadFiles.append("upload files:[");
+        for (MultipartFile file : dire) {
+            uploadFiles.append(file.getOriginalFilename());
+        }
+        uploadFiles.append("]");
+        LOG.info(uploadFiles.toString());
+        String msg = FileUtil.save(path, dire);
+        if (!msg.equals("上传成功")) {
+            LOG.info(msg);
+            return "error";
+        }
+        project.setCreateTime(new Date());
+        projectService.save(project);
+//        taskUploadService.upload(project);
+        LOG.info("save project:" + project.toString());
+        return "succeed";
+    }
+    @PostMapping("update")
+    @ResponseBody
+    public String adminUpdate(@RequestParam("dire") MultipartFile[] dire,Project project){
+        Project projectById = projectService.getProjectById(project.getId());
+        if (projectById.equals(project)) {
+            LOG.info("project info not changed!");
+            return "error";
+        }
+        if (dire == null || dire.length == 0) {
+            LOG.info("files in project to upload is null,path no need to update");
+        }else {
+            User user = userService.get(project.getUserId());
+            String path = growningAiConfig.getUploadPath() + File.separator + user.getNumber() + File.separator;
+            String[] pathNames = dire[0].getOriginalFilename().split("/");
+            project.setPath(path + pathNames[0]);
+            File projectPath = new File(project.getPath());
+            if (projectPath.exists()) {
+                LOG.info("project path in " + project.getPath() + " is existed!");
+            } else {
+                //System.out.println(project);
+                StringBuilder uploadFiles = new StringBuilder();
+                uploadFiles.append("upload files:[");
+                for (MultipartFile file : dire) {
+                    uploadFiles.append(file.getOriginalFilename());
+                }
+                uploadFiles.append("]");
+                LOG.info(uploadFiles.toString());
+                String msg = FileUtil.save(path, dire);
+                if (!msg.equals("上传成功")) {
+                    LOG.info(msg);
+                    return "error";
+                }
+            }
+        }
+        boolean update = projectService.update(project);
+        LOG.info("update project:" + project.toString());
+        return update?"succeed":"error";
     }
 }

@@ -82,14 +82,14 @@
             },
             dataSrc:function (resultJson) {
                 var datas=resultJson.data;
-                for (var i = 0; i < datas.length; i++) {
-                    var item=datas[i];
-                    var date = new Date(item.createTime);
-                    Y = date.getFullYear() + '-';
-                    M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-                    D = date.getDate();
-					item.createTime=Y+M+D;
-                }
+                // for (var i = 0; i < datas.length; i++) {
+				//     var item=datas[i];
+				//     var date = new Date(item.createTime);
+				//     Y = date.getFullYear() + '-';
+				//     M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+				//     D = date.getDate();
+				// 	item.createTime=Y+M+D;
+				// }
                 return resultJson.data;
             }
         },
@@ -97,7 +97,7 @@
 			{ "data": "id" },
 			{ "data": "name" },
 			{ "data": "path" },
-			{ "data": "typeid" },
+			{ "data": "typeid" }
 		],
 		"columnDefs":[
 			{

@@ -23,8 +23,8 @@ public class ResultServiceImpl implements ResultService {
     public PageInfo<Result> getResults(int pc, int ps) {
         PageHelper.startPage(pc,ps);
         List<Result> results = resultMapper.selectByExample(null);
-        PageInfo<Result> resultPageInfo = new PageInfo<>();
-        resultPageInfo.setList(results);
+        PageInfo<Result> resultPageInfo = new PageInfo<>(results);
+//        resultPageInfo.setList(results);
         return resultPageInfo;
     }
 
@@ -38,18 +38,21 @@ public class ResultServiceImpl implements ResultService {
         ResultExample.Criteria criteria = resultExample.createCriteria();
         criteria.andProjectIdEqualTo(result.getProjectId());
         List<Result> results = resultMapper.selectByExample(resultExample);
+        LOG.info("results:"+results);
         if (results!=null&&results.size()==1){
             result.setId(results.get(0).getId());
             resultMapper.updateByPrimaryKey(result);
             return  true;
-        }else if (results!=null&&results.size()>1){
-            LOG.error("failed to save result,because we found "+results.size()+" results with project id ="+result.getProjectId());
+        }else {
+            LOG.error("failed to save result,because we found " + results.size() + " results with project id =" + result.getProjectId());
             return false;
-        }else{
-            resultMapper.insertSelective(result);
-            LOG.info("result:"+result+" is saved successfully!");
-            return  true;
         }
+    }
+
+    @Override
+    public boolean add(Result result) {
+        int i = resultMapper.insertSelective(result);
+        return i==1;
     }
 
     @Override
@@ -90,5 +93,32 @@ public class ResultServiceImpl implements ResultService {
             }
             return true;
         }
+    }
+
+    @Override
+    public Result getResult(Integer id) {
+        Result result = resultMapper.selectByPrimaryKey(id);
+        return result;
+    }
+
+    @Override
+    public boolean deleteResult(Integer id) {
+        int i = resultMapper.deleteByPrimaryKey(id);
+        return i==1;
+    }
+
+    @Override
+    public boolean updateResult(Result result) {
+        if (result.getId()==null){
+            LOG.error("the id ["+result.getId()+"] of result to update is null");
+            return false;
+        }
+        Result res = resultMapper.selectByPrimaryKey(result.getId());
+        if (res==null){
+            LOG.error("the id ["+result.getId()+"] of result to update is not exist");
+            return false;
+        }
+        int i = resultMapper.updateByPrimaryKey(result);
+        return i==1;
     }
 }

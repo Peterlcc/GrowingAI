@@ -16,7 +16,14 @@
 		<div class="row small-spacing">
 			<div class="col-xs-12">
 				<div class="box-content">
-                    <table th:attr="requestUrl=@{/score/list}" id="example-edit" class="display" style="width: 100%">
+					<div class="btn-group" role="group">
+						<button data-toggle="modal" data-target="#addScore" class="btn btn-primary m-5 p-5"><i
+								class="fa fa-plus-circle" aria-hidden="true"></i>添加
+						</button>
+					</div>
+					<p></p>
+                    <table th:attr="requestUrl=@{/score/list},deleteUrl=@{/score/delete},updateUrl=@{/score/update}"
+						   id="example-edit" class="display" style="width: 100%">
 						<thead>
 							<tr>
 								<th th:each="attr:${attrs}" th:text="${attr}">id</th>
@@ -38,17 +45,208 @@
 	</div>
 	<!-- /.main-content -->
 </div><!--/#wrapper -->
+
+<!--modal start -->
+<div class="modal fade in" id="addScore" tabindex="-1" role="dialog" aria-labelledby="addScoreLabel">
+	<div class="modal-dialog  modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="addScoreLabel">手动添加分数</h4>
+			</div>
+			<div class="modal-body">
+				<form th:action="@{/score/add}" method="post" id="addScoreForm">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="score">score</label>
+								<input type="number" id="score"
+									   name="score"
+									   class="form-control">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="projectId">Project</label>
+								<select class="custom-select form-control" id="projectId" name="projectId">
+									<option th:each="project,projectStat:${projects}" th:selected="${projectStat.index==0?true:false}" th:value="${project.id}" th:text="${project.id}+' -- '+${project.name}">Open this select menu</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal">取消</button>
+				<button type="button" onclick="addScore();" class="btn btn-primary waves-effect waves-light">添加</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--modal end -->
+<!--modal start -->
+<div class="modal fade in" id="updateScore" tabindex="-1" role="dialog" aria-labelledby="updateScoreLabel">
+	<div class="modal-dialog  modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="updateScoreLabel">手动修改分数</h4>
+			</div>
+			<div class="modal-body">
+				<form th:action="@{/score/update}" method="post" id="updateScoreForm" th:attr="getUrl=@{/score/score},deleteUrl=@{/score/delete}">
+					<input hidden="hidden" id="scoreId" name="id">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="updateScoreNumber">score</label>
+								<input type="number" id="updateScoreNumber"
+									   name="score"
+									   class="form-control">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="updateProjectId">Project</label>
+								<select class="custom-select form-control" name="projectId" id="updateProjectId">
+									<option th:each="project,projectStat:${projects}" th:selected="${projectStat.index==0?true:false}" th:value="${project.id}" th:text="${project.id}+' -- '+${project.name}">Open this select menu</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal">取消</button>
+				<button type="button" onclick="updateScore();" class="btn btn-primary waves-effect waves-light">修改</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--modal end -->
+
 <div th:replace="commons/baseAdmin::scriptImport"></div>
 <!-- Data Tables -->
 <script th:src="@{/admin/plugin/datatables/media/js/jquery.dataTables.min.js}" src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
 <script th:src="@{/admin/plugin/datatables/media/js/dataTables.bootstrap.min.js}" src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
 <script th:src="@{/admin/plugin/editable-table/mindmup-editabletable.js}" src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
+<script th:src="@{/admin/scripts/utils/swalUtil.js}"></script>
 <!--<script th:src="@{/admin/scripts/datatables.demo.min.js}" src="assets/scripts/datatables.demo.min.js"></script>-->
 <script  th:inline="javascript">
-	var nameSearch=[[${searchName}]];
-	var requestUrl=$("#example-edit").attr("requestUrl");
-	var deleteUrl=$("#example-edit").attr("deleteUrl");
-	var updateUrl=$("#example-edit").attr("updateUrl");
+	var nameSearch = [[${searchName}]];
+	var requestUrl = $("#example-edit").attr("requestUrl");
+	var deleteUrl = $("#example-edit").attr("deleteUrl");
+
+	function addScore(event) {
+		var targetUrl = $("#addScoreForm").attr("action");
+		var data = $("#addScoreForm").serialize();
+		$.ajax({
+			type: 'post',
+			url: targetUrl,
+			cache: false,
+			data: data,
+			success: function (data) {
+				$("#addScore").modal("hide");
+				if (data=="succeed") {
+					swalTextWithType("添加成功","",swalType.SUCCEED);
+					setTimeout(function(){ window.location.reload(); }, 1000);
+
+				}else{
+					swalTextWithType("添加失败","请检查您的参数",swalType.ERROR);
+				}
+			},
+			error: function () {
+				swalTextWithType("添加失败","请检查您的参数",swalType.ERROR);
+			}
+		});
+	}
+
+	function showScoreInfo(id) {
+		var getUrl=$("#updateScoreForm").attr("getUrl");
+		$("#scoreId").val(id);
+		$.ajax({
+			type: 'get',
+			url: getUrl,
+			cache: false,
+			data: {id:id},
+			success: function (result) {
+				result=eval(result);
+				console.log(result);
+				$("#updateScoreNumber").val(result.score);
+				$("#updateProjectId option").each(function () {
+					var cid=$(this).val();
+					console.log(cid+"-"+result.projectId);
+					if (cid==result.projectId){
+						$(this).attr("selected",true);
+					}else {
+						$(this).attr("selected",false);
+					}
+				});
+
+			},
+			error: function (data) {
+				swalTextWithType("系统错误","请稍后再试",swalType.ERROR);
+			}
+		});
+	}
+
+	function updateScore(event) {
+		var targetUrl = $("#updateScoreForm").attr("action");
+		var data = $("#updateScoreForm").serialize();
+		console.log("url:"+targetUrl);
+		console.log("data:"+data);
+
+		$.ajax({
+			type: 'post',
+			url: targetUrl,
+			cache: false,
+			data: data,
+			success: function (data) {
+				$("#updateScore").modal("hide");
+				if (data=="succeed"){
+					swalTextWithType("修改成功","",swalType.SUCCEED);
+					setTimeout(function(){ window.location.reload(); }, 1000);
+				}
+				else {
+					swalTextWithType("修改失败","请检查您的参数",swalType.ERROR);
+				}
+			},
+			error: function (data) {
+				swalTextWithType("修改失败","请检查您的参数",swalType.ERROR);
+			}
+		});
+	}
+
+	function deleteScore(id) {
+		swalTextWithFunction("确定要删除吗？","删除后不可恢复！",swalType.WARN,function (isConfirm) {
+			if (isConfirm) {
+				$.ajax({
+					type: 'get',
+					url: deleteUrl,
+					cache: false,
+					data: {id: id},
+					success: function (data) {
+						if (data == "succeed") {
+							swalTextWithType("删除成功", "", swalType.SUCCEED);
+							setTimeout(function () {
+								window.location.reload();
+							}, 1000);
+						} else {
+							swalTextWithType("删除失败", "请检查您的参数", swalType.ERROR);
+						}
+					},
+					error: function (data) {
+						swalTextWithType("删除失败", "请检查您的参数", swalType.ERROR);
+					}
+				});
+			}else {
+				swalTextWithType("操作取消", "", swalType.ERROR);
+			}
+		});
+
+	}
+
 	$('#example-edit').DataTable({
         stateSave: true,
         pagingType: "full_numbers",
@@ -71,6 +269,7 @@
 			}
 		},
         pageLength: 10,//每页显示10条数据
+		lengthMenu: [ 5,10],
         bFilter: false, //去掉搜索框方法
         serverSide: true, //启用服务器端分页，要进行后端分页必须的环节
 		"ajax": {
@@ -94,7 +293,7 @@
 				targets:[3],
 				data:"time",
 				render:function (data, type, row) {
-					return "<a id='sal-warning' type='button' class='btn btn-danger waves-effect waves-light' href='"+deleteUrl+"?id="+row.id+"'>删除</a>&nbsp;<a type='button' class='btn btn-info waves-effect waves-light' href='"+updateUrl+"?id="+row.id+"'>修改</a>";
+					return "<a type='button' class='btn btn-danger' href='javascript:void(0);' onclick='deleteScore(" + row.id + ")'>删除</a>&nbsp;<a type='button' class='btn btn-info waves-effect waves-light' href='javascript:void(0);' onclick='showScoreInfo("+row.id+");'  data-toggle='modal' data-target='#updateScore'>修改</a>";
 				}
 			}
 		]

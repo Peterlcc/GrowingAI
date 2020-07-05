@@ -196,8 +196,38 @@ public class UserController {
     }
 
     @GetMapping("delete")
-    public String adminDelete(@RequestParam("id") int id){
-        System.out.println("delete result id="+id);
-        return "redirect:/admin/user/list";
+    @ResponseBody
+    public String adminDelete(Integer id){
+        LOG.info("id:"+id);
+        boolean delete = userService.delete(id);
+        return delete?"succeed":"error";
+    }
+    @GetMapping("user")
+    @ResponseBody
+    public User adminGet(Integer id){
+        LOG.info("id:"+id);
+        User user = userService.get(id);
+        user.setPassword("");
+        return user;
+    }
+    @PostMapping("add")
+    @ResponseBody
+    public String adminAdd(User user){
+        user.setLoginTime(new Date());
+        LOG.info(user);
+        if (StringUtils.isEmpty(user.getPassword())){
+            user.setPassword(null);
+        }
+        boolean add = userService.adminAdd(user);
+        return add?"succeed":"error";
+
+    }
+    @PostMapping("update")
+    @ResponseBody
+    public String adminUpdate(User user){
+        user.setLoginTime(new Date());
+        LOG.info(user);
+        boolean update = userService.update(user);
+        return update?"succeed":"error";
     }
 }

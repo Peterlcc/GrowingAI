@@ -1,8 +1,7 @@
 package com.peter.controller;
 
 import com.peter.bean.*;
-import com.peter.service.TestService;
-import com.peter.service.TypeService;
+import com.peter.service.*;
 import com.peter.utils.BeanEnum;
 import com.peter.utils.MessageUtil;
 import com.peter.utils.ObjectUtils;
@@ -28,6 +27,15 @@ public class PageController {
 
     @Autowired
     private TypeService typeService;
+
+    @Autowired
+    private ProjectService projectService;
+
+    @Autowired
+    private DatasetService datasetService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("index")
     public String index() {
@@ -126,7 +134,8 @@ public class PageController {
         List<String> chinaAttrs = ObjectUtils.getChinaAttrs(BeanEnum.DATASET, attrs);
         chinaAttrs.add("操作");
         model.addAttribute("attrs",chinaAttrs);
-
+        List<Type> types = typeService.getTypes();
+        model.addAttribute("types",types);
         return "admin/dataset/datasetList";
     }
 
@@ -148,6 +157,12 @@ public class PageController {
         List<String> chinaAttrs = ObjectUtils.getChinaAttrs(BeanEnum.PROJECT, attrs);
         chinaAttrs.add("操作");
         model.addAttribute("attrs",chinaAttrs);
+
+        List<User> simpleUsers = userService.getSimpleUsers();
+        model.addAttribute("users",simpleUsers);
+
+        List<Type> types = typeService.getTypes();
+        model.addAttribute("types",types);
         return "admin/project/projectList";
     }
 
@@ -186,6 +201,12 @@ public class PageController {
         List<String> chinaAttrs = ObjectUtils.getChinaAttrs(BeanEnum.RESULT, attrs);
         chinaAttrs.add("操作");
         model.addAttribute("attrs",chinaAttrs);
+
+        List<Project> simpleProjects = projectService.getAllSimpleProjects();
+        model.addAttribute("projects",simpleProjects);
+
+        List<Dataset> simpleDatasets = datasetService.getAllSimpleDatasets();
+        model.addAttribute("datasets",simpleDatasets);
         return "admin/result/resultList";
     }
 
@@ -221,6 +242,10 @@ public class PageController {
         List<String> chinaAttrs = ObjectUtils.getChinaAttrs(BeanEnum.SCORE, attrs);
         chinaAttrs.add("操作");
         model.addAttribute("attrs",chinaAttrs);
+
+        List<Project> simpleProjects = projectService.getAllSimpleProjects();
+        model.addAttribute("projects",simpleProjects);
+
         return "admin/score/scoreList";
     }
 }

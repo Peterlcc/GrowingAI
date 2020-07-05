@@ -48,8 +48,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Integer id) {
-        return userMapper.selectByPrimaryKey(id);
+    public List<User> getSimpleUsers() {
+        List<User> users = userMapper.selectSimpleByExample(null);
+        return users;
+    }
+
+    @Override
+    public User get(Integer id) {
+        User user = userMapper.selectByPrimaryKey(id);
+        return user;
+    }
+
+    @Override
+    public boolean adminAdd(User user) {
+        int i = userMapper.insertSelective(user);
+        return i==1;
     }
 
     @Override
@@ -88,8 +101,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User user) {
-        userMapper.updateByPrimaryKey(user);
+    public boolean update(User user) {
+        int i = userMapper.updateByPrimaryKey(user);
+        return i==1;
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        int i = userMapper.deleteByPrimaryKey(id);
+        return i==1;
     }
 
     @Override

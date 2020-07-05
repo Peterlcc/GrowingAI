@@ -8,4 +8,5 @@ import java.util.List;
 public interface DatasetService {
     Dataset getDatasetById(Integer id);
     PageInfo<Dataset> getDatasets(int pc, int ps);
+    List<Dataset> getAllSimpleDatasets();
 }

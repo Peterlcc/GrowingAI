@@ -58,7 +58,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project getProjectById(Integer id) {
-        return projectMapper.selectByPrimaryKey(id);
+        Project project = projectMapper.selectByPrimaryKey(id);
+        return project;
+    }
+
+    @Override
+    public boolean update(Project project) {
+        int i = projectMapper.updateByPrimaryKeySelective(project);
+        return i==1;
     }
 
     @Override
@@ -117,14 +124,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public boolean delete(Integer id) {
         if (deleteDir == null) {
             deleteDir = new File(growningAiConfig.getTmpDir());
         }
         Project project = projectMapper.selectByPrimaryKey(id);
         if (project == null) {
             LOG.info("can't find project by id:" + id + " delete failed!");
-            return;
+            return false;
         }
         String name = project.getName();
         String path = project.getPath();
@@ -137,7 +144,8 @@ public class ProjectServiceImpl implements ProjectService {
             LOG.error(e.getMessage());
         }
         LOG.info("project " + name + " is deleted");
-        projectMapper.deleteByPrimaryKey(id);
+        int i = projectMapper.deleteByPrimaryKey(id);
+        return i==1;
     }
 
     @Override
@@ -152,6 +160,12 @@ public class ProjectServiceImpl implements ProjectService {
         if (results == null || results.size() == 0) project.setResults(null);
         else project.setResults(results);
         return project;
+    }
+
+    @Override
+    public List<Project> getAllSimpleProjects() {
+        List<Project> projects = projectMapper.selectSimpleByExample(null);
+        return projects;
     }
 
 

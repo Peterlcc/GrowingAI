@@ -23,8 +23,8 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     public PageInfo<Announce> getAnnouncements(int pc, int ps) {
         PageHelper.startPage(pc,ps);
         List<Announce> announces = announceMapper.selectByExample(null);
-        PageInfo<Announce> announcePageInfo = new PageInfo<>();
-        announcePageInfo.setList(announces);
+        PageInfo<Announce> announcePageInfo = new PageInfo<>(announces);
+//        announcePageInfo.setList(announces);
         return announcePageInfo;
     }
 }

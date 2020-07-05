@@ -9,10 +9,15 @@ public interface UserService {
     List<User> findByName(String username);
     List<User> findByNumber(String number);
     List<User> findByEmail(String email);
-    User findById(Integer id);
+    List<User> getSimpleUsers();
     String add(User user);
+    PageInfo<User> getUsers(int pc,int ps);
+
     String regist(User user);
 
-    void update(User user);
-    PageInfo<User> getUsers(int pc,int ps);
+
+    User get(Integer id);
+    boolean adminAdd(User user);
+    boolean update(User user);
+    boolean delete(Integer id);
 }

@@ -259,7 +259,9 @@ public class Project {
         Project project = (Project) o;
         return name.equals(project.name) &&
                 description.equals(project.description) &&
-                userId.equals(project.userId);
+                userId.equals(project.userId) &&
+                typeId.equals(((Project) o).typeId) &&
+                path.equals(((Project) o).path);
     }
 
     @Override
@@ -276,7 +278,7 @@ public class Project {
                 ", path='" + path + '\'' +
                 ", userId=" + userId +
                 ", user=" + user +
-                ", createTime=" + DateFormatUtils.format(createTime,"yyyy-MM-dd") +
+                ", createTime=" + (createTime==null?"":DateFormatUtils.format(createTime,"yyyy-MM-dd")) +
                 '}';
     }
 }

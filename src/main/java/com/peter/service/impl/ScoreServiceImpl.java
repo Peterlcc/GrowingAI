@@ -35,4 +35,37 @@ public class ScoreServiceImpl implements ScoreService {
         PageInfo<Score> pageInfo = new PageInfo<Score>(scores);
         return pageInfo;
     }
+
+    @Override
+    public boolean add(Score score) {
+        int i = scoreMapper.insertSelective(score);
+        return i==1;
+    }
+
+    @Override
+    public boolean update(Score score) {
+        if (score.getId()==null){
+            LOG.error("the id ["+score.getId()+"] of result to update is null");
+            return false;
+        }
+        Score res = scoreMapper.selectByPrimaryKey(score.getId());
+        if (res==null){
+            LOG.error("the id ["+score.getId()+"] of result to update is not exist");
+            return false;
+        }
+        int i = scoreMapper.updateByPrimaryKey(score);
+        return i==1;
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        int i = scoreMapper.deleteByPrimaryKey(id);
+        return i==1;
+    }
+
+    @Override
+    public Score get(Integer id) {
+        Score score = scoreMapper.selectByPrimaryKey(id);
+        return score;
+    }
 }

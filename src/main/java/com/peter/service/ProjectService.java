@@ -8,12 +8,15 @@ import java.util.Map;
 
 public interface ProjectService {
     void save(Project project);
-    Project getProjectById(Integer id);
     Project getProjectByIdWithUser(Integer id);
     PageInfo<Project> getProjectsByUserId(int pc, int ps,Integer userId);
     PageInfo<Project> getProjects(int pc, int ps);
     List<Map<String,Object>> getStructById(Integer id);
-    void delete(Integer id);
-
     Project getProjectDetail(Integer id);
+    List<Project> getAllSimpleProjects();
+
+    Project getProjectById(Integer id);
+    boolean update(Project project);
+    boolean delete(Integer id);
+
 }
