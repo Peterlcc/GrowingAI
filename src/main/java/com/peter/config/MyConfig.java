@@ -8,6 +8,8 @@ import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -24,21 +26,33 @@ import com.alibaba.druid.support.http.WebStatFilter;
 
 @Configuration
 public class MyConfig {
-	
+	private Log LOG = LogFactory.getLog(MyConfig.class);
 	@Bean
 	public WebMvcConfigurer webMvcConfigurer() {
 		WebMvcConfigurer webMvcConfigurer=new WebMvcConfigurer() {
 			@Override
 			public void addInterceptors(InterceptorRegistry registry) {
-//				registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**")
-//						.excludePathPatterns("/druid/*","*.ico","*.jpg","/admin/**","*.png","*.css","*.js","/webjars/**",
-//								"/error","/test",
-//								"/user/**",
-//								"/regist","/login","list","userList","show","userEdit",
+				registry.addInterceptor(new AdminLoginHandlerInterceptor()).addPathPatterns("/admin/**")
+						.excludePathPatterns("/admin/login","/admin/code");
+				registry.addInterceptor(new UserLoginHandlerInterceptor()).addPathPatterns("/**")
+						.excludePathPatterns("/adminSource/**","/vendor/**","/druid/**","*.ico","/img/**","/css/**","/js/**","/webjars/**",
+								"/error","/test",
+								"/regist","/login",
 //								"/result/save",
-//								"/user/regist/**","/user/code/**","/user/login/**"
-//						);
+								"/user/regist","/user/code","/user/login",
+								"/admin/login","/admin/code"
+						);
 			}
+
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				LOG.info("初始化 CORSConfiguration 配置");
+//				registry.addMapping("/**")
+//						.allowedHeaders("*")
+//						.allowedMethods("*")
+//						.allowedOrigins("*")
+//						.allowCredentials(true);// 允许跨域带上cookies;
+//			}
 
 			@Override
 			public void addViewControllers(ViewControllerRegistry registry) {

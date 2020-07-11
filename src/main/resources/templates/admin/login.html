@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="commons/baseAdmin::headSettings"></div>
+	<title th:text="${title}"></title>
+
+	<div th:replace="commons/baseAdmin::cssImport"></div>
+
+</head>
+
+<body>
+
+<div id="single-wrapper">
+	<form th:action="@{/admin/login}" method="post" class="frm-single">
+		<div class="inside">
+			<div class="title"><strong>可成长系统</strong>后台管理</div>
+			<!-- /.title -->
+			<div class="frm-title">登录</div>
+			<p style="color: red;" th:text="${msg}"
+			   th:if="${not #strings.isEmpty(msg)}"></p>
+			<!-- /.frm-title -->
+			<div class="frm-input"><input required type="text" name="name" placeholder="用户名" class="frm-inp"><i class="fa fa-user frm-ico"></i></div>
+			<!-- /.frm-input -->
+			<div class="frm-input"><input required type="password" name="password" placeholder="密码" class="frm-inp"><i class="fa fa-lock frm-ico"></i></div>
+			<!-- /.frm-input -->
+			<!-- /.clearfix -->
+			<button type="submit" class="frm-submit">登录<i class="fa fa-arrow-circle-right"></i></button>
+			<div class="frm-footer">buaa © 2020.</div>
+			<!-- /.footer -->
+		</div>
+		<!-- .inside -->
+	</form>
+	<!-- /.frm-single -->
+</div><!--/#single-wrapper -->
+<div th:replace="commons/baseAdmin::scriptImport"></div>
+</body>
+</html>

@@ -4,7 +4,7 @@
 	<div th:replace="commons/baseAdmin::headSettings"></div>
 	<title th:text="${title}"></title>
 	<!-- Data Tables -->
-	<link rel="stylesheet" th:href="@{/admin/plugin/datatables/media/css/jquery.dataTables.min.css}" href="assets/plugin/datatables/media/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" th:href="@{/adminSource/plugin/datatables/media/css/jquery.dataTables.min.css}" href="assets/plugin/datatables/media/css/jquery.dataTables.min.css">
 	<div th:replace="commons/baseAdmin::cssImport"></div>
 </head>
 
@@ -143,10 +143,10 @@
 
 <div th:replace="commons/baseAdmin::scriptImport"></div>
 <!-- Data Tables -->
-<script th:src="@{/admin/plugin/datatables/media/js/jquery.dataTables.min.js}" src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
-<script th:src="@{/admin/plugin/datatables/media/js/dataTables.bootstrap.min.js}" src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
-<script th:src="@{/admin/plugin/editable-table/mindmup-editabletable.js}" src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
-<script th:src="@{/admin/scripts/utils/swalUtil.js}"></script>
+<script th:src="@{/adminSource/plugin/datatables/media/js/jquery.dataTables.min.js}" src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+<script th:src="@{/adminSource/plugin/datatables/media/js/dataTables.bootstrap.min.js}" src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+<script th:src="@{/adminSource/plugin/editable-table/mindmup-editabletable.js}" src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
+<script th:src="@{/adminSource/scripts/utils/swalUtil.js}"></script>
 <!--<script th:src="@{/admin/scripts/datatables.demo.min.js}" src="assets/scripts/datatables.demo.min.js"></script>-->
 <script  th:inline="javascript">
     var nameSearch = [[${searchName}]];

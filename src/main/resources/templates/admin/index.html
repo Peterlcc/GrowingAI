@@ -4,8 +4,8 @@
 	<div th:replace="commons/baseAdmin::headSettings"></div>
 	<title>后台管理首页</title>
 	<!-- FullCalendar -->
-	<link rel="stylesheet" th:href="@{/admin/plugin/fullcalendar/fullcalendar.min.css}" href="assets/plugin/fullcalendar/fullcalendar.min.css">
-	<link rel="stylesheet" th:href="@{/admin/plugin/fullcalendar/fullcalendar.print.css}" href="assets/plugin/fullcalendar/fullcalendar.print.css" media='print'>
+	<link rel="stylesheet" th:href="@{/adminSource/plugin/fullcalendar/fullcalendar.min.css}" href="assets/plugin/fullcalendar/fullcalendar.min.css">
+	<link rel="stylesheet" th:href="@{/adminSource/plugin/fullcalendar/fullcalendar.print.css}" href="assets/plugin/fullcalendar/fullcalendar.print.css" media='print'>
 	<div th:replace="commons/baseAdmin::cssImport"></div>
 </head>
 
@@ -111,26 +111,26 @@
 </div><!--/#wrapper -->
 <div th:replace="commons/baseAdmin::scriptImport"></div>
 <!-- Morris Chart -->
-<script th:src="@{/admin/plugin/chart/morris/morris.min.js}" src="assets/plugin/chart/morris/morris.min.js"></script>
-<script th:src="@{/admin/plugin/chart/morris/raphael-min.js}" src="assets/plugin/chart/morris/raphael-min.js"></script>
-<script th:src="@{/admin/scripts/chart.morris.black.init.min.js}" src="assets/scripts/chart.morris.black.init.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/morris/morris.min.js}" src="assets/plugin/chart/morris/morris.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/morris/raphael-min.js}" src="assets/plugin/chart/morris/raphael-min.js"></script>
+<script th:src="@{/adminSource/scripts/chart.morris.black.init.min.js}" src="assets/scripts/chart.morris.black.init.min.js"></script>
 
 <!-- Flot Chart -->
-<script th:src="@{/admin/plugin/chart/plot/jquery.flot.min.js}" src="assets/plugin/chart/plot/jquery.flot.min.js"></script>
-<script th:src="@{/admin/plugin/chart/plot/jquery.flot.tooltip.min.js}" src="assets/plugin/chart/plot/jquery.flot.tooltip.min.js"></script>
-<script th:src="@{/admin/plugin/chart/plot/jquery.flot.categories.min.js}" src="assets/plugin/chart/plot/jquery.flot.categories.min.js"></script>
-<script th:src="@{/admin/plugin/chart/plot/jquery.flot.pie.min.js}" src="assets/plugin/chart/plot/jquery.flot.pie.min.js"></script>
-<script th:src="@{/admin/plugin/chart/plot/jquery.flot.stack.min.js}" src="assets/plugin/chart/plot/jquery.flot.stack.min.js"></script>
-<script th:src="@{/admin/scripts/chart.flot.black.init.min.js}" src="assets/scripts/chart.flot.black.init.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.min.js}" src="assets/plugin/chart/plot/jquery.flot.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.tooltip.min.js}" src="assets/plugin/chart/plot/jquery.flot.tooltip.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.categories.min.js}" src="assets/plugin/chart/plot/jquery.flot.categories.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.pie.min.js}" src="assets/plugin/chart/plot/jquery.flot.pie.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.stack.min.js}" src="assets/plugin/chart/plot/jquery.flot.stack.min.js"></script>
+<script th:src="@{/adminSource/scripts/chart.flot.black.init.min.js}" src="assets/scripts/chart.flot.black.init.min.js"></script>
 
 <!-- Sparkline Chart -->
-<script th:src="@{/admin/plugin/chart/sparkline/jquery.sparkline.min.js}" src="assets/plugin/chart/sparkline/jquery.sparkline.min.js"></script>
-<script th:src="@{/admin/scripts/chart.sparkline.init.min.js}" src="assets/scripts/chart.sparkline.init.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/sparkline/jquery.sparkline.min.js}" src="assets/plugin/chart/sparkline/jquery.sparkline.min.js"></script>
+<script th:src="@{/adminSource/scripts/chart.sparkline.init.min.js}" src="assets/scripts/chart.sparkline.init.min.js"></script>
 
 <!-- FullCalendar -->
-<script th:src="@{/admin/plugin/moment/moment.js}" src="assets/plugin/moment/moment.js"></script>
-<script th:src="@{/admin/plugin/fullcalendar/fullcalendar.min.js}" src="assets/plugin/fullcalendar/fullcalendar.min.js"></script>
-<script th:src="@{/admin/scripts/fullcalendar.init.js}" src="assets/scripts/fullcalendar.init.js"></script>
+<script th:src="@{/adminSource/plugin/moment/moment.js}" src="assets/plugin/moment/moment.js"></script>
+<script th:src="@{/adminSource/plugin/fullcalendar/fullcalendar.min.js}" src="assets/plugin/fullcalendar/fullcalendar.min.js"></script>
+<script th:src="@{/adminSource/scripts/fullcalendar.init.js}" src="assets/scripts/fullcalendar.init.js"></script>
 
 <script>
 	jQuery(document).ready(function () {

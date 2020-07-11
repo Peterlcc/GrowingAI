@@ -32,6 +32,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
+@CrossOrigin(allowCredentials="true",allowedHeaders="*")
 @Controller
 @RequestMapping("user")
 public class UserController {
@@ -178,6 +179,7 @@ public class UserController {
         result.put("recordsTotal",userPageInfo.getTotal());
         result.put("recordsFiltered",userPageInfo.getTotal());
         result.put("data",userPageInfo.getList());
+        LOG.info("ajax forward: user list");
         return result.toString();
     }
 

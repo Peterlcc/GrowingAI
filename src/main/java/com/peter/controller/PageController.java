@@ -11,13 +11,14 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
+//@CrossOrigin(allowCredentials="true",allowedHeaders="*")
 @Controller
 public class PageController {
     private Log LOG = LogFactory.getLog(PageController.class);
@@ -48,6 +49,8 @@ public class PageController {
         if (!StringUtils.isEmpty(msg)) {
             model.addAttribute(msgName, msg);
         }
+
+        model.addAttribute("sid",request.getSession().getId());
     }
 
     @GetMapping("login")
@@ -105,6 +108,18 @@ public class PageController {
         return "project/detail";
     }
 
+    /**
+     * 系统管理员登录
+     * @param model
+     * @return
+     */
+    @GetMapping("/admin/login")
+    public String admimLogin(Model model) {
+        LOG.info("/admin/login.html requested!");
+        checkMsg(MessageUtil.LOGIN_MSG,model);
+        model.addAttribute("title","后台登录");
+        return "admin/login";
+    }
 
     /**
      * 后台首页
