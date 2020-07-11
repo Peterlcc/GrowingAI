@@ -13,6 +13,7 @@ import com.peter.service.UserService;
 import com.peter.utils.FileUtil;
 import com.peter.utils.MessageUtil;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,12 @@ public class ProjectController {
 //        String pname = dire[0].getOriginalFilename().substring(0, dire[0].getOriginalFilename().indexOf("/"));
         String[] pathNames = dire[0].getOriginalFilename().split("/");
         project.setPath(path+ pathNames[0]);
+        File projectPathDir = new File(project.getPath());
+        if (projectPathDir.exists()){
+            LOG.info("projectPathDir is existed,upload failed!");
+            model.addFlashAttribute(MessageUtil.UPLOAD_MSG,"上传项目的已存在，请确认上传的项目！");
+            return "redirect:/projectAdd";
+        }
         //System.out.println(project);
         StringBuilder uploadFiles = new StringBuilder();
         uploadFiles.append("upload files:[");
@@ -189,7 +196,7 @@ public class ProjectController {
     @ResponseBody
     public String adminAdd(@RequestParam("dire") MultipartFile[] dire, Project project){
 //        projectService.save(project);
-        if (dire == null || dire.length == 0) {
+        if (dire == null || dire.length == 0|| StringUtils.isEmpty(dire[0].getOriginalFilename())) {
             LOG.info("files in project to upload is null,upload failed!");
             return "error";
         }
@@ -230,7 +237,7 @@ public class ProjectController {
             LOG.info("project info not changed!");
             return "error";
         }
-        if (dire == null || dire.length == 0) {
+        if (dire == null || dire.length == 0|| StringUtils.isEmpty(dire[0].getOriginalFilename())) {
             LOG.info("files in project to upload is null,path no need to update");
         }else {
             User user = userService.get(project.getUserId());

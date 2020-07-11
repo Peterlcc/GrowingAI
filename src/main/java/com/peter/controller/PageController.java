@@ -135,6 +135,8 @@ public class PageController {
         chinaAttrs.add("操作");
         model.addAttribute("attrs",chinaAttrs);
         List<Type> types = typeService.getTypes();
+        Type type = typeService.getTypeById(1);
+        types.remove(type);
         model.addAttribute("types",types);
         return "admin/dataset/datasetList";
     }

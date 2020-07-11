@@ -17,7 +17,7 @@
 			<div class="col-xs-12">
 				<div class="box-content">
                     <div class="btn-group" role="group">
-                        <button data-toggle="modal" data-target="#addProject" class="btn btn-primary m-5 p-5"><i
+                        <button data-toggle="modal" data-target="#addDataset" class="btn btn-primary m-5 p-5"><i
                                 class="fa fa-plus-circle" aria-hidden="true"></i>添加
                         </button>
                     </div>
@@ -65,14 +65,6 @@
                                        class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="description">项目描述</label>
-                                <input type="text" id="description"
-                                       name="description" required
-                                       class="form-control">
-                            </div>
-                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="dire">数据集文件</label>
@@ -84,7 +76,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="typeId">数据集类型</label>
-                                <select class="custom-select form-control" id="typeId" name="typeId">
+                                <select class="custom-select form-control" id="typeId" name="typeid">
                                     <option th:each="type,typeStat:${types}" th:selected="${typeStat.index==0?true:false}" th:value="${type.id}" th:text="${type.id}+' -- '+${type.name}">Open this select menu</option>
                                 </select>
                             </div>
@@ -110,7 +102,7 @@
                 <h4 class="modal-title" id="updateDatasetLabel">手动修改数据集</h4>
             </div>
             <div class="modal-body">
-                <form th:action="@{/dataset/update}" method="post" id="updateProjectForm" th:attr="getUrl=@{/dataset/dataset},deleteUrl=@{/dataset/delete}">
+                <form th:action="@{/dataset/update}" method="post" id="updateDatasetForm" th:attr="getUrl=@{/dataset/dataset},deleteUrl=@{/dataset/delete}">
                     <input hidden="hidden" id="datasetId" name="id">
                     <div class="row">
                         <div class="col-md-6">
@@ -132,7 +124,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="updateTypeId">数据集类型</label>
-                                <select class="custom-select form-control" id="updateTypeId" name="typeId">
+                                <select class="custom-select form-control" id="updateTypeId" name="typeid">
                                     <option th:each="type,typeStat:${types}" th:selected="${typeStat.index==0?true:false}" th:value="${type.id}" th:text="${type.id}+' -- '+${type.name}">Open this select menu</option>
                                 </select>
                             </div>
@@ -154,6 +146,7 @@
 <script th:src="@{/admin/plugin/datatables/media/js/jquery.dataTables.min.js}" src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
 <script th:src="@{/admin/plugin/datatables/media/js/dataTables.bootstrap.min.js}" src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
 <script th:src="@{/admin/plugin/editable-table/mindmup-editabletable.js}" src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
+<script th:src="@{/admin/scripts/utils/swalUtil.js}"></script>
 <!--<script th:src="@{/admin/scripts/datatables.demo.min.js}" src="assets/scripts/datatables.demo.min.js"></script>-->
 <script  th:inline="javascript">
     var nameSearch = [[${searchName}]];
