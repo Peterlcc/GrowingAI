@@ -14,7 +14,7 @@ public class UserLoginHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String servletPath = request.getServletPath();
-        LOG.info("servletPath: " + servletPath + " sid:" + request.getSession().getId());
+        LOG.info("servletPath: " + servletPath);
         Object admin = request.getSession().getAttribute("admin");
         if (admin !=null)
             return true;

@@ -83,4 +83,9 @@ public class ScoreController {
         return delete?"succeed":"error";
     }
 
+    @GetMapping("baidu")
+    public String toBaidu(){
+        return "redirect:https://www.baidu.com";
+    }
+
 }
