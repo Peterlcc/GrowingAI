@@ -12,7 +12,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ScoreServiceImpl implements ScoreService {
@@ -25,6 +28,29 @@ public class ScoreServiceImpl implements ScoreService {
     private ProjectService projectService;
 
     @Override
+    public PageInfo<Map<String,Object>> getAdminOrderedScores(int pc, int ps) {
+        ScoreExample scoreExample = new ScoreExample();
+        scoreExample.setOrderByClause("score desc");
+        PageHelper.startPage(pc, ps);
+        List<Score> scores = scoreMapper.selectByExample(scoreExample);
+        LOG.info("getProjectsWithScore pc:"+pc+" ps:"+ps+" size:"+scores.size());
+        scores.stream().forEach(score -> score.setProject(projectService.getProjectByIdWithUser(score.getProjectId())));
+
+        List<Map<String,Object>> results=new ArrayList<>();
+        scores.stream().forEach(score -> {
+            Map<String,Object> datas=new HashMap<>();
+            datas.put("name",score.getProject().getName());
+            datas.put("score",score.getScore());
+            datas.put("author",score.getProject().getUser().getName());
+            datas.put("date",score.getProject().getCreateTime());
+            results.add(datas);
+        });
+
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(results);
+        return pageInfo;
+    }
+
+    @Override
     public PageInfo<Score> getOrderedScores(int pc, int ps) {
         ScoreExample scoreExample = new ScoreExample();
         scoreExample.setOrderByClause("score desc");
@@ -32,6 +58,7 @@ public class ScoreServiceImpl implements ScoreService {
         List<Score> scores = scoreMapper.selectByExample(scoreExample);
         LOG.info("getProjectsWithScore pc:"+pc+" ps:"+ps+" size:"+scores.size());
         scores.stream().forEach(score -> score.setProject(projectService.getProjectByIdWithUser(score.getProjectId())));
+
         PageInfo<Score> pageInfo = new PageInfo<Score>(scores);
         return pageInfo;
     }

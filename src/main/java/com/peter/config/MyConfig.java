@@ -38,7 +38,6 @@ public class MyConfig {
 						.excludePathPatterns("/adminSource/**","/vendor/**","/druid/**","*.ico","/img/**","/css/**","/js/**","/webjars/**",
 								"/error","/test",
 								"/regist","/login",
-//								"/result/save",
 								"/user/regist","/user/code","/user/login",
 								"/admin/login","/admin/code"
 						);

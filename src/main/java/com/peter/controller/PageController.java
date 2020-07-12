@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 //@CrossOrigin(allowCredentials="true",allowedHeaders="*")
 @Controller
@@ -38,6 +39,9 @@ public class PageController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TaskUploadService taskUploadService;
+
     @GetMapping("index")
     public String index() {
         LOG.info("index.html requested!");
@@ -50,7 +54,7 @@ public class PageController {
             model.addAttribute(msgName, msg);
         }
 
-        model.addAttribute("sid",request.getSession().getId());
+        model.addAttribute("taskSize",taskUploadService.getProjectsInTask());
     }
 
     @GetMapping("login")
@@ -264,5 +268,24 @@ public class PageController {
         model.addAttribute("projects",simpleProjects);
 
         return "admin/score/scoreList";
+    }
+
+
+    /**
+     * 排名列表
+     */
+    @GetMapping("/admin/score/rank")
+    public String adminScoreRank(Model model){
+        LOG.info("admin.rank.list.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        model.addAttribute("title","用户项目排名");
+        model.addAttribute("searchName","项目名名");
+        List<String> chinaAttrs = Arrays.asList("项目名称","项目得分","作者","项目创建时间");
+        model.addAttribute("attrs",chinaAttrs);
+
+//        List<Project> simpleProjects = projectService.getAllSimpleProjects();
+//        model.addAttribute("projects",simpleProjects);
+
+        return "admin/score/rankList";
     }
 }

@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author lcc
  * @date 2020/6/21 1:13
@@ -35,12 +38,22 @@ public class ScoreController {
         LOG.info(scorePageInfo.getList());
         return result.toString();
     }
-//    @GetMapping("delete")
-//    @ResponseBody
-//    public String adminDelete(@RequestParam("id") int id){
-//        System.out.println("delete result id="+id);
-//        return "succeed";
-//    }
+
+    @PostMapping("rank")
+    @ResponseBody
+    public String adminProjectRank(@RequestParam("draw") int draw,@RequestParam("length") int length,@RequestParam("start") int start){
+        int pageCurrent = start / length + 1;
+        int pageSize=length;
+        PageInfo<Map<String,Object>> orderedScores = scoreService.getAdminOrderedScores(pageCurrent, pageSize);
+        JSONObject result = new JSONObject();
+        result.put("draw",draw);
+        result.put("recordsTotal",orderedScores.getTotal());
+        result.put("recordsFiltered",orderedScores.getTotal());
+        result.put("data",orderedScores.getList());
+        LOG.info(orderedScores.getList());
+        return result.toString();
+    }
+
     @PostMapping("add")
     @ResponseBody
     public String adminAdd(Score score){

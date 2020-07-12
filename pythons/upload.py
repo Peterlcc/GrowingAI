@@ -14,6 +14,11 @@ class Result():
     def __str__(self):
         return json.dumps(self.__dict__, encoding="utf-8")
 
+def post(url,param):
+    sess=requests.session()
+    res=sess.post("http://localhost:8999/growningai/admin/login",{"name":"admin","password":"buaagrow"})
+    res=sess.post("http://localhost:8888/growningai/result/save",{"data":param})  # list转字符串，构成json数据格式
+
 if __name__ == "__main__":
     l = []
     l.append(Result(10.1, 5, 3.5, 1,1).__dict__)  # 将对象的字典加入list
