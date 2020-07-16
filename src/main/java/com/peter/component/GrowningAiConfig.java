@@ -15,6 +15,12 @@ public class GrowningAiConfig {
     private String catkinPath;
     private String datasetRoot;
 
+    private String webvizAddr;
+
+    public String getWebvizAddr() {
+        return webvizAddr;
+    }
+
     public String getDatasetRoot() {
         return datasetRoot;
     }

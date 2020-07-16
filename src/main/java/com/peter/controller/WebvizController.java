@@ -1,5 +1,6 @@
 package com.peter.controller;
 
+import com.peter.component.GrowningAiConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class WebvizController {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private GrowningAiConfig growningAiConfig;
+
     @GetMapping("app")
     public String rosweb(){
         HttpSession session = request.getSession();
@@ -31,6 +35,6 @@ public class WebvizController {
             user = session.getAttribute("admin");
         }
         LOG.info("user:"+user+" request webviz app!");
-        return "redirect:http://localhost:8080/app";
+        return "redirect:"+growningAiConfig.getWebvizAddr();
     }
 }
