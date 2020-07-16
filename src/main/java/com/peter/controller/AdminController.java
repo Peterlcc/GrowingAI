@@ -70,4 +70,12 @@ public class AdminController {
         model.addFlashAttribute(MessageUtil.LOGIN_MSG, "用户名或密码错误");
         return "redirect:/admin/login";
     }
+
+    @GetMapping("logout")
+    public String logout(){
+        Object admin = request.getSession().getAttribute("admin");
+        LOG.info(admin+" logout!");
+        request.getSession().setAttribute("admin",null);
+        return "redirect:/admin/login";
+    }
 }
