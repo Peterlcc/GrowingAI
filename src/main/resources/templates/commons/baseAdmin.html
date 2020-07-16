@@ -124,6 +124,7 @@
 					<ul class="sub-menu js__content">
 						<li><a th:href="@{/admin/score/rank}" href="chart-3d.html">成绩排名</a></li>
 						<li><a th:href="@{/admin/Visual}" href="chart-chartist.html">成绩可视化</a></li>
+						<li><a th:href="@{/admin/rosweb}" href="chart-chartist.html">ros环境可视化</a></li>
 					</ul>
 					<!-- /.sub-menu js__content -->
 				</li>
@@ -131,6 +132,19 @@
 					<a class="waves-effect parent-item js__control" href="#"><i class="menu-icon mdi mdi-pencil-box"></i><span>测试监控</span><span class="notice notice-blue" th:text="${taskSize}">7</span></a>
 					<ul class="sub-menu js__content">
 						<li><a th:href="@{/task/list}" href="form-advanced.html">测试任务列表</a></li>
+					</ul>
+					<!-- /.sub-menu js__content -->
+				</li>
+			</ul>
+			<!-- /.menu js__accordion -->
+
+			<h5 class="title">ROS环境</h5>
+			<!-- /.title -->
+			<ul class="menu js__accordion">
+				<li>
+					<a class="waves-effect parent-item js__control" href="#"><i class="menu-icon mdi mdi-chart-areaspline"></i><span>webviz</span><span class="menu-arrow fa fa-angle-down"></span></a>
+					<ul class="sub-menu js__content">
+						<li><a th:href="@{/webviz/app}" href="chart-chartist.html">App</a></li>
 					</ul>
 					<!-- /.sub-menu js__content -->
 				</li>
