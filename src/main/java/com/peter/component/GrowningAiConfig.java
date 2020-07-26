@@ -21,6 +21,10 @@ public class GrowningAiConfig {
         return webvizAddr;
     }
 
+    public void setWebvizAddr(String webvizAddr) {
+        this.webvizAddr = webvizAddr;
+    }
+
     public String getDatasetRoot() {
         return datasetRoot;
     }

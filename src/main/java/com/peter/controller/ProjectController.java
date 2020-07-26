@@ -143,6 +143,18 @@ public class ProjectController {
             return "打开文件失败";
         }
     }
+    @PostMapping("file")
+    @ResponseBody
+    public String setFileDetail(@RequestParam("path")String path,@RequestParam("text")String text){
+        try {
+            FileUtils.writeStringToFile(new File(path),text,"utf8");
+            LOG.info(path+" is updated!");
+            return "succeed";
+        } catch (IOException e) {
+            LOG.error("getFileDetail error "+e.getMessage());
+            return "打开文件失败";
+        }
+    }
 
     @GetMapping("top")
     public String selectAllprojects(HttpServletRequest request, Model model) {

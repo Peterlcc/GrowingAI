@@ -15,6 +15,9 @@
 
   <!-- Custom styles for this template -->
   <link th:href="@{/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
+  <link th:href="@{/css/codemirror/codemirror.css}" rel="stylesheet">
+  <link th:href="@{/css/codemirror/simplescrollbars.css}" rel="stylesheet">
+  <link th:href="@{/css/codemirror/idea.css}" rel="stylesheet">
 <!--  <link th:href="@{/css/font-awesome.min.css}" href="css/modern-business.css" rel="stylesheet">-->
   <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <style type="text/css">
@@ -79,43 +82,26 @@
         <h3 class="my-3">项目文件</h3>
         <div class="a" id="struct"></div>
       </div>
-      <textarea readonly="readonly" class="col-md-7" rows="10" id="fileDetail">
+      <div class="col-md-7">
+        <div>
+          <label for="mode" style="font-size: 30px">选择语言：</label>
+          <select id="mode" class="form-control col-6 pull-right" onchange="switchMode();">
+            <option value="text/x-cmake" selected="selected">Cmake</option>
+            <option value="text/html">XML</option>
+            <option value="python">Python</option>
+            <option value="text/x-c++src">C++</option>
+          </select>
+        </div>
+        <textarea rows="10" readonly="readonly" id="fileDetail" filePath="null">
 
-      </textarea>
+        </textarea>
+        <div class="btn-group" role="group">
+          <button id="saveFile" onclick="saveFile();" class="btn btn-primary" disabled>保存</button>
+        </div>
+
+      </div>
 
     </div>
-    <!-- /.row -->
-
-    <!-- Related Projects Row -->
-<!--    <h3 class="my-4">Related Projects</h3>-->
-
-<!--    <div class="row">-->
-
-<!--      <div class="col-md-3 col-sm-6 mb-4">-->
-<!--        <a href="#">-->
-<!--          <img class="img-fluid" src="http://placehold.it/500x300" alt="">-->
-<!--        </a>-->
-<!--      </div>-->
-
-<!--      <div class="col-md-3 col-sm-6 mb-4">-->
-<!--        <a href="#">-->
-<!--          <img class="img-fluid" src="http://placehold.it/500x300" alt="">-->
-<!--        </a>-->
-<!--      </div>-->
-
-<!--      <div class="col-md-3 col-sm-6 mb-4">-->
-<!--        <a href="#">-->
-<!--          <img class="img-fluid" src="http://placehold.it/500x300" alt="">-->
-<!--        </a>-->
-<!--      </div>-->
-
-<!--      <div class="col-md-3 col-sm-6 mb-4">-->
-<!--        <a href="#">-->
-<!--          <img class="img-fluid" src="http://placehold.it/500x300" alt="">-->
-<!--        </a>-->
-<!--      </div>-->
-
-<!--    </div>-->
     <!-- /.row -->
 
   </div>
@@ -126,7 +112,56 @@
   <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
   <script th:src="@{/js/LuTree.js}"></script>
+  <script th:src="@{/js/codemirror/codemirror.js}"></script>
+  <script th:src="@{/js/codemirror/simplescrollbars.js}"></script>
+  <script th:src="@{/js/codemirror/python.js}"></script>
+  <script th:src="@{/js/codemirror/cmake.js}"></script>
+  <script th:src="@{/js/codemirror/clike.js}"></script>
+  <script th:src="@{/js/codemirror/xml.js}"></script>
   <script type="text/javascript">
+    var editor = CodeMirror.fromTextArea(document.getElementById("fileDetail"), {
+      mode:"text/x-cmake",
+      lineNumbers: true,
+      readOnly: false,        //只读模式
+      smartIndent: true , //智能缩进
+      indentUnit: 4, // 智能缩进单位为4个空格长度
+      indentWithTabs:true,  // 使用制表符进行智能缩进
+      lineWrapping:true,//
+      // 在行槽中添加行号显示器、折叠器、语法检测器`
+      gutters: ["CodeMirror-linenumbers","CodeMirror-foldgutter","CodeMirror-lint-markers"],
+      foldGutter:true, // 启用行槽中的代码折叠
+      autofocus:true, //自动聚焦
+      matchBrackets:true,// 匹配结束符号，比如"]、}"
+      autoCloseBrackets: true , // 自动闭合符号
+        scrollbarStyle:"simple",
+      styleActiveLine:true // 显示选中行的样式
+    });
+    editor.on("change",function () {
+      var curPath=$("#fileDetail").attr("filePath");
+      if (curPath=='null'){
+        return;
+      }
+      console.log("代码改变了");
+      $("#saveFile").removeAttr("disabled");
+    });
+    // 在最后一行中追加codemirror编辑器内容
+    function updateCodeMirror(data){
+      var doc = editor.getDoc();
+      var cursor = doc.getCursor(); // gets the line number in the cursor position
+      var line = doc.getLine(cursor.line); // get the line contents
+      var pos = { // create a new object to avoid mutation of the original selection
+        line: editor.lastLine(), //获取最后一行，也可以获取当前光标行：cursor.line
+        ch: line.length - 1 // set the character position to the end of the line
+      };
+      doc.setValue('');
+      doc.replaceRange(data, pos); // adds a new line
+      // 跳转到编辑器底部
+      editor.execCommand("goDocStart");
+    }
+    // 跳转到编辑器顶部
+    // editor.execCommand("goDocStart");
+
+
     function isNumber(val){
 
       var regPos = /^\d+(\.\d+)?$/; //非负浮点数
@@ -136,11 +171,39 @@
       }else{
         return false;
       }
-
     }
+    
+    function switchMode() {
+      var mode = $("#mode").val();
+      var doc = editor.getDoc();
+      console.log("set mode to "+mode);
+      doc.cm.setOption("mode",mode);
+    }
+
+    function saveFile() {
+      var doc = editor.getDoc();
+      var text=doc.getValue();
+      var curPath=$("#fileDetail").attr("filePath");
+      if (curPath=='null'){
+        return;
+      }
+      $.ajax({
+        url: $("#pid").attr("fileUrl"),
+        data: {"text": doc.getValue(),"path":curPath},
+        type: "POST",
+        success: function (result) {
+          if (result=="succeed"){
+            $("#saveFile").attr("disabled","disabled");
+          }else {
+            alert("保存文件失败，请稍后重试！");
+          }
+        }
+      });
+    }
+
     //预加载数据格式
-    console.log($("#pid").attr("url"))
-    console.log($("#pid").text())
+    console.log($("#pid").attr("url"));
+    console.log($("#pid").text());
     $.ajax({
       url: $("#pid").attr("url"),
       data: {"id":$("#pid").text()},
@@ -154,18 +217,20 @@
           simIcon: "fa fa-file-o",//叶子图标
           mouIconOpen: " fa fa-folder-open",//展开图标
           mouIconClose:"fa fa-folder",//关闭图标
-          callback: function(id) {
-            if(!isNumber(id)){
+          callback: function(path) {
+            if(!isNumber(path)){
               $.ajax({
                 url: $("#pid").attr("fileUrl"),
-                data: {"path":id},
+                data: {"path":path},
                 type:"GET",
                 success:function (result) {
-                    $("#fileDetail").text(result);
+                    // $("#fileDetail").text(result);
+                  updateCodeMirror(result);
+                  $("#fileDetail").attr("filePath",path);
                 }
               });
             }
-            console.log("你选择的id是" + id);
+            console.log("你选择的path是" + path);
           }
         });
       }
