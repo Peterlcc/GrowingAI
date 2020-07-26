@@ -9,4 +9,8 @@ import com.peter.bean.Announce;
  */
 public interface AnnouncementService {
     PageInfo<Announce> getAnnouncements(int pc,int ps);
+    boolean save(Announce announce);
+    boolean update(Announce announce);
+    Announce get(Integer id);
+    boolean delete(Integer id);
 }

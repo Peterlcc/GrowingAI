@@ -11,10 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -38,6 +35,9 @@ public class PageController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AnnouncementService announcementService;
 
     @Autowired
     private TaskUploadService taskUploadService;
@@ -248,7 +248,24 @@ public class PageController {
         model.addAttribute("attrs",chinaAttrs);
         return "admin/announcement/announcementList";
     }
-
+    /**
+     * 公告内容
+     * @param model
+     * @return
+     */
+    @GetMapping("/admin/announcement/detail/{method}")
+    public String adminAnnouncementDetail(@PathVariable("method")String method, Model model){
+        LOG.info("admin.announcement.list.html requested!,method is "+method);
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        model.addAttribute("title","公告详情");
+        if (StringUtils.contains(method,"query")){
+            Integer id = Integer.valueOf(method.substring(5));
+            Announce announce = announcementService.get(id);
+            LOG.info("get: "+announce);
+            model.addAttribute("announce",announce);
+        }
+        return "admin/announcement/announcementDetail";
+    }
     /**
      * 分数列表
      */
@@ -287,5 +304,11 @@ public class PageController {
 //        model.addAttribute("projects",simpleProjects);
 
         return "admin/score/rankList";
+    }
+
+    public static void main(String[] args) {
+        String method="query5";
+        Integer id = Integer.valueOf(method.substring(5));
+        System.out.println(id);
     }
 }

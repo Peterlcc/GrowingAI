@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="commons/baseAdmin::headSettings"></div>
+	<title th:text="${title}"></title>
+	<!-- Data Tables -->
+	<link rel="stylesheet" th:href="@{/adminSource/plugin/datatables/media/css/jquery.dataTables.min.css}" href="assets/plugin/datatables/media/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" th:href="@{/adminSource/plugin/tinymce/skins/lightgray/skin.min.css}" href="assets/plugin/tinymce/skins/lightgray/skin.min.css">
+	<div th:replace="commons/baseAdmin::cssImport"></div>
+</head>
+
+<body>
+<div th:replace="commons/baseAdmin::leftBar"></div>
+<div th:replace="commons/baseAdmin::navbar"></div>
+<div id="wrapper">
+	<div class="main-content">
+		<div class="row small-spacing">
+			<div class="col-xs-12">
+				<div class="box-content">
+					<h4 class="box-title">公告内容</h4>
+					<!-- /.box-title -->
+					<div class="dropdown js__drop_down">
+						<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
+						<ul class="sub-menu">
+							<li><a href="javascript:void(0);" onclick="addAnnouncement();">增加公告</a></li>
+							<li class="split"></li>
+							<li><a href="javascript:void(0);" onclick="resetAnnouncement();">重置</a></li>
+						</ul>
+						<!-- /.sub-menu -->
+					</div>
+					<form action="#" th:attr="postUrl=@{/announcement/announcement}" method="post" id="postAnnouncement">
+						<input hidden="hidden" name="id" th:if="${announce!=null&&announce.id!=null}" th:value="${announce.id}">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="title">标题</label>
+									<input type="text" id="title"
+										   name="title" th:value="${announce!=null?announce.title:''}"
+										   class="form-control">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="tinymce">内容</label>
+									<textarea rows="50" class="form-control" id="tinymce" th:text="${announce!=null?announce.content:''}"></textarea>
+								</div>
+							</div>
+
+						</div>
+					</form>
+					<!-- /.dropdown js__dropdown -->
+				</div>
+				<!-- /.box-content -->
+			</div>
+			<!-- /.col-xs-12 -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.main-content -->
+</div><!--/#wrapper -->
+<div th:replace="commons/baseAdmin::scriptImport"></div>
+<!-- Data Tables -->
+<script th:src="@{/adminSource/plugin/datatables/media/js/jquery.dataTables.min.js}" src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+<script th:src="@{/adminSource/plugin/datatables/media/js/dataTables.bootstrap.min.js}" src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+<script th:src="@{/adminSource/plugin/editable-table/mindmup-editabletable.js}" src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
+<!-- TinyMCE -->
+<!-- Plugin Files DON'T INCLUDES THESES FILES IF YOU USE IN THE HOST -->
+<script src="https://cdn.tiny.cloud/1/bw01rsb167uh3pxh9klomnzkg7h4zhgma9otv2nfflmsh05n/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script  th:inline="javascript">
+	// tinyMCE.baseURL = "/growningai/adminSource/plugin/tinymce";
+	tinymce.init({
+		selector: "#tinymce",
+		plugins: 'a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+		toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+		toolbar_mode: 'floating',
+		tinycomments_mode: 'embedded',
+		tinycomments_author: 'Author name',
+		height: 600,
+		skin: 'oxide-dark',
+	});
+	function addAnnouncement() {
+		var postUrl = $("#postAnnouncement").attr("postUrl");
+		var title = $("#title").val();
+		console.log(postUrl);
+		$.ajax({
+			type: 'post',
+			url: postUrl,
+			cache: false,
+			data: {title:title,content:tinymce.activeEditor.getContent()},
+			success: function (data) {
+				if (data == "succeed") {
+					swalTextWithType("发布成功", "", swalType.SUCCEED);
+					setTimeout(function () {
+						window.location.reload();
+					}, 1000);
+				} else {
+					swalTextWithType("发布失败", "请检查您的参数s", swalType.ERROR);
+				}
+			},
+			error: function () {
+				swalTextWithType("发布失败","请检查您的参数",swalType.ERROR);
+			}
+		});
+	}
+	function resetAnnouncement() {
+		$('#postAnnouncement')[0].reset();
+		tinymce.activeEditor.getContent('');
+	}
+</script>
+</body>
+</html>

@@ -7,7 +7,7 @@
 (function($) {
 	"use strict";
 
-	tinyMCE.baseURL = "/assets/plugin/tinymce"
+	tinyMCE.baseURL = "/adminSource/plugin/tinymce"
 
 	tinymce.init({
 		selector: '#tinymce',
