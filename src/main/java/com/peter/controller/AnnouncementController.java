@@ -8,8 +8,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -37,6 +39,34 @@ public class AnnouncementController {
         result.put("data",announcementPageInfo.getList());
         return result.toString();
     }
+    @GetMapping("list")
+    public String announcementList(HttpServletRequest request,Model model){
+        LOG.info("announcement.list.html requested!");
+        String pcstr = request.getParameter("pc");
+        if (pcstr == null || pcstr.equals("")) {
+            pcstr = "1";
+        }
+        int pc = Integer.parseInt(pcstr);
+        String psstr = request.getParameter("ps");
+        if (psstr == null || psstr.equals("")) {
+            psstr = "10";
+        }
+        int ps = Integer.parseInt(psstr);
+        PageInfo<Announce> pageInfo = announcementService.getAnnouncements(pc, ps);
+        pageInfo.getList().forEach(announce -> announce.setContent(null));
+        LOG.info("get projects list,size:"+pageInfo.getList().size());
+        model.addAttribute("pageInfo", pageInfo);
+        return "announcement/announcementList";
+    }
+    @GetMapping("detail/{id}")
+    public String detail(@PathVariable("id")Integer id,Model model){
+        LOG.info("announcement.detail.html requested!");
+        Announce announce = announcementService.get(id);
+        LOG.info("get "+announce);
+        model.addAttribute("announce",announce);
+        return "announcement/detail";
+    }
+
     @PostMapping("announcement")
     @ResponseBody
     public String save(Announce announce){

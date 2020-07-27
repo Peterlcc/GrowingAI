@@ -3,6 +3,7 @@ package com.peter.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Announce;
+import com.peter.bean.AnnounceExample;
 import com.peter.controller.AnnouncementController;
 import com.peter.mapper.AnnounceMapper;
 import com.peter.service.AnnouncementService;
@@ -26,10 +27,11 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     @Override
     public PageInfo<Announce> getAnnouncements(int pc, int ps) {
         PageHelper.startPage(pc,ps);
-        List<Announce> announces = announceMapper.selectByExample(null);
+        AnnounceExample example = new AnnounceExample();
+        example.setOrderByClause("create_time desc");
+        List<Announce> announces = announceMapper.selectByExample(example);
         LOG.info(announces);
         PageInfo<Announce> announcePageInfo = new PageInfo<>(announces);
-//        announcePageInfo.setList(announces);
         return announcePageInfo;
     }
 
