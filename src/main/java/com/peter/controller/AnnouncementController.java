@@ -56,13 +56,13 @@ public class AnnouncementController {
         pageInfo.getList().forEach(announce -> announce.setContent(null));
         LOG.info("get projects list,size:"+pageInfo.getList().size());
         model.addAttribute("pageInfo", pageInfo);
-        return "announcement/announcementList";
+        return "announcement/list";
     }
     @GetMapping("detail/{id}")
     public String detail(@PathVariable("id")Integer id,Model model){
         LOG.info("announcement.detail.html requested!");
         Announce announce = announcementService.get(id);
-        LOG.info("get "+announce);
+        LOG.info("get announce "+announce.getTitle()+" with id "+announce.getId());
         model.addAttribute("announce",announce);
         return "announcement/detail";
     }

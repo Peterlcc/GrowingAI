@@ -8,48 +8,13 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>公告列表</title>
+  <title>公告详情</title>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" href="asserts/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
   <link th:href="@{/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
-  <style type="text/css">
-    .pagination-demo {
-      text-align:center;
-      padding: 20px;
-    }
-    .customBootstrap .pagination > li > a {
-      margin-right: 5px;
-      border-radius: 2px;
-      background: #fff;
-      color: #333;
-      border-color: #ccc;
-      padding: 6px 15px;
-    }
-    .customBootstrap .pagination > li > a:hover,
-    .customBootstrap .pagination > li > a:focus {
-      color: #fff;
-      background: #fb9400;
-      border-color: #fb9400;
-    }
-    .customBootstrap .pagination > .active > a,
-    .customBootstrap .pagination > .active > a:hover,
-    .customBootstrap .pagination > .active > a:focus {
-      color: #fff;
-      background: #fb9400;
-      border-color: #fb9400;
-    }
-    .customBootstrap .pagination > .disabled > a,
-    .customBootstrap .pagination > .disabled > a:hover,
-    .customBootstrap .pagination > .disabled > a:focus {
-      color: #999;
-      background: #fff;
-      border-color: #ddd;
-      cursor: not-allowed;
-    }
-  </style>
 </head>
 
 <body>
@@ -62,51 +27,33 @@
 
     <!-- Page Heading/Breadcrumbs -->
     <h1 class="mt-4 mb-3">可成长系统之
-      <small>公告</small>
+      <small>公告详情</small>
     </h1>
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a th:href="@{/index}" href="index.html">首页</a>
       </li>
-      <li class="breadcrumb-item active">个人项目</li>
+      <li class="breadcrumb-item active">公告详情</li>
     </ol>
 
     <!-- Blog Post -->
-    <div class="card mb-4" th:each="announce:${pageInfo.list}">
+    <div class="card mb-4">
       <div class="card-body">
         <div class="row">
           <div class="col-lg-12">
 
             <h2 class="card-title" th:text="${announce.title}">Post Title</h2>
-<!--            <p class="card-text">项目描述</p>-->
-            <a href="#" th:href="@{'/announcement/detail/'+${announce.id}}" class="btn btn-primary">查看详情&rarr;</a>
-<!--            <a href="#" th:href="@{'/project/test/'+${project.id}}" class="btn btn-primary">手动测试&rarr;</a>-->
-          </div>
+            <p class="card-text">发布者:管理员 [[${#dates.format(announce.createTime,'yyyy-MM-dd')}]]</p>
+            <div th:utext="${announce.content}"></div>
         </div>
       </div>
-      <div class="card-footer text-muted">
-        Posted on [[${#dates.format(announce.createTime,'yyyy-MM-dd')}]] by
-        <a class="font-weight-bold" href="javascript:void(0);">管理员</a>
-      </div>
     </div>
 
-    <!-- Pagination -->
-    <div class="pagination-demo customBootstrap">
-      <ul id="project-pagination" class="pagination"></ul>
-      <p class="pull-left text-left">当前第 <span id="pagination-text"></span> 页</p>
-    </div>
 
   </div>
-  <span id="pageNum" class="text-hide" th:attr="num=${pageInfo.pageNum}"></span>
-  <span id="pages" class="text-hide" th:attr="num=${pageInfo.pages},url=@{/user/projects}"></span>
-  <span id="pageSize" class="text-hide" th:attr="num=${pageInfo.pageSize}" th:text="${pageInfo.pageSize}"></span>
   </div>
   <!-- /.container -->
-
-  <!-- Footer -->
-  <div th:replace="commons/base::footbar"></div>
-
   <!-- Bootstrap core JavaScript -->
   <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
