@@ -9,8 +9,8 @@ public class LinuxCmdUtils {
     private static Log logger = LogFactory.getLog(LinuxCmdUtils.class);
 
     public static void killShell(){
-        System.out.println(getGrepCmdReturn("ps -ef | grep \"shell.sh\" | grep -v grep | awk '{print $2}' |xargs kill"));
-        System.out.println(getGrepCmdReturn("pgrep launch|xargs kill"));
+        logger.info(getGrepCmdReturn("ps -ef | grep \"shell.sh\" | grep -v grep | awk '{print $2}' |xargs kill"));
+        logger.info(getGrepCmdReturn("pgrep launch|xargs kill"));
     }
 
     public  static boolean executeLinuxCmd(String cmd) {

@@ -10,6 +10,11 @@ class Result():
         self.time = time
         self.projectId = projectId
         self.datasetId=datasetId
+    def __init__(self, length, points, time, projectId):
+            self.length = length
+            self.points = points
+            self.time = time
+            self.projectId = projectId
 
     def __str__(self):
         return json.dumps(self.__dict__, encoding="utf-8")

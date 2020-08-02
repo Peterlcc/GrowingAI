@@ -39,9 +39,10 @@ public class ResultController {
         LOG.info("get results:"+res);
         for (Result result:res)
         {
-            if (result.getDatasetId()==0)
+            if (result.getDatasetId()==null||result.getDatasetId()==0)
             {
                 LOG.info("result of project "+result.getProjectId()+" has no dataset!");
+                result.setDatasetId(0);
             }
         }
         if(resultService.save(res)){
