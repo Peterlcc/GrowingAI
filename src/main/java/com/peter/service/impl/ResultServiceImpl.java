@@ -4,8 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Result;
 import com.peter.bean.ResultExample;
+import com.peter.component.ProjectTaskQueue;
+import com.peter.component.TestTask;
 import com.peter.mapper.ResultMapper;
 import com.peter.service.ResultService;
+import com.peter.service.TestService;
+import com.peter.utils.RunTag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +22,8 @@ public class ResultServiceImpl implements ResultService {
     private Log LOG = LogFactory.getLog(ResultServiceImpl.class);
     @Autowired
     private ResultMapper resultMapper;
-
+    @Autowired
+    private ProjectTaskQueue projectTaskQueue;
     @Override
     public PageInfo<Result> getResults(int pc, int ps) {
         PageHelper.startPage(pc,ps);
@@ -30,6 +35,7 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public boolean save(Result result) {
+        projectTaskQueue.pop();
         if (result.getProjectId()==null){
             LOG.error("project id of result to save is null!");
             return false;
@@ -64,6 +70,7 @@ public class ResultServiceImpl implements ResultService {
             LOG.info("提交的结果集合大小为"+res.size()+"不是三个！");
             return false;
         }else {
+            projectTaskQueue.pop();
             ResultExample resultExample = new ResultExample();
             ResultExample.Criteria criteria = resultExample.createCriteria();
             int projectId = res.get(0).getProjectId();

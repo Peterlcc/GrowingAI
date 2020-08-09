@@ -2,6 +2,9 @@
 import json
 import requests
 
+CONTEXT_URL="http://localhost:8999/growningai"
+LOGIN_URL=CONTEXT_URL+"/admin/login"
+SAVE_URL=CONTEXT_URL+"/result/save"
 
 class Result():
     def __init__(self, length, points, time, projectId,datasetId):
@@ -21,8 +24,8 @@ class Result():
 
 def post(url,param):
     sess=requests.session()
-    res=sess.post("http://localhost:8999/growningai/admin/login",{"name":"admin","password":"buaagrow"})
-    res=sess.post("http://localhost:8888/growningai/result/save",{"data":param})  # list转字符串，构成json数据格式
+    res=sess.post(LOGIN_URL,{"name":"admin","password":"buaagrown"})
+    res=sess.post(SAVE_URL,{"data":param})  # list转字符串，构成json数据格式
 
 if __name__ == "__main__":
     l = []

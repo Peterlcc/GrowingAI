@@ -5,8 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Result;
+import com.peter.component.ProjectTaskQueue;
+import com.peter.component.TestTask;
 import com.peter.service.ProjectService;
 import com.peter.service.ResultService;
+import com.peter.service.TestService;
 import com.peter.utils.LinuxCmdUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -25,9 +28,9 @@ import java.util.List;
 public class ResultController {
     private Log LOG = LogFactory.getLog(ResultController.class);
 
+
     @Autowired
     private ResultService resultService;
-
 
     @PostMapping("save")
     @ResponseBody
@@ -45,6 +48,8 @@ public class ResultController {
                 result.setDatasetId(0);
             }
         }
+        //TODO 设置结果是否成功
+
         if(resultService.save(res)){
             return "保存成功";
         }else {

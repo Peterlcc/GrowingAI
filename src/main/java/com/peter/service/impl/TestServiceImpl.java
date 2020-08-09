@@ -6,9 +6,11 @@ import com.peter.bean.Project;
 import com.peter.bean.Result;
 import com.peter.component.GrowningAiConfig;
 import com.peter.mapper.DatasetMapper;
+import com.peter.service.ResultService;
 import com.peter.service.TestService;
 import com.peter.utils.FileUtil;
 import com.peter.utils.LinuxCmdUtils;
+import com.peter.utils.RunTag;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -26,6 +29,12 @@ public class TestServiceImpl implements TestService {
     private GrowningAiConfig growningAiConfig;
     @Autowired
     private DatasetMapper datasetMapper;
+
+    @Autowired
+    private ResultService resultService;
+
+    @Autowired
+    private RunTag runTag;
 
     @Override
     @Async
@@ -39,14 +48,23 @@ public class TestServiceImpl implements TestService {
 //            switchDataset();//切换数据集
             testWithDataset(project,dataset);
         }
+        runTag.setRunFlag(false);
     }
 
     private void testWithDataset(Project project, Dataset dataset) {
         String path = dataset.getPath();
         LOG.info("test project with dataset:" + project);
         boolean resultPrepare = prepareForTest(project, dataset);
+        Result error=new Result();
+        error.setDatasetId(dataset.getId());
+        error.setLength(Double.MAX_VALUE);
+        error.setPoints(0);
+        error.setTime(Double.MAX_VALUE);
+        error.setProjectId(project.getId());
         if (!resultPrepare){
             LOG.error("测试项目"+project.getId()+"准备失败");
+            //TODO 设置错误信息
+            resultService.save(error);
             return;
         }
         //编译node
@@ -59,6 +77,8 @@ public class TestServiceImpl implements TestService {
             return;
         }else {
             LOG.error("编译出错："+project);
+            //TODO 设置错误信息
+            resultService.save(error);
             return;
         }
     }
@@ -70,10 +90,19 @@ public class TestServiceImpl implements TestService {
     @Override
     @Async
     public void testProject(Project project) {
+        Result error=new Result();
+        error.setDatasetId(0);
+        error.setLength(Double.MAX_VALUE);
+        error.setPoints(0);
+        error.setTime(Double.MAX_VALUE);
+        error.setProjectId(project.getId());
         LOG.info("test project:" + project);
         boolean resultPrepare = prepareForTest(project, null);
         if (!resultPrepare){
             LOG.error("测试项目"+project.getId()+"准备失败");
+            //TODO 设置错误信息
+            resultService.save(error);
+            runTag.setRunFlag(false);
             return;
         }
 
@@ -82,18 +111,22 @@ public class TestServiceImpl implements TestService {
         if(LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand,growningAiConfig.getCatkinPath())){
             LOG.info("编译成功");
             //执行测试命令
-            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && sh /home/peter/AppStore/GrowningAI/scripts/shell.sh",growningAiConfig.getCatkinPath());
+//            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && sh /home/peter/AppStore/GrowningAI/scripts/shell.sh",growningAiConfig.getCatkinPath());
+            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && sh "+growningAiConfig.getScriptsPath()+File.separator+growningAiConfig.getStartScript(),growningAiConfig.getCatkinPath());
             LOG.info("运行测试命令成功");
+            runTag.setRunFlag(false);
             return;
         }else {
             LOG.error("编译出错："+project);
+            //TODO 设置错误信息
+            resultService.save(error);
+            runTag.setRunFlag(false);
             return;
         }
     }
 
     private boolean prepareForTest(Project project,Dataset dataset) {
         String projectPath = project.getPath();
-
         File launchFile = new File(projectPath + File.separator + "fake_move_base_amcl.launch");
         //检测launch文件是否存在，不存在不能启动测试
         if (!launchFile.exists()){
@@ -112,7 +145,7 @@ public class TestServiceImpl implements TestService {
         }
         //保存项目id信息
         try {
-            FileUtils.writeStringToFile(new File(growningAiConfig.getUploadPath()+File.separator+"project_id.txt"),
+            FileUtils.writeStringToFile(new File(growningAiConfig.getPidPath()),
                     project.getId()+"","utf-8");
         } catch (IOException e) {
             LOG.error("写入project id 失败："+e.getMessage());
@@ -125,7 +158,7 @@ public class TestServiceImpl implements TestService {
             {
                 did=dataset.getId();
             }
-            FileUtils.writeStringToFile(new File(growningAiConfig.getUploadPath()+File.separator+"dataset_id.txt"),
+            FileUtils.writeStringToFile(new File(growningAiConfig.getDatasetIdPath()),
                     did+"","utf-8");
             LOG.info("write dataset id completed!");
         } catch (IOException e) {
@@ -134,7 +167,8 @@ public class TestServiceImpl implements TestService {
         }
 
         //删除原来测试的项目
-        String pid="/home/peter/AppStore/GrowningAI/pid.txt";
+//        String pid="/home/peter/AppStore/GrowningAI/pid.txt";
+        String pid=growningAiConfig.getPidPath();
         File pidFile=new File(pid);
         try {
             String tmpPath = FileUtils.readFileToString(pidFile,"utf-8");

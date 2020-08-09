@@ -8,6 +8,7 @@ import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import javax.sql.DataSource;
 
+import com.peter.utils.RunTag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -107,4 +108,8 @@ public class MyConfig {
   		bean.setUrlPatterns(Arrays.asList("/*"));
   		return bean;
   	}
+  	@Bean
+	public RunTag addRunTag(){
+		return new RunTag();
+	}
 }

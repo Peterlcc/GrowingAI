@@ -15,7 +15,79 @@ public class GrowningAiConfig {
     private String catkinPath;
     private String datasetRoot;
 
+    //webviz address
     private String webvizAddr;
+
+    //path of out.txt
+    private String outPath;
+    //path of project_id.txt
+    private String pidPath;
+    //path of dataset_id.txt
+    private String datasetIdPath;
+    //http url of admin login
+    private String loginUrl;
+    //http url of result to save
+    private String saveUrl;
+    //path of scripts in test
+    private String scriptsPath;
+    //name of script to start test
+    private String startScript;
+
+    public void setOutPath(String outPath) {
+        this.outPath = outPath;
+    }
+
+    public void setPidPath(String pidPath) {
+        this.pidPath = pidPath;
+    }
+
+    public void setDatasetIdPath(String datasetIdPath) {
+        this.datasetIdPath = datasetIdPath;
+    }
+
+    public void setLoginUrl(String loginUrl) {
+        this.loginUrl = loginUrl;
+    }
+
+    public void setSaveUrl(String saveUrl) {
+        this.saveUrl = saveUrl;
+    }
+
+    public void setScriptsPath(String scriptsPath) {
+        this.scriptsPath = scriptsPath;
+    }
+
+    public void setStartScript(String startScript) {
+        this.startScript = startScript;
+    }
+
+    public String getDatasetIdPath() {
+        return datasetIdPath;
+    }
+
+    public String getScriptsPath() {
+        return scriptsPath;
+    }
+
+    public String getStartScript() {
+        return startScript;
+    }
+
+    public String getOutPath() {
+        return outPath;
+    }
+
+    public String getPidPath() {
+        return pidPath;
+    }
+
+    public String getLoginUrl() {
+        return loginUrl;
+    }
+
+    public String getSaveUrl() {
+        return saveUrl;
+    }
 
     public String getWebvizAddr() {
         return webvizAddr;
