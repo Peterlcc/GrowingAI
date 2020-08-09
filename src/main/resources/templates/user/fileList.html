@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title th:text="'个人'+${fileType.name}+'列表'"></title>
+
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" href="asserts/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/modern-business.css}" href="css/modern-business.css" rel="stylesheet">
+  <style type="text/css">
+    .pagination-demo {
+      text-align:center;
+      padding: 20px;
+    }
+    .customBootstrap .pagination > li > a {
+      margin-right: 5px;
+      border-radius: 2px;
+      background: #fff;
+      color: #333;
+      border-color: #ccc;
+      padding: 6px 15px;
+    }
+    .customBootstrap .pagination > li > a:hover,
+    .customBootstrap .pagination > li > a:focus {
+      color: #fff;
+      background: #fb9400;
+      border-color: #fb9400;
+    }
+    .customBootstrap .pagination > .active > a,
+    .customBootstrap .pagination > .active > a:hover,
+    .customBootstrap .pagination > .active > a:focus {
+      color: #fff;
+      background: #fb9400;
+      border-color: #fb9400;
+    }
+    .customBootstrap .pagination > .disabled > a,
+    .customBootstrap .pagination > .disabled > a:hover,
+    .customBootstrap .pagination > .disabled > a:focus {
+      color: #999;
+      background: #fff;
+      border-color: #ddd;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <div th:replace="commons/base::topbar"></div>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">可成长系统之
+      <small th:text="'个人'+${fileType.name}+'列表'"></small>
+    </h1>
+
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a th:href="@{/index}" href="index.html">首页</a>
+      </li>
+      <li class="breadcrumb-item active" th:text="'个人'+${fileType.name}+'列表'"></li>
+    </ol>
+
+    <!-- Blog Post -->
+    <div class="card mb-4" th:each="file:${pageInfo.list}">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-12">
+
+            <h2 class="card-title" th:text="${file.name}">Post Title</h2>
+            <a href="#" th:href="@{'/'+${fileType.name}+'/detail/'+${file.id}}" class="btn btn-primary">查看详情&rarr;</a>
+<!--            <a href="#" th:href="@{'/project/test/'+${project.id}}" class="btn btn-primary">手动测试&rarr;</a>-->
+            <button onclick="delPro();" th:attr="data=${file.id},url=@{/aadl/file}" id="del" class="btn btn-primary">删除&rarr;</button>
+            <button th:if="${fileType.id==1}" onclick="code();" th:attr="data=${file.id},url=@{/aadl/code}" id="code" class="btn btn-primary">代码生成&rarr;</button>
+            <button th:if="${fileType.id==2}" onclick="cppDownload();" th:attr="data=${file.id},url=@{/cpp/download}" id="download" class="btn btn-primary">文件下载&rarr;</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-muted">
+        Uploaded on [[${#dates.format(file.createtime,'yyyy-MM-dd')}]]
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-demo customBootstrap">
+      <ul id="project-pagination" class="pagination"></ul>
+      <p class="pull-left text-left">当前第 <span id="pagination-text"></span> 页</p>
+    </div>
+
+  </div>
+  <span id="pageNum" class="text-hide" th:attr="num=${pageInfo.pageNum}"></span>
+  <span id="pages" class="text-hide" th:attr="num=${pageInfo.pages},url=@{/user/projects}"></span>
+  <span id="pageSize" class="text-hide" th:attr="num=${pageInfo.pageSize}" th:text="${pageInfo.pageSize}"></span>
+  </div>
+  <!-- /.container -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
+  <!-- paginator -->
+  <script type="text/javascript" th:src="@{/js/jq-paginator.js}" src="asserts/js/feather.min.js" ></script>
+
+  <script type="text/javascript">
+    //异步提交删除请求
+    function delPro() {
+      console.log("delpro");
+      $.ajax({
+        type: "POST",
+        url: $("#del").attr("url"),
+        data: {_method: "DELETE", id: $("#del").attr("data")},
+        success: function (result) {
+          alert(result);
+          location.reload();
+        }
+      });
+    }
+    //异步提交生成代码请求
+    function code() {
+      console.log("code generation");
+      $.ajax({
+        type: "POST",
+        url: $("#code").attr("url"),
+        data: {id: $("#code").attr("data")},
+        success: function (result) {
+          alert(result);
+          location.reload();
+        }
+      });
+    }
+
+    var first=true;
+    var pages=$("#pages").attr("num");
+    var pageSize=$("#pageSize").attr("num");
+    var pageNum=$("#pageNum").attr("num");
+    var url=$("#pages").attr("url");
+    console.log(pages+","+pageSize+","+pageNum);
+    $("#project-pagination").jqPaginator({
+      totalPages:   parseInt(pages),
+      visiblePages: parseInt(pageSize),
+      currentPage:  parseInt(pageNum),
+      first: '<li class="first"><a href="javascript:void(0);">首页<\/a><\/li>',
+      prev: '<li class="prev"><a href="javascript:void(0);">上一页<\/a><\/li>',
+      next: '<li class="next"><a href="javascript:void(0);">下一页<\/a><\/li>',
+      last: '<li class="last"><a href="javascript:void(0);">末页<\/a><\/li>',
+      page: '<li class="page"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+      onPageChange: function(n) {
+        $("#pagination-text").html(n);
+        if(!first){
+          window.location.href=url+"?ps=10&pc="+n;
+        }else{
+          first=false;
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

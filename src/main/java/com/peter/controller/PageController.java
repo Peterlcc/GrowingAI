@@ -41,6 +41,8 @@ public class PageController {
 
     @Autowired
     private TaskUploadService taskUploadService;
+    @Autowired
+    private FileTypeService fileTypeService;
 
     @GetMapping("index")
     public String index() {
@@ -110,6 +112,13 @@ public class PageController {
         LOG.info("project.detail.html requested!");
         checkMsg(MessageUtil.DETAIL_MSG,model);
         return "project/detail";
+    }
+    @GetMapping("/aadl/add")
+    public String aadlAdd(Model model){
+        LOG.info("user.uploadFile.html requested!");
+        checkMsg(MessageUtil.DETAIL_MSG,model);
+        model.addAttribute("fileType",fileTypeService.getById(1));
+        return "user/uploadFile";
     }
 
 

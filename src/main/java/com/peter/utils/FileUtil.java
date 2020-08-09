@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUtil {
 	private final static String deletePath="F:/tmp";
 	public final static File deleteDir=new File(deletePath);
-	public static String saveSimple(String dir,MultipartFile file) {
+	public static String save(String dir,MultipartFile file) {
 		try {
 			File dire = new File(dir);
 			if (!dire.exists()) {

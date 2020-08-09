@@ -8,12 +8,15 @@ import java.io.File;
 @Configuration
 @ConfigurationProperties(prefix = "system.growingai")
 public class GrowningAiConfig {
-    //上传路径
+    //项目上传路径
     private String uploadPath;
+    //xml文件上传路径
+    private String filesDir;
     //删除的临时目录
     private String tmpDir;
     private String catkinPath;
     private String datasetRoot;
+
 
     //webviz address
     private String webvizAddr;
@@ -130,5 +133,13 @@ public class GrowningAiConfig {
 
     public void setTmpDir(String tmpDir) {
         this.tmpDir = tmpDir;
+    }
+
+    public String getFilesDir() {
+        return filesDir;
+    }
+
+    public void setFilesDir(String filesDir) {
+        this.filesDir = filesDir;
     }
 }

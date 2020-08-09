@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>添加新项目</title>
+  <title>添加新文件</title>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" href="asserts/css/bootstrap.min.css" rel="stylesheet">
@@ -28,14 +28,14 @@
 
     <!-- Page Heading/Breadcrumbs -->
     <h1 class="mt-4 mb-3">可成长系统之
-      <small>上传项目</small>
+      <small>上传aadl</small>
     </h1>
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a th:href="@{/page/index}" href="index.html">首页</a>
       </li>
-      <li class="breadcrumb-item active">添加项目</li>
+      <li class="breadcrumb-item active">上传aadl</li>
     </ol>
 
 
@@ -46,34 +46,21 @@
       <div class="col-lg-8 mb-4">
         <p style="color: red;" th:text="${msg}"
            th:if="${not #strings.isEmpty(msg)}"></p>
-        <h3>添加你的新项目</h3>
-        <form name="sentMessage" id="contactForm" method="post" enctype="multipart/form-data" th:action="@{project/project}">
-          <input type="hidden" name="_method" value="put" th:if="${project!=null}"/>
+        <h3>添加你的aadl文件</h3>
+        <form name="sentMessage" id="contactForm" method="post" enctype="multipart/form-data" th:action="@{/aadl/aadl}">
+          <input type="hidden" name="_method" value="put" th:if="${aadl!=null}"/>
           <div class="control-group form-group">
             <div class="controls">
-              <label>项目名称：</label>
-              <input type="text" name="name" class="form-control" required data-validation-required-message="请输入项目名称">
+              <label>aadl名称：</label>
+              <input type="text" name="name" class="form-control" required data-validation-required-message="请输入aadl名称">
               <p class="help-block"></p>
             </div>
           </div>
+          <input type="hidden" name="typeId" th:value="${fileType.id}"/>
           <div class="control-group form-group">
             <div class="controls">
-              <label>项目描述：</label>
-              <input type="text" name="description" class="form-control" required data-validation-required-message="请输入项目描述">
-            </div>
-          </div>
-          <div class="control-group form-group">
-            <div class="controls">
-              <label>项目类型：</label>
-              <select class="custom-select" name="typeId">
-                <option th:each="type,typeStat:${types}" th:selected="${typeStat.index==0?true:false}" th:value="${type.id}" th:text="${type.name}">Open this select menu</option>
-              </select>
-            </div>
-          </div>
-          <div class="control-group form-group">
-            <div class="controls">
-              <label>选择你的项目文件夹</label>
-              <input class="form-control-file" type="file" name="dire" multiple="multiple" webkitdirectory>
+              <label>选择你的aadl文件</label>
+              <input class="form-control-file" type="file" name="aadl">
             </div>
           </div>
           <!-- For success/fail messages -->
