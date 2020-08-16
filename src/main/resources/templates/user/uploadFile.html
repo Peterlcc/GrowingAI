@@ -28,14 +28,14 @@
 
     <!-- Page Heading/Breadcrumbs -->
     <h1 class="mt-4 mb-3">可成长系统之
-      <small>上传aadl</small>
+      <small th:text="'上传'+${fileType.name}">上传aadl</small>
     </h1>
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a th:href="@{/page/index}" href="index.html">首页</a>
       </li>
-      <li class="breadcrumb-item active">上传aadl</li>
+      <li class="breadcrumb-item active" th:text="'上传'+${fileType.name}">上传aadl</li>
     </ol>
 
 
@@ -46,20 +46,20 @@
       <div class="col-lg-8 mb-4">
         <p style="color: red;" th:text="${msg}"
            th:if="${not #strings.isEmpty(msg)}"></p>
-        <h3>添加你的aadl文件</h3>
+        <h3 th:text="'添加你的'+${fileType.name}+'文件'">添加你的aadl文件</h3>
         <form name="sentMessage" id="contactForm" method="post" enctype="multipart/form-data" th:action="@{/aadl/aadl}">
           <input type="hidden" name="_method" value="put" th:if="${aadl!=null}"/>
           <div class="control-group form-group">
             <div class="controls">
-              <label>aadl名称：</label>
-              <input type="text" name="name" class="form-control" required data-validation-required-message="请输入aadl名称">
+              <label th:text="${fileType.name}+'名称：'">aadl名称：</label>
+              <input type="text" name="name" class="form-control" required data-validation-required-message="请输入XML名称">
               <p class="help-block"></p>
             </div>
           </div>
           <input type="hidden" name="typeId" th:value="${fileType.id}"/>
           <div class="control-group form-group">
             <div class="controls">
-              <label>选择你的aadl文件</label>
+              <label th:text="'选择你的'+${fileType.name}+'文件'">选择你的aadl文件</label>
               <input class="form-control-file" type="file" name="aadl">
             </div>
           </div>
