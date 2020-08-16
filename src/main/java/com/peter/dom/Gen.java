@@ -1,16 +1,6 @@
 package com.peter.dom;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +11,19 @@ public class Gen {
 	private String package_name;
 	private String name;
 	private List<Founction> founctions;
+	private String lib_path;
+	private String dir_name;
+	private String gen_path;
 	
-	public Gen(String name,String include_file) {
+	public Gen(String name,String include_file,String lib_path,String dir_name,String gen_path) {
 		this.include_file=include_file;
 		this.name=name;
 		this.setVersion("");
 		founctions=new ArrayList<Founction>();
 		//System.out.println("\t\t\tGen name:"+name+"\tinclude_file:"+include_file+"\n");
+		this.lib_path=lib_path;
+		this.dir_name=dir_name;
+		this.gen_path=gen_path;
 	}
 	
 	public String getVersion() {
@@ -71,7 +67,71 @@ public class Gen {
 	public void addFounction(Founction founc) {
 		this.founctions.add(founc);
 	}
-	public String readFile(String fileName) {
+
+
+	public void copyFile(String oldPath, String newPath) {
+		try {
+			int bytesum = 0;
+			int byteread = 0;
+			File oldfile = new File(oldPath);
+			if (oldfile.exists()) { //�ļ�����ʱ
+				InputStream inStream = new FileInputStream(oldPath); //����ԭ�ļ�
+				FileOutputStream fs = new FileOutputStream(newPath);
+				byte[] buffer = new byte[1444];
+				int length;
+				while ( (byteread = inStream.read(buffer)) != -1) {
+					bytesum += byteread; //�ֽ��� �ļ���С
+					System.out.println(bytesum);
+					fs.write(buffer, 0, byteread);
+				}
+				inStream.close();
+			}
+		}
+		catch (Exception e) {
+			System.out.println("���Ƶ����ļ���������");
+			e.printStackTrace();
+		}
+	}
+
+	public void copyFolder(String oldPath, String newPath) {
+		try {
+			(new File(newPath)).mkdirs(); //����ļ��в����� �������ļ���
+			File a=new File(oldPath);
+			String[] file=a.list();
+			File temp=null;
+			for (int i = 0; i < file.length; i++) {
+				if(oldPath.endsWith(File.separator)){
+					temp=new File(oldPath+file[i]);
+				}
+				else{
+					temp=new File(oldPath+File.separator+file[i]);
+				}
+				if(temp.isFile()){
+					FileInputStream input = new FileInputStream(temp);
+					FileOutputStream output = new FileOutputStream(newPath + "/" +
+							(temp.getName()).toString());
+					byte[] b = new byte[1024 * 5];
+					int len;
+					while ( (len = input.read(b)) != -1) {
+						output.write(b, 0, len);
+					}
+					output.flush();
+					output.close();
+					input.close();
+				}
+				if(temp.isDirectory()){//��������ļ���
+					copyFolder(oldPath+"/"+file[i],newPath+"/"+file[i]);
+				}
+			}
+		}
+		catch (Exception e) {
+			System.out.println("���������ļ������ݲ�������");
+			e.printStackTrace();
+		}
+	}
+
+	public String readFile(String fileName)
+	{
 		File file = new File(fileName);
 	    BufferedReader reader = null;
 	    StringBuffer sbf = new StringBuffer();
@@ -80,11 +140,11 @@ public class Gen {
 	        reader = new BufferedReader(new FileReader(file));
 	        String tempStr;
 	        while ((tempStr = reader.readLine()) != null) {
-	            sbf.append(tempStr+"\r\n");
+	            sbf.append(tempStr+"\n");
 	        }
 	        reader.close();
 	        String Ret=sbf.toString();
-		    Ret = Ret.replaceAll("(?!\\r)\\n", "\r\n");
+		    Ret = Ret.replaceAll("(?!\\r)\\n", "\n");
 		    return Ret;
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -98,7 +158,7 @@ public class Gen {
 	        }
 	    }
 	    String Ret=sbf.toString();
-	    Ret = Ret.replaceAll("(?!\\r)\\n", "\r\n");
+	    Ret = Ret.replaceAll("(?!\\r)\\n", "\n");
 	    return Ret;
 	}
 	public String gen_func_head(Founction func) {
@@ -110,12 +170,17 @@ public class Gen {
 		if(sp[sp.length-1].equals("re")) {
 			func_name=func_name.replace("_re", "");
 		}
-		stringBuilder.append(func.getRetType()+" "+func_name+"(");
+		stringBuilder.append(func.getRetType()+" DStarPlannerROS::"+func_name+"(");
 		boolean f=false;
 		List<Param> params=func.getParams();
 		for(Param param:params) {
 			if(f) stringBuilder.append(", ");
-			stringBuilder.append(param.getType()+" "+param.getName());
+			String pname=param.getName();
+			if(pname.endsWith("_re"))
+			{
+				pname=pname.replace("_re","");
+			}
+			stringBuilder.append(param.getType()+" "+pname);
 			f=true;
 			//System.out.println("\t\t\t\t"+param.getType()+"\t"+param.getName());
 		}
@@ -126,8 +191,10 @@ public class Gen {
 	}
 	
 	public void gen_code() throws IOException {
+		
 
-		String root_path = "H:\\aadl_lib";
+		//String root_path = "H:\\aadl_lib";
+		String root_path = "E:\\gen_test";
         File file = new File(root_path+"\\"+name+".cpp");
         //����ļ������ڣ����Զ������ļ���
         if(!file.exists()){
@@ -164,8 +231,48 @@ public String add_version_to_file(String s,String version){
 	String[] sp=s.split("\\.");
     return sp[0]+"_"+version+"."+sp[1];
 }
+public void genCMakeLists(File f,String lib_path) throws FileNotFoundException
+{
+	PrintStream psOld = System.out;
+	System.setOut(new PrintStream(f));
+	String include_context=readFile(lib_path+"\\CMakeLists.txt");
+	System.out.println(include_context);
+	System.setOut(psOld);
+}
+
+public void genPackageXml(File f,String lib_path) throws FileNotFoundException
+{
+	PrintStream psOld = System.out;
+	System.setOut(new PrintStream(f));
+	String include_context=readFile(lib_path+"\\package.xml");
+	System.out.println(include_context);
+	System.setOut(psOld);
+}
+
+public void genIncludeDir(String lib_path,String gen_path)
+{
+	copyFolder(lib_path+"\\include",gen_path+"\\include");
+}
+
+public void genPluginXml(File f,String lib_path) throws FileNotFoundException {
+	PrintStream psOld = System.out;
+	System.setOut(new PrintStream(f));
+	String include_context=readFile(lib_path+"\\bgp_plugin.xml");
+	System.out.println(include_context);
+	System.setOut(psOld);
+}
+
+public void genSrcDir(String lib_path,String gen_path)
+{
+	copyFolder(lib_path+"\\src",gen_path+"\\src");
+}
+
 public void gen_code_different_version() throws IOException {
-		String root_path = "E:\\gen_test";
+		String root_path = gen_path+"\\"+dir_name;
+		File dirFolder = new File(root_path);
+		if(!dirFolder.exists()) {
+			dirFolder.mkdirs();
+		}
 		String gen_path = root_path;
 		if(package_name != null && !package_name.equals("")) {
 			gen_path = root_path + "\\" + package_name;
@@ -175,16 +282,30 @@ public void gen_code_different_version() throws IOException {
 			}
 			File cmakelists = new File(gen_path + "\\CMakeLists.txt");
 			cmakelists.createNewFile();
+			genCMakeLists(cmakelists,lib_path);
+
 			File packagexml = new File(gen_path + "\\package.xml");
 			packagexml.createNewFile();
+			genPackageXml(packagexml,lib_path);
+
+			File pluginxml = new File(gen_path + "\\bgp_plugin.xml");
+			packagexml.createNewFile();
+			genPluginXml(pluginxml,lib_path);
+
 			File include = new File(gen_path + "\\include");
 			include.mkdirs();
+			genIncludeDir(lib_path,gen_path);
+
 			File src = new File(gen_path + "\\src");
 			src.mkdirs();
+			genSrcDir(lib_path,gen_path);
+
+
 			gen_path = gen_path + "\\src";
 		}
 		
-		String file_name = gen_path+"\\"+name;
+		//String file_name = gen_path+"\\"+name;
+		String file_name = gen_path+"\\myPlanner";
 		if(this.version_bind)
 			file_name += "_"+this.version+".cpp";
 		else
@@ -202,7 +323,7 @@ public void gen_code_different_version() throws IOException {
         }
         System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(file_name)),true));
       
-        String include_path = root_path+"\\"+this.include_file;
+        String include_path = lib_path+"\\"+this.include_file;
         if(this.version_bind)
         	include_path = add_version_to_file(include_path, this.version);
         	
@@ -216,7 +337,7 @@ public void gen_code_different_version() throws IOException {
 			System.out.println(fun_head);
 			System.out.println("{");
 			
-			String file_path = root_path+"\\"+func.getSource_file();
+			String file_path = lib_path+"\\"+func.getSource_file();
 	        if(this.version_bind)
 	        	file_path = add_version_to_file(file_path, this.version);
 			
@@ -225,7 +346,7 @@ public void gen_code_different_version() throws IOException {
 			System.out.println("}");
 			
 		}
-		
+		System.out.println("}");
 		System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(FileDescriptor.out)),true));
 
 				

@@ -12,7 +12,7 @@
 
     <groupId>com.peter</groupId>
     <artifactId>GrowningAI</artifactId>
-    <version>0.0.1a</version>
+    <version>2.0.0a</version>
     <name>GrowningAI</name>
     <description>Code Manager For GrowningAI</description>
 
@@ -159,6 +159,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

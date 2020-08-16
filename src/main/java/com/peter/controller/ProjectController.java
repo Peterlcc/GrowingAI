@@ -112,12 +112,17 @@ public class ProjectController {
         return "redirect:/project/projects";
     }
     @GetMapping("project/{id}")
-    public String getProjectDetail(@PathVariable("id") Integer id, Model model){
+    public String getProjectDetail(@PathVariable("id") Integer id, Model model,HttpServletRequest request){
         Project project = projectService.getProjectDetail(id);
+        Project projectByIdWithUser = projectService.getProjectByIdWithUser(id);
+        Integer userId = projectByIdWithUser.getUserId();
+        User user = (User) request.getSession().getAttribute("user");
+
         if (project==null){
             model.addAttribute(MessageUtil.DETAIL_MSG,"项目查询失败！");
         }else {
             model.addAttribute("project",project);
+            model.addAttribute("own",user.getId().equals(userId));
         }
         return "project/detail";
     }

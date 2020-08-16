@@ -18,7 +18,7 @@ public class XML_Reader {
 
 	}
 
-	public static void xmlReader(String aaxl_path) {
+	public static void xmlReader(String aaxl_path,String lib_path,String gen_path,String dir_name) {
 		List<modes> modes_list=new ArrayList<>();//´æ´¢Ò»¸öxmlÀïµÄËùÓÐÄ£ÐÍ£¨classifier£©
 		try {
 //			File f = new File("E:/basenode.xml"); 
@@ -264,7 +264,7 @@ public class XML_Reader {
 								boolean gen_version_bind_type = (gen_version_bind.equals("true") ? true : false);
 //								System.out.println(gen_name+" " + gen_include_file + " " + gen_version_type + " " + gen_version_bind_type);
 								//println(gen_version_type);
-								Gen gen=new Gen(gen_name,gen_include_file);
+								Gen gen=new Gen(gen_name,gen_include_file,lib_path,dir_name,gen_path);
 								gen.setVersion_bind(gen_version_bind_type);
 								gen.setPackage_name(gen_package_name);
 								if(gen_version_bind_type)
@@ -435,9 +435,7 @@ public class XML_Reader {
 			e.printStackTrace();
 		}
 	}
-	public static void gen_code() {
-
-	}
+	public static void gen_code() {}
 
 	/*
 	 * Ò»¸öclassifier¾ÍÊÇÒ»¸öÄ£ÐÍ£¬process»òÕßthread
@@ -570,7 +568,10 @@ public class XML_Reader {
 	}
 	public static void main(String[] args)
 	{
-		String aaxl_path="H:\\AADL_Gen\\planner_core0.aadl";
-		xmlReader(aaxl_path);
+		String aaxl_path="E:\\basenode.xml";
+		String lib_path="E:\\gen_test";
+		String gen_path="E:\\gen_test";
+		String dir_name="test";
+		xmlReader(aaxl_path,lib_path,gen_path,dir_name);
 	}
 }

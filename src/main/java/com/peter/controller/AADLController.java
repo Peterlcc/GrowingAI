@@ -7,6 +7,7 @@ import com.peter.bean.User;
 import com.peter.component.GrowningAiConfig;
 import com.peter.service.FileService;
 import com.peter.service.FileTypeService;
+import com.peter.service.GeneratorService;
 import com.peter.utils.FileUtil;
 import com.peter.utils.MessageUtil;
 import org.apache.commons.io.FileUtils;
@@ -40,6 +41,8 @@ public class AADLController {
     private FileTypeService fileTypeService;
     @Autowired
     private GrowningAiConfig growningAiConfig;
+    @Autowired
+    private GeneratorService generatorService;
 
     @PostMapping("aadl")
     public String upload(@RequestParam("aadl") MultipartFile aadl,File file, HttpServletRequest request,
@@ -116,9 +119,11 @@ public class AADLController {
     }
     @PostMapping("code")
     @ResponseBody
-    public String codeGenerate(Integer id){
+    public String codeGenerate(Integer id,HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
         File file = fileService.getById(id);
-        //TODO 自动生成代码
+        File generated = generatorService.generate(file,user);
+        fileService.save(generated);
         return "自动生成代码已提交,请稍后到cpp列表查看";
     }
 }

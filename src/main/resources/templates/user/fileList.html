@@ -79,11 +79,12 @@
           <div class="col-lg-12">
 
             <h2 class="card-title" th:text="${file.name}">Post Title</h2>
-            <a href="#" th:href="@{'/'+${fileType.name}+'/detail/'+${file.id}}" class="btn btn-primary">查看详情&rarr;</a>
+<!--            <a href="#" th:href="@{'/'+${fileType.name}+'/detail/'+${file.id}}" class="btn btn-primary">查看详情&rarr;</a>-->
 <!--            <a href="#" th:href="@{'/project/test/'+${project.id}}" class="btn btn-primary">手动测试&rarr;</a>-->
             <button onclick="delPro();" th:attr="data=${file.id},url=@{/aadl/file}" id="del" class="btn btn-primary">删除&rarr;</button>
             <button th:if="${fileType.id==1}" onclick="code();" th:attr="data=${file.id},url=@{/aadl/code}" id="code" class="btn btn-primary">代码生成&rarr;</button>
             <button th:if="${fileType.id==2}" onclick="cppDownload();" th:attr="data=${file.id},url=@{/cpp/download}" id="download" class="btn btn-primary">文件下载&rarr;</button>
+            <a th:if="${fileType.id==3}" th:href="@{'/pro/download/'+${file.id}}" class="btn btn-primary">文件打包下载&rarr;</a>
           </div>
         </div>
       </div>

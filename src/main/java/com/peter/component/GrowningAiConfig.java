@@ -1,5 +1,7 @@
 package com.peter.component;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -7,6 +9,8 @@ import java.io.File;
 
 @Configuration
 @ConfigurationProperties(prefix = "system.growingai")
+@Data
+@Accessors(chain = true)
 public class GrowningAiConfig {
     //项目上传路径
     private String uploadPath;
@@ -35,111 +39,11 @@ public class GrowningAiConfig {
     private String scriptsPath;
     //name of script to start test
     private String startScript;
+    private String libPath;
+    private Integer runSum;
 
-    public void setOutPath(String outPath) {
-        this.outPath = outPath;
-    }
-
-    public void setPidPath(String pidPath) {
-        this.pidPath = pidPath;
-    }
-
-    public void setDatasetIdPath(String datasetIdPath) {
-        this.datasetIdPath = datasetIdPath;
-    }
-
-    public void setLoginUrl(String loginUrl) {
-        this.loginUrl = loginUrl;
-    }
-
-    public void setSaveUrl(String saveUrl) {
-        this.saveUrl = saveUrl;
-    }
-
-    public void setScriptsPath(String scriptsPath) {
-        this.scriptsPath = scriptsPath;
-    }
-
-    public void setStartScript(String startScript) {
-        this.startScript = startScript;
-    }
-
-    public String getDatasetIdPath() {
-        return datasetIdPath;
-    }
-
-    public String getScriptsPath() {
-        return scriptsPath;
-    }
-
-    public String getStartScript() {
-        return startScript;
-    }
-
-    public String getOutPath() {
-        return outPath;
-    }
-
-    public String getPidPath() {
-        return pidPath;
-    }
-
-    public String getLoginUrl() {
-        return loginUrl;
-    }
-
-    public String getSaveUrl() {
-        return saveUrl;
-    }
-
-    public String getWebvizAddr() {
-        return webvizAddr;
-    }
-
-    public void setWebvizAddr(String webvizAddr) {
-        this.webvizAddr = webvizAddr;
-    }
-
-    public String getDatasetRoot() {
-        return datasetRoot;
-    }
-
-    public void setDatasetRoot(String datasetRoot) {
-        this.datasetRoot = datasetRoot;
-    }
-
-    public String getCatkinPath() {
-        return catkinPath;
-    }
     public String getCatkinSrcPath() {
         return catkinPath+File.separator+"src";
     }
 
-    public void setCatkinPath(String catkinPath) {
-        this.catkinPath = catkinPath;
-    }
-
-    public String getUploadPath() {
-        return uploadPath;
-    }
-
-    public void setUploadPath(String uploadPath) {
-        this.uploadPath = uploadPath;
-    }
-
-    public String getTmpDir() {
-        return tmpDir;
-    }
-
-    public void setTmpDir(String tmpDir) {
-        this.tmpDir = tmpDir;
-    }
-
-    public String getFilesDir() {
-        return filesDir;
-    }
-
-    public void setFilesDir(String filesDir) {
-        this.filesDir = filesDir;
-    }
 }
