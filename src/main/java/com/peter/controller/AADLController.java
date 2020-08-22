@@ -124,6 +124,6 @@ public class AADLController {
         File file = fileService.getById(id);
         File generated = generatorService.generate(file,user);
         fileService.save(generated);
-        return "自动生成代码已提交,请稍后到cpp列表查看";
+        return "自动生成代码已提交,请稍后到生成项目列表查看";
     }
 }

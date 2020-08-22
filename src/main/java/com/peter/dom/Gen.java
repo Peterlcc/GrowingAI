@@ -235,7 +235,7 @@ public void genCMakeLists(File f,String lib_path) throws FileNotFoundException
 {
 	PrintStream psOld = System.out;
 	System.setOut(new PrintStream(f));
-	String include_context=readFile(lib_path+"\\CMakeLists.txt");
+	String include_context=readFile(lib_path+File.separator+"CMakeLists.txt");
 	System.out.println(include_context);
 	System.setOut(psOld);
 }
@@ -244,68 +244,68 @@ public void genPackageXml(File f,String lib_path) throws FileNotFoundException
 {
 	PrintStream psOld = System.out;
 	System.setOut(new PrintStream(f));
-	String include_context=readFile(lib_path+"\\package.xml");
+	String include_context=readFile(lib_path+File.separator+"package.xml");
 	System.out.println(include_context);
 	System.setOut(psOld);
 }
 
 public void genIncludeDir(String lib_path,String gen_path)
 {
-	copyFolder(lib_path+"\\include",gen_path+"\\include");
+	copyFolder(lib_path+File.separator+"include",gen_path+File.separator+"include");
 }
 
 public void genPluginXml(File f,String lib_path) throws FileNotFoundException {
 	PrintStream psOld = System.out;
 	System.setOut(new PrintStream(f));
-	String include_context=readFile(lib_path+"\\bgp_plugin.xml");
+	String include_context=readFile(lib_path+File.separator+"bgp_plugin.xml");
 	System.out.println(include_context);
 	System.setOut(psOld);
 }
 
 public void genSrcDir(String lib_path,String gen_path)
 {
-	copyFolder(lib_path+"\\src",gen_path+"\\src");
+	copyFolder(lib_path+File.separator+"src",gen_path+File.separator+"src");
 }
 
 public void gen_code_different_version() throws IOException {
-		String root_path = gen_path+"\\"+dir_name;
+		String root_path = gen_path+File.separator+dir_name;
 		File dirFolder = new File(root_path);
 		if(!dirFolder.exists()) {
 			dirFolder.mkdirs();
 		}
 		String gen_path = root_path;
 		if(package_name != null && !package_name.equals("")) {
-			gen_path = root_path + "\\" + package_name;
+			gen_path = root_path + File.separator + package_name;
 			File packageFolder = new File(gen_path);
 			if(!packageFolder.exists()) {
 				packageFolder.mkdirs();
 			}
-			File cmakelists = new File(gen_path + "\\CMakeLists.txt");
+			File cmakelists = new File(gen_path +File.separator+ "CMakeLists.txt");
 			cmakelists.createNewFile();
 			genCMakeLists(cmakelists,lib_path);
 
-			File packagexml = new File(gen_path + "\\package.xml");
+			File packagexml = new File(gen_path +File.separator+ "package.xml");
 			packagexml.createNewFile();
 			genPackageXml(packagexml,lib_path);
 
-			File pluginxml = new File(gen_path + "\\bgp_plugin.xml");
+			File pluginxml = new File(gen_path +File.separator+ "bgp_plugin.xml");
 			packagexml.createNewFile();
 			genPluginXml(pluginxml,lib_path);
 
-			File include = new File(gen_path + "\\include");
+			File include = new File(gen_path +File.separator+ "include");
 			include.mkdirs();
 			genIncludeDir(lib_path,gen_path);
 
-			File src = new File(gen_path + "\\src");
+			File src = new File(gen_path + File.separator+"src");
 			src.mkdirs();
 			genSrcDir(lib_path,gen_path);
 
 
-			gen_path = gen_path + "\\src";
+			gen_path = gen_path + File.separator+"src";
 		}
 		
 		//String file_name = gen_path+"\\"+name;
-		String file_name = gen_path+"\\myPlanner";
+		String file_name = gen_path+File.separator+"myPlanner";
 		if(this.version_bind)
 			file_name += "_"+this.version+".cpp";
 		else
@@ -323,7 +323,7 @@ public void gen_code_different_version() throws IOException {
         }
         System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(file_name)),true));
       
-        String include_path = lib_path+"\\"+this.include_file;
+        String include_path = lib_path+File.separator+this.include_file;
         if(this.version_bind)
         	include_path = add_version_to_file(include_path, this.version);
         	
@@ -337,7 +337,7 @@ public void gen_code_different_version() throws IOException {
 			System.out.println(fun_head);
 			System.out.println("{");
 			
-			String file_path = lib_path+"\\"+func.getSource_file();
+			String file_path = lib_path+File.separator+func.getSource_file();
 	        if(this.version_bind)
 	        	file_path = add_version_to_file(file_path, this.version);
 			
