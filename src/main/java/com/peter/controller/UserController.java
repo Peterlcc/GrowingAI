@@ -41,7 +41,7 @@ public class UserController {
     private UserService userService;
     @Autowired
     private ProjectService projectService;
-    @GetMapping("/code")
+    @GetMapping("code")
     public void getCode(HttpServletResponse response, HttpServletRequest request) throws IOException {
         Object[] images = VerifyUtil.createImage();
         request.getSession().setAttribute("valicode", images[0]);
