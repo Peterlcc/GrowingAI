@@ -41,6 +41,7 @@ public class TestTask {
             runCount++;
             if (runCount>=growningAiConfig.getRunSum()){
                 LOG.info("the test task running to long ,need tobe killed!");
+                projectTaskQueue.pop();
                 LinuxCmdUtils.killShell();
             }
             return;

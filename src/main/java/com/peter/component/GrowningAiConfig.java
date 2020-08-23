@@ -2,6 +2,7 @@ package com.peter.component;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,6 +30,8 @@ public class GrowningAiConfig {
     private String outPath;
     //path of project_id.txt
     private String pidPath;
+    //path of tmp project location
+    private String plocPath;
     //path of dataset_id.txt
     private String datasetIdPath;
     //http url of admin login
@@ -44,6 +47,10 @@ public class GrowningAiConfig {
 
     public String getCatkinSrcPath() {
         return catkinPath+File.separator+"src";
+    }
+
+    public String getHomePath(){
+        return StringUtils.substringBefore(uploadPath,File.separator);
     }
 
 }

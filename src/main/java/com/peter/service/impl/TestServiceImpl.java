@@ -5,6 +5,7 @@ import com.peter.bean.DatasetExample;
 import com.peter.bean.Project;
 import com.peter.bean.Result;
 import com.peter.component.GrowningAiConfig;
+import com.peter.component.ProjectTaskQueue;
 import com.peter.mapper.DatasetMapper;
 import com.peter.service.ResultService;
 import com.peter.service.TestService;
@@ -32,6 +33,9 @@ public class TestServiceImpl implements TestService {
 
     @Autowired
     private ResultService resultService;
+
+    @Autowired
+    private ProjectTaskQueue projectTaskQueue;
 
     @Autowired
     private RunTag runTag;
@@ -68,11 +72,11 @@ public class TestServiceImpl implements TestService {
             return;
         }
         //编译node
-        String compileCommand="source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && catkin_make";
+        String compileCommand="source /opt/ros/kinetic/setup.bash && source "+growningAiConfig.getCatkinPath()+"/devel/setup.sh && catkin_make";
         if(LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand,growningAiConfig.getCatkinPath())){
             LOG.info("编译成功");
             //执行测试命令
-            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && sh "+path+File.separator+"shell.sh",growningAiConfig.getCatkinPath());
+            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source "+growningAiConfig.getCatkinPath()+"/devel/setup.sh && sh "+path+File.separator+"shell.sh",growningAiConfig.getCatkinPath());
             LOG.info("运行测试命令成功");
             return;
         }else {
@@ -91,7 +95,7 @@ public class TestServiceImpl implements TestService {
     @Async
     public void testProject(Project project) {
         Result error=new Result();
-        error.setDatasetId(0);
+        error.setDatasetId(1);
         error.setLength(Double.MAX_VALUE);
         error.setPoints(0);
         error.setTime(Double.MAX_VALUE);
@@ -107,12 +111,12 @@ public class TestServiceImpl implements TestService {
         }
 
         //编译node
-        String compileCommand="source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && chmod -R 777 /home/peter/WorkSpaces/catkin_ws/src && catkin_make";
+        String compileCommand="source /opt/ros/kinetic/setup.bash && source "+growningAiConfig.getCatkinPath()+"/devel/setup.sh && chmod -R 777 "+growningAiConfig.getCatkinPath()+"/src && catkin_make";
         if(LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand,growningAiConfig.getCatkinPath())){
             LOG.info("编译成功");
             //执行测试命令
 //            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && sh /home/peter/AppStore/GrowningAI/scripts/shell.sh",growningAiConfig.getCatkinPath());
-            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && sh "+growningAiConfig.getScriptsPath()+File.separator+growningAiConfig.getStartScript(),growningAiConfig.getCatkinPath());
+            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source "+growningAiConfig.getCatkinPath()+"/devel/setup.sh && sh "+growningAiConfig.getScriptsPath()+File.separator+growningAiConfig.getStartScript(),growningAiConfig.getCatkinPath());
             LOG.info("运行测试命令成功");
             runTag.setRunFlag(false);
             return;
@@ -147,6 +151,7 @@ public class TestServiceImpl implements TestService {
         try {
             FileUtils.writeStringToFile(new File(growningAiConfig.getPidPath()),
                     project.getId()+"","utf-8");
+            LOG.info("write pid "+project.getId() +" to "+growningAiConfig.getPidPath());
         } catch (IOException e) {
             LOG.error("写入project id 失败："+e.getMessage());
             return false;
@@ -168,12 +173,12 @@ public class TestServiceImpl implements TestService {
 
         //删除原来测试的项目
 //        String pid="/home/peter/AppStore/GrowningAI/pid.txt";
-        String pid=growningAiConfig.getPidPath();
-        File pidFile=new File(pid);
+        String plocPath = growningAiConfig.getPlocPath();
+        File plocFile=new File(plocPath);
         try {
-            String tmpPath = FileUtils.readFileToString(pidFile,"utf-8");
+            String tmpPath = FileUtils.readFileToString(plocFile,"utf-8");
             FileUtils.forceDelete(new File(tmpPath));
-            FileUtils.forceDelete(pidFile);
+            FileUtils.forceDelete(plocFile);
             LOG.info("delete project in "+tmpPath);
         } catch (IOException e) {
             LOG.error("删除之前的测试项目失败："+e.getMessage());
@@ -185,7 +190,7 @@ public class TestServiceImpl implements TestService {
         try {
             FileUtils.copyDirectoryToDirectory(new File(projectPath),new File(growningAiConfig.getCatkinSrcPath()));
             //测试的项目路径保存，方便下次测试清除
-            FileUtils.writeStringToFile(pidFile,growningAiConfig.getCatkinSrcPath()+File.separator+new File(project.getPath()).getName(),"utf-8");
+            FileUtils.writeStringToFile(plocFile,growningAiConfig.getCatkinSrcPath()+File.separator+new File(project.getPath()).getName(),"utf-8");
             LOG.info("copy project");
         } catch (IOException e) {
             LOG.error("将项目"+project.getId()+"复制到rossrc下失败："+e.getMessage());
