@@ -29,10 +29,10 @@ def post(url,param):
 
 if __name__ == "__main__":
     l = []
-    l.append(Result(10.1, 5, 3.5, 1,1).__dict__)  # 将对象的字典加入list
-    l.append(Result(10.2, 5, 3.5, 1,1).__dict__)
-    l.append(Result(10.3, 5, 3.5, 1,1).__dict__)
-    print l
+    l.append(Result(10.1, 5, 3.5, 1).__dict__)  # 将对象的字典加入list
+    l.append(Result(10.2, 5, 3.5, 1).__dict__)
+    l.append(Result(10.3, 5, 3.5, 1).__dict__)
+    # print l
     sess=requests.session()
     res=sess.post("http://localhost:8999/growningai/admin/login",{"name":"admin","password":"buaagrow"})
-    res=sess.post("http://localhost:8888/growningai/result/save",{"data":str(l)})  # list转字符串，构成json数据格式
+    res=sess.post("http://localhost:8999/growningai/result/save",{"results":str(l)})  # list转字符串，构成json数据格式

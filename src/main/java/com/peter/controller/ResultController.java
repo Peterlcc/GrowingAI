@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Result;
+import com.peter.component.GrowningAiConfig;
 import com.peter.component.ProjectTaskQueue;
 import com.peter.component.TestTask;
 import com.peter.service.ProjectService;
@@ -28,6 +29,8 @@ import java.util.List;
 public class ResultController {
     private Log LOG = LogFactory.getLog(ResultController.class);
 
+    @Autowired
+    private GrowningAiConfig growningAiConfig;
 
     @Autowired
     private ResultService resultService;
@@ -42,10 +45,10 @@ public class ResultController {
         LOG.info("get results:"+res);
         for (Result result:res)
         {
-            if (result.getDatasetId()==null||result.getDatasetId()==0)
+            if (result.getDatasetId()==null||result.getDatasetId().equals(growningAiConfig.getDefaultDataset()))
             {
                 LOG.info("result of project "+result.getProjectId()+" has no dataset!");
-                result.setDatasetId(0);
+                result.setDatasetId(growningAiConfig.getDefaultDataset());
             }
         }
         //TODO 设置结果是否成功

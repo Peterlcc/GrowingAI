@@ -45,6 +45,8 @@ public class GrowningAiConfig {
     private String libPath;
     private Integer runSum;
 
+    private Integer defaultDataset;
+
     public String getCatkinSrcPath() {
         return catkinPath+File.separator+"src";
     }

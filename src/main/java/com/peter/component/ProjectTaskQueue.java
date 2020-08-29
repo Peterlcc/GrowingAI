@@ -43,7 +43,7 @@ public class ProjectTaskQueue {
 
     public Project pop() {
         try {
-            return tasks.take();
+            return tasks.size()>0?tasks.take():null;
         } catch (InterruptedException e) {
             LOG.error(e.getMessage());
             e.printStackTrace();
