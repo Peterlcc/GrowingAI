@@ -5,6 +5,7 @@ import com.peter.service.*;
 import com.peter.utils.BeanEnum;
 import com.peter.utils.MessageUtil;
 import com.peter.utils.ObjectUtils;
+import com.peter.utils.PageModelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,7 +64,8 @@ public class PageController {
     public String login(Model model) {
         LOG.info("login.html requested!");
         checkMsg(MessageUtil.LOGIN_MSG,model);
-        return "user/login";
+        PageModelUtil.loginRegisterAttr(model,"登录","login");
+        return "user/login-register";
     }
 
     @GetMapping("list")
@@ -92,7 +94,8 @@ public class PageController {
     public String regist(Model model) {
         LOG.info("regist.html requested!");
         checkMsg(MessageUtil.REGIST_MSG,model);
-        return "user/regist";
+        PageModelUtil.loginRegisterAttr(model,"注册","register");
+        return "user/login-register";
     }
     @GetMapping("userEdit")
     public String userEdit(Model model) {

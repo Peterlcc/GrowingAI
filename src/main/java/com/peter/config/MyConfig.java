@@ -34,9 +34,9 @@ public class MyConfig {
 			@Override
 			public void addInterceptors(InterceptorRegistry registry) {
 				registry.addInterceptor(new AdminLoginHandlerInterceptor()).addPathPatterns("/admin/**")
-						.excludePathPatterns("/admin/login","/admin/code");
+						.excludePathPatterns("/admin/login","/admin/code","/userSource/**","/druid/**","*.ico","*.js","*.css","/webjars/**");
 				registry.addInterceptor(new UserLoginHandlerInterceptor()).addPathPatterns("/**")
-						.excludePathPatterns("/adminSource/**","/vendor/**","/druid/**","*.ico","/img/**","/css/**","/js/**","/webjars/**",
+						.excludePathPatterns("/adminSource/**","/userSource/**","/druid/**","*.ico","*.js","*.css","/webjars/**",
 								"/error","/test",
 								"/regist","/login",
 								"/user/regist","/user/code","/user/login",
