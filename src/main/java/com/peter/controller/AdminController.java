@@ -1,8 +1,12 @@
 package com.peter.controller;
 
 import com.peter.bean.Admin;
+import com.peter.component.ProjectTaskQueue;
+import com.peter.component.TestTask;
 import com.peter.service.AdminService;
+import com.peter.utils.LinuxCmdUtils;
 import com.peter.utils.MessageUtil;
+import com.peter.utils.RunTag;
 import com.peter.utils.VerifyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -36,6 +40,12 @@ public class AdminController {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private ProjectTaskQueue projectTaskQueue;
+
+    @Autowired
+    private RunTag runTag;
 
     @GetMapping("/code")
     public void getCode(HttpServletResponse response, HttpServletRequest request) throws IOException {
@@ -77,5 +87,13 @@ public class AdminController {
         LOG.info(admin+" logout!");
         request.getSession().setAttribute("admin",null);
         return "redirect:/admin/login";
+    }
+
+    @GetMapping("kill")
+    public String killTask(){
+        runTag.setRunFlag(false);
+        projectTaskQueue.pop();
+        LinuxCmdUtils.killShell();
+        return "测试任务已终止";
     }
 }
