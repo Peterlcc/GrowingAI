@@ -39,6 +39,15 @@
     <!-- Notika icon CSS
 		============================================ -->
     <link rel="stylesheet" th:href="@{/userSource/css/notika-custom-icon.css}">
+    <!-- bootstrap select CSS
+		============================================ -->
+<!--    <link rel="stylesheet" th:href="@{/userSource/css/bootstrap-select/bootstrap-select.css}">-->
+    <!-- datapicker CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/userSource/css/datapicker/datepicker3.css}">
+    <!-- dropzone CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/userSource/css/dropzone/dropzone.css}">
     <!-- main CSS
 		============================================ -->
     <link rel="stylesheet" th:href="@{/userSource/css/main.css}">
@@ -60,18 +69,20 @@
     <!-- Login Register area Start-->
     <div class="login-content">
         <!-- Login -->
+
         <div th:class="${type=='login'?'nk-block toggled':'nk-block'}" id="l-login">
             <div class="nk-form">
+                <form th:action="@{/user/login}" method="post">
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-support"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" class="form-control" placeholder="用户名" required="required">
+                        <input type="text" class="form-control" placeholder="用户名" required="required" name="username">
                     </div>
                 </div>
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-edit"></i></span>
                     <div class="nk-int-st">
-                        <input type="password" class="form-control" placeholder="密码" required="required">
+                        <input type="password" class="form-control" placeholder="密码" required="required" name="password">
                     </div>
                 </div>
                 <div class="input-group mg-t-15">
@@ -80,11 +91,16 @@
                              onclick="this.src=this.src+'?d='+new Date()*1" alt="验证码" />
                     </div>
                     <div class="nk-int-st">
-                        <input type="password" class="form-control" placeholder="验证码" required="required">
+                        <input type="password" class="form-control" placeholder="验证码" required="required" name="valicode">
                     </div>
-
                 </div>
+                    <div class="input-group mg-t-15">
+                        <div class="nk-int-st">
+                            <button class="btn btn-lg btn-success btn-block" type="submit">登录</button>
+                        </div>
+                    </div>
                 <a href="#l-register" data-ma-action="nk-login-switch" data-ma-block="#l-register" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow right-arrow-ant"></i></a>
+                </form>
             </div>
 
             <div class="nk-navigation nk-lg-ic">
@@ -93,27 +109,57 @@
             </div>
         </div>
 
+
         <!-- Register -->
         <div th:class="${type=='register'?'nk-block toggled':'nk-block'}" class="nk-block" id="l-register">
             <div class="nk-form">
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-support"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" class="form-control" placeholder="Username">
+                        <input type="text" class="form-control" placeholder="用户名" name="name">
                     </div>
                 </div>
-
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-support"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" class="form-control" placeholder="姓名" name="realname">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-tax"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" class="form-control" placeholder="学号" name="number" required="required">
+                    </div>
+                </div>
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-mail"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" class="form-control" placeholder="Email Address">
+                        <input type="text" class="form-control" placeholder="邮箱" name="email" required="required">
                     </div>
                 </div>
 
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-edit"></i></span>
                     <div class="nk-int-st">
-                        <input type="password" class="form-control" placeholder="Password">
+                        <input type="password" class="form-control" placeholder="密码" name="password" required="required">
+                    </div>
+                </div>
+
+                <div class="input-group mg-t-15">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-edit"></i></span>
+                    <div class="nk-int-st">
+                        <input type="password" class="form-control" placeholder="确认密码" name="retypePassword" required="required">
+                    </div>
+                </div>
+                <div class="input-group mg-t-15">
+<!--                    <div class="nk-int-mk sl-dp-mn">-->
+<!--                        <h2>性别</h2>-->
+<!--                    </div>-->
+                    <div class="nk-int-st">
+                        <select class="form-control" name="sex">
+                            <option value="0" selected="selected">男</option>
+                            <option value="1">女</option>
+                        </select>
                     </div>
                 </div>
 
