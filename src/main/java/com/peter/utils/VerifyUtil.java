@@ -78,4 +78,15 @@ public class VerifyUtil {
                 ran.nextInt(256), ran.nextInt(256));
         return color;
     }
+    public static String createCode(){
+        StringBuffer sb = new StringBuffer();
+        Random ran = new Random();
+        for (int i = 0; i <SIZE; i++) {
+            // 取随机字符索引
+            int n = ran.nextInt(chars.length);
+            // 记录字符
+            sb.append(chars[n]);
+        }
+        return sb.toString();
+    }
 }
