@@ -47,6 +47,7 @@
 
 				<form id="yamlForm" th:action="@{/param/save}" method="post" th:attr="download=@{/param/download.yaml}">
 					<div>
+						<div id="cards">
 					<!-- Comments Form -->
 					<div class="card my-4" th:if="${yaml!=null}" th:each="data,dataStat:${yaml}">
 						<h5 class="card-header" th:text="${yamlNameText}">Leave a Comment:</h5>
@@ -55,15 +56,16 @@
 									<input class="form-control" th:name="'name'+${dataStat.index}" th:value="${data.key}">
 									<input class="form-control" th:name="'value'+${dataStat.index}" th:value="${data.value}">
 								</div>
-								<button type="button" class="btn btn-primary">删除当前项</button>
+								<button type="button" onclick="deleteCard(this);" class="btn btn-primary">删除当前项</button>
 						</div>
 					</div>
+						</div>
 					<div class="card my-4">
 						<h5 class="card-header">操作</h5>
 						<div class="card-body">
 							<div class="mb-3">
 								<button type="button" onclick="generateYaml();" class="btn btn-primary form-control mb-3">生成yaml文件</button>
-<!--								<button type="button" class="btn btn-primary form-control mb-3">增加一项</button>-->
+								<button type="button" onclick="addCard();" class="btn btn-primary form-control mb-3">增加一项</button>
 							</div>
 						</div>
 					</div>
@@ -104,7 +106,47 @@
 	</div>
 	<!-- /.container -->
 
-<script>
+<script th:inline="javascript">
+	var indexGlobal=[[${indexGlobal}]];
+	var yamlNameText=[[${yamlNameText}]];
+
+	function deleteCard(btn) {
+		var cardBody=$(btn).parent();
+		var card=cardBody.parent();
+		card.remove();
+	}
+
+	function addCard() {
+		var inputName=$("<input class='form-control'>");
+		inputName.attr("name","name"+indexGlobal);
+		inputName.attr("value","default");
+
+		var inputValue=$("<input class='form-control'>");
+		inputValue.attr("name","value"+indexGlobal);
+		inputValue.attr("value","default");
+
+		var formGroup=$("<div class='form-group'>");
+		formGroup.append(inputName);
+		formGroup.append(inputValue);
+
+		var btn=$('<button type="button" class="btn btn-primary">删除当前项</button>');
+
+		var cardBody=$('<div class="card-body"></div>');
+		cardBody.append(formGroup);
+		cardBody.append(btn);
+
+		var cardHead=$('<h5 class="card-header">Leave a Comment:</h5>');
+		cardHead.text(yamlNameText);
+
+		var card=$('<div class="card my-4"></div>');
+		card.append(cardHead);
+		card.append(cardBody);
+
+		$("#cards").append(card);
+
+		indexGlobal=indexGlobal+1;
+	}
+
 	function generateYaml() {
 		console.log($('#yamlForm').attr("action"));
 		console.log($('#yamlForm').serialize());

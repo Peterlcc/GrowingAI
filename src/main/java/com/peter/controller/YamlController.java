@@ -56,6 +56,7 @@ public class YamlController {
             LOG.info("load yamls from "+yamlDir.getAbsolutePath()+",["+String.join(",",yamlNames)+"]");
         }
         model.addAttribute("yamlNames",yamlNames);
+        model.addAttribute("indexGlobal",yamlNames.size());
 
         File file = new File(growningAiConfig.getYamlDir() + File.separator + name+".yaml");
         if(!file.exists()){
