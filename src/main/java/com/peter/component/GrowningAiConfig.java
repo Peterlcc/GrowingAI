@@ -47,6 +47,8 @@ public class GrowningAiConfig {
 
     private Integer defaultDataset;
 
+    private String yamlDir;
+
     public String getCatkinSrcPath() {
         return catkinPath+File.separator+"src";
     }

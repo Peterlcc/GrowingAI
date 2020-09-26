@@ -84,7 +84,6 @@ public class LinuxCmdUtils {
             while ((line = input.readLine()) != null){
                 result=line;
             }
-
         } catch (java.io.IOException e) {
 
             System.err.println("IOException " + e.getMessage());
