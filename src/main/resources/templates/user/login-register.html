@@ -27,6 +27,12 @@
     <!-- animate CSS
 		============================================ -->
     <link rel="stylesheet" th:href="@{/userSource/css/animate.css}">
+    <!-- summernote CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/userSource/css/summernote/summernote.css}">
+    <!-- Range Slider CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/userSource/css/themesaller-forms.css}">
     <!-- normalize CSS
 		============================================ -->
     <link rel="stylesheet" th:href="@{/userSource/css/normalize.css}">
@@ -41,7 +47,7 @@
     <link rel="stylesheet" th:href="@{/userSource/css/notika-custom-icon.css}">
     <!-- bootstrap select CSS
 		============================================ -->
-<!--    <link rel="stylesheet" th:href="@{/userSource/css/bootstrap-select/bootstrap-select.css}">-->
+    <link rel="stylesheet" th:href="@{/userSource/css/bootstrap-select/bootstrap-select.css}">
     <!-- datapicker CSS
 		============================================ -->
     <link rel="stylesheet" th:href="@{/userSource/css/datapicker/datepicker3.css}">
@@ -152,17 +158,31 @@
                     </div>
                 </div>
                 <div class="input-group mg-t-15">
-<!--                    <div class="nk-int-mk sl-dp-mn">-->
-<!--                        <h2>性别</h2>-->
 <!--                    </div>-->
-                    <div class="nk-int-st">
-                        <select class="form-control" name="sex">
-                            <option value="0" selected="selected">男</option>
-                            <option value="1">女</option>
-                        </select>
+                    <span class="input-group-addon nk-ic-st-pro inline-block"><i class="notika-icon notika-flag"></i></span>
+                    <div class="nk-int-st inline-block">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="fm-checkbox">
+                                <label><input type="radio" placeholder="性别" name="sex" checked="checked" class="i-checks" value="0"> <i></i>男</label>
+                                &nbsp;&nbsp;&nbsp;
+                                <label><input type="radio" placeholder="性别" name="sex" class="i-checks" value="1"> <i></i>女</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
+                <hr>
+                <div class="input-group mg-t-15">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-edit"></i></span>
+                    <div class="nk-int-st form-inline">
+                        <input type="text" class="form-control mb-3" placeholder="邮箱验证码" name="verify" required="required">
+                        <button class="btn btn-success" onclick="settime(this);">获取验证码</button>
+                    </div>
+                </div>
+                <div class="input-group mg-t-15">
+                    <div class="nk-int-st">
+                        <button class="btn btn-lg btn-success btn-block" type="submit">注册</button>
+                    </div>
+                </div>
                 <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
             </div>
 
@@ -194,6 +214,27 @@
         </div>
     </div>
     <!-- Login Register area End-->
+
+    <script>
+        var countdown=30;
+        function settime(t) {
+            var btn=$(t);
+            if (countdown == 0) {
+                btn.removeAttr("disabled");
+                btn.text("免费获取验证码");
+                countdown = 30;
+                return;
+            } else {
+                btn.attr("disabled", true);
+                btn.text("重新发送(" + countdown + ")");
+                countdown--;
+            }
+            setTimeout(function() {
+                settime(t)
+            },1000)
+        }
+
+    </script>
     <!-- jquery
 		============================================ -->
     <script th:src="@{/userSource/js/vendor/jquery-1.12.4.min.js}"></script>
