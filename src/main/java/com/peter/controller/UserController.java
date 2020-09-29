@@ -87,7 +87,7 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @PostMapping("regist")
+    @PostMapping("register")
     public String regist(User user, @RequestParam("valicode") String valicode, HttpServletRequest request,
                          @RequestParam("retypePassword") String retypePassword, RedirectAttributes model) {
         user.setLoginTime(new Date());

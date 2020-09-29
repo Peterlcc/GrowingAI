@@ -175,7 +175,7 @@
                     <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-edit"></i></span>
                     <div class="nk-int-st form-inline">
                         <input type="text" class="form-control mb-3" placeholder="邮箱验证码" name="verify" required="required">
-                        <button class="btn btn-success" onclick="settime(this);">获取验证码</button>
+                        <button class="btn btn-success" th:attr="url=@{/mail/send/register}" onclick="settime(this);">获取验证码</button>
                     </div>
                 </div>
                 <div class="input-group mg-t-15">
@@ -220,6 +220,7 @@
         function settime(t) {
             var btn=$(t);
             if (countdown == 0) {
+                swal("验证码已发送!请前往您的邮箱接收！");
                 btn.removeAttr("disabled");
                 btn.text("免费获取验证码");
                 countdown = 30;
@@ -234,6 +235,24 @@
             },1000)
         }
 
+
+        function sendMailVerifyCode() {
+            // var sendMailCodeUrl=$(this).attr("url");
+            // $.ajax({
+            //     url: sendMailCodeUrl,
+            //     type: "GET",
+            //     success: function (result) {
+            //         if (result=="succeed"){
+            //             $("#saveFile").attr("disabled","disabled");
+            //         }else {
+            //             alert("保存文件失败，请稍后重试！");
+            //         }
+            //     },
+            //     error:function () {
+            //
+            //     }
+            // });
+        }
     </script>
     <!-- jquery
 		============================================ -->
@@ -281,6 +300,8 @@
     <!--  Chat JS
 		============================================ -->
     <script th:src="@{/userSource/js/chat/jquery.chat.js}"></script>
+    <script th:src="@{/userSource/js/dialog/sweetalert2.min.js}"></script>
+    <script th:src="@{/userSource/js/dialog/dialog-active.js}"></script>
     <!--  wave JS
 		============================================ -->
     <script th:src="@{/userSource/js/wave/waves.min.js}"></script>
@@ -301,6 +322,10 @@
     <!-- main JS
 		============================================ -->
     <script th:src="@{/userSource/js/main.js}"></script>
+
+    <!-- tawk chat JS
+            ============================================ -->
+    <script th:src="@{/userSource/js/tawk-chat.js}"></script>
 </body>
 
 </html>
