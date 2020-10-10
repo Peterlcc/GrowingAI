@@ -45,7 +45,7 @@
 
             <h2 class="card-title" th:text="${announce.title}">Post Title</h2>
             <p class="card-text">发布者:管理员 [[${#dates.format(announce.createTime,'yyyy-MM-dd')}]]</p>
-            <div th:utext="${announce.content}"></div>
+            <p th:utext="${announce.content}"></p>
         </div>
       </div>
     </div>
@@ -57,36 +57,6 @@
   <!-- Bootstrap core JavaScript -->
   <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
-  <!-- paginator -->
-  <script type="text/javascript" th:src="@{/js/jq-paginator.js}" src="asserts/js/feather.min.js" ></script>
-
-  <script type="text/javascript">
-
-    var first=true;
-    var pages=$("#pages").attr("num");
-    var pageSize=$("#pageSize").attr("num");
-    var pageNum=$("#pageNum").attr("num");
-    var url=$("#pages").attr("url");
-    console.log(pages+","+pageSize+","+pageNum);
-    $("#project-pagination").jqPaginator({
-      totalPages:   parseInt(pages),
-      visiblePages: parseInt(pageSize),
-      currentPage:  parseInt(pageNum),
-      first: '<li class="first"><a href="javascript:void(0);">首页<\/a><\/li>',
-      prev: '<li class="prev"><a href="javascript:void(0);">上一页<\/a><\/li>',
-      next: '<li class="next"><a href="javascript:void(0);">下一页<\/a><\/li>',
-      last: '<li class="last"><a href="javascript:void(0);">末页<\/a><\/li>',
-      page: '<li class="page"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
-      onPageChange: function(n) {
-        $("#pagination-text").html(n);
-        if(!first){
-          window.location.href=url+"?ps=10&pc="+n;
-        }else{
-          first=false;
-        }
-      }
-    });
-  </script>
 </body>
 
 </html>
