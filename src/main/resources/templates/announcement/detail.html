@@ -45,7 +45,7 @@
 
             <h2 class="card-title" th:text="${announce.title}">Post Title</h2>
             <p class="card-text">发布者:管理员 [[${#dates.format(announce.createTime,'yyyy-MM-dd')}]]</p>
-            <p th:utext="${announce.content}"></p>
+            <div th:utext="${announce.content}"></div>
         </div>
       </div>
     </div>
