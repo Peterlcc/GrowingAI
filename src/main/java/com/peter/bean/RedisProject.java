@@ -11,6 +11,9 @@ import java.lang.reflect.InvocationTargetException;
 public class RedisProject extends Project{
     private int runNumber=0;
 
+    public RedisProject() {
+    }
+
     public RedisProject(int runNumber) {
         super();
         this.runNumber = runNumber;
