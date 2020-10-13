@@ -1,8 +1,11 @@
 package com.peter.code;
 
+import com.peter.bean.Project;
 import com.peter.bean.User;
 import com.peter.component.GrowningAiConfig;
 import com.peter.component.RedisUtil;
+import com.peter.component.TaskQueue;
+import com.peter.service.ProjectService;
 import com.peter.service.UserService;
 import com.peter.utils.RegexUtils;
 import org.junit.jupiter.api.Test;
@@ -25,6 +28,12 @@ class GrowningAiApplicationTests {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private TaskQueue taskQueue;
+
+	@Autowired
+	private ProjectService projectService;
+
 	@Test
 	void contextLoads() {
 		String email="123@123.com";
@@ -40,6 +49,25 @@ class GrowningAiApplicationTests {
 		User key_test = (User) redisUtil.lGetIndex("key_test", 0);
 		key_test.setLoginTime(new Date());
 		System.out.println(key_test);
+	}
+
+	@Test
+	void taskQueueTest(){
+		List<Project> allSimpleProjects = projectService.getAllSimpleProjects();
+
+		taskQueue.addTask(allSimpleProjects.get(0),false);
+		taskQueue.addTask(allSimpleProjects.get(1),false);
+		taskQueue.addTask(allSimpleProjects.get(2),false);
+		Project task1 = taskQueue.getTask();
+//		task1.setCreateTime(new Date());
+		System.out.println("task1:"+task1);
+		taskQueue.addTask(task1,true);
+		Project task2 = taskQueue.getTask();
+		System.out.println("task2:"+task2);
+		Project task3 = taskQueue.getTask();
+		System.out.println("task3:"+task3);
+		Project task4 = taskQueue.getTask();
+		System.out.println("task4:"+task4);
 	}
 
 }

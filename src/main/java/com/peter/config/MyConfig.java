@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.peter.component.MultiLevelTaskQueue;
+import com.peter.component.RedisTaskQueue;
+import com.peter.component.RedisUtil;
+import com.peter.component.TaskQueue;
 import com.peter.utils.RunTag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -143,5 +147,11 @@ public class MyConfig {
 		template.setHashValueSerializer(jackson2JsonRedisSerializer);
 		template.afterPropertiesSet();
 		return template;
+	}
+
+	@Bean
+	public TaskQueue taskQueue(RedisUtil redisUtil){
+		TaskQueue taskQueue = new MultiLevelTaskQueue(redisUtil);
+		return taskQueue;
 	}
 }

@@ -365,6 +365,12 @@ public final class RedisUtil {
             return null;
         }
     }
+    public void rpush(String key,Object object){
+        redisTemplate.opsForList().rightPush(key,object);
+    }
+    public Object lpop(String key,Object object){
+        return redisTemplate.opsForList().leftPop(key);
+    }
         /**
          * 获取list缓存的长度
          * @param key 键
@@ -429,7 +435,6 @@ public final class RedisUtil {
          * 将list放入缓存
          * @param key 键
          * @param value 值
-         * @param time 时间(秒)
          * @return
          */
     public boolean lSet(String key, List<Object> value) {

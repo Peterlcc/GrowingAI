@@ -1,27 +1,17 @@
 package com.peter.controller;
 
-import com.alibaba.druid.support.json.JSONUtils;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.peter.bean.Result;
 import com.peter.component.GrowningAiConfig;
-import com.peter.component.ProjectTaskQueue;
-import com.peter.component.TestTask;
-import com.peter.service.ProjectService;
 import com.peter.service.ResultService;
-import com.peter.service.TestService;
 import com.peter.utils.LinuxCmdUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 @Controller

@@ -1,8 +1,6 @@
 package com.peter.controller;
 
 import com.peter.bean.Admin;
-import com.peter.component.ProjectTaskQueue;
-import com.peter.component.TestTask;
 import com.peter.service.AdminService;
 import com.peter.utils.LinuxCmdUtils;
 import com.peter.utils.MessageUtil;
@@ -13,7 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,9 +37,6 @@ public class AdminController {
 
     @Autowired
     private HttpServletRequest request;
-
-    @Autowired
-    private ProjectTaskQueue projectTaskQueue;
 
     @Autowired
     private RunTag runTag;
@@ -92,7 +86,6 @@ public class AdminController {
     @GetMapping("kill")
     public String killTask() {
         runTag.setRunFlag(false);
-        projectTaskQueue.pop();
         LinuxCmdUtils.killShell();
         return "测试任务已终止";
     }

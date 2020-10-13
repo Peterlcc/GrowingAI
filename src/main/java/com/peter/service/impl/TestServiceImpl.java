@@ -1,15 +1,11 @@
 package com.peter.service.impl;
 
-import com.peter.bean.Dataset;
-import com.peter.bean.DatasetExample;
-import com.peter.bean.Project;
-import com.peter.bean.Result;
+import com.peter.bean.*;
 import com.peter.component.GrowningAiConfig;
-import com.peter.component.ProjectTaskQueue;
+import com.peter.component.TaskQueue;
 import com.peter.mapper.DatasetMapper;
 import com.peter.service.ResultService;
 import com.peter.service.TestService;
-import com.peter.utils.FileUtil;
 import com.peter.utils.LinuxCmdUtils;
 import com.peter.utils.RunTag;
 import org.apache.commons.io.FileUtils;
@@ -21,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -35,7 +30,7 @@ public class TestServiceImpl implements TestService {
     private ResultService resultService;
 
     @Autowired
-    private ProjectTaskQueue projectTaskQueue;
+    private TaskQueue taskQueue;
 
     @Autowired
     private RunTag runTag;

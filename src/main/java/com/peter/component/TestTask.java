@@ -23,7 +23,7 @@ public class TestTask {
     private TestService testService;
 
     @Autowired
-    private ProjectTaskQueue projectTaskQueue;
+    private TaskQueue taskQueue;
 
     @Autowired
     private RunTag runTag;
@@ -41,12 +41,11 @@ public class TestTask {
             runCount++;
             if (runCount>=growningAiConfig.getRunSum()){
                 LOG.info("the test task running to long ,need tobe killed!");
-//                projectTaskQueue.pop();
                 LinuxCmdUtils.killShell();
             }
             return;
         }
-        Project project = projectTaskQueue.getTask();
+        Project project = taskQueue.getTask();
         if (project==null) {
             LOG.info("queue is empty!");
             return;

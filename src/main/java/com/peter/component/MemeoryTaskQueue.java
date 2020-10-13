@@ -1,17 +1,18 @@
 package com.peter.component;
 
 import com.peter.bean.Project;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-@Component
-public class ProjectTaskQueue {
-    private static final Log LOG = LogFactory.getLog(ProjectTaskQueue.class);
-    private ArrayBlockingQueue<Project> tasks=new ArrayBlockingQueue<Project>(100);
-    public Project getTask(){
+/**
+ * @author lcc
+ * @date 2020/10/13 下午3:41
+ */
+public class MemeoryTaskQueue extends TaskQueue{
+    private static final long capacity=30;
+    private ArrayBlockingQueue<Project> tasks=new ArrayBlockingQueue<Project>(30);
+    @Override
+    public Project getTask() {
         try {
             return tasks.size()==0?null:tasks.take();
         } catch (InterruptedException e) {
@@ -20,7 +21,9 @@ public class ProjectTaskQueue {
         }
 //        return tasks.size()==0?null:tasks.peek();
     }
-    public void addTask(Project project){
+
+    @Override
+    public void addTask(Project project, boolean again) {
         try {
             tasks.put(project);
         } catch (InterruptedException e) {
@@ -28,26 +31,23 @@ public class ProjectTaskQueue {
             throw new RuntimeException(e);
         }
     }
-    public int getTaskSize(){
+
+    @Override
+    public long getTaskSize() {
         return tasks.size();
     }
-    public int getRemaining(){
+
+    @Override
+    public long getRemaining(){
         return tasks.remainingCapacity();
     }
+    @Override
     public boolean isFull(){
         return tasks.remainingCapacity()==0;
     }
+
+    @Override
     public boolean isEmpty(){
         return tasks.isEmpty();
-    }
-
-    public Project pop() {
-        try {
-            return tasks.size()>0?tasks.take():null;
-        } catch (InterruptedException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
     }
 }

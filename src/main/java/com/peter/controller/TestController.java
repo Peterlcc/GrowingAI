@@ -50,7 +50,7 @@ public class TestController {
 
     @GetMapping("taskSize")
     @ResponseBody
-    public Integer getTaskQueueSize(){
+    public Long getTaskQueueSize(){
         return taskUploadService.getProjectsInTask();
     }
 }

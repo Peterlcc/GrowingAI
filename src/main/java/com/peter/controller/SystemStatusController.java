@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping("/admin/status")
 public class SystemStatusController {
     private static final Log LOG= LogFactory.getLog(SystemStatusController.class);
-    
+
     @GetMapping("mem")
     @ResponseBody
     public Map<String,Object> getMemory(){
