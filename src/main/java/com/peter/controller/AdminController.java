@@ -33,7 +33,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("admin")
 public class AdminController {
-    private Log LOG = LogFactory.getLog(AdminController.class);
+    private static final Log LOG = LogFactory.getLog(AdminController.class);
 
     @Autowired
     private AdminService adminService;
@@ -60,7 +60,7 @@ public class AdminController {
 
     @PostMapping("login")
     public String login(@RequestParam("name") String name, @RequestParam("password") String password,
-                         RedirectAttributes model){
+                        RedirectAttributes model) {
         LOG.info("post msg:[name:" + name + ",passwd:" + password + "]");
         if (StringUtils.isEmpty(name) || StringUtils.isEmpty(password)) {
             model.addFlashAttribute(MessageUtil.LOGIN_MSG, "用户名密码不能为空");
@@ -68,7 +68,7 @@ public class AdminController {
             return "redirect:/admin/login";
         }
         Admin adminByName = adminService.getByName(name);
-        if (adminByName!=null){
+        if (adminByName != null) {
             if (StringUtils.equals(adminByName.getPassword(), password)) {
                 adminByName.setLoginTime(new Date());
                 adminService.update(adminByName);
@@ -82,15 +82,15 @@ public class AdminController {
     }
 
     @GetMapping("logout")
-    public String logout(){
+    public String logout() {
         Object admin = request.getSession().getAttribute("admin");
-        LOG.info(admin+" logout!");
-        request.getSession().setAttribute("admin",null);
+        LOG.info(admin + " logout!");
+        request.getSession().setAttribute("admin", null);
         return "redirect:/admin/login";
     }
 
     @GetMapping("kill")
-    public String killTask(){
+    public String killTask() {
         runTag.setRunFlag(false);
         projectTaskQueue.pop();
         LinuxCmdUtils.killShell();

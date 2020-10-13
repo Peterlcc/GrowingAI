@@ -27,7 +27,7 @@ import java.util.List;
 @Controller
 @RequestMapping("result")
 public class ResultController {
-    private Log LOG = LogFactory.getLog(ResultController.class);
+    private static final Log LOG = LogFactory.getLog(ResultController.class);
 
     @Autowired
     private GrowningAiConfig growningAiConfig;

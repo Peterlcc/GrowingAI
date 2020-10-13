@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("test")
 public class TestController {
-    private Log LOG = LogFactory.getLog(TestController.class);
+    private static final Log LOG = LogFactory.getLog(TestController.class);
     @Autowired
     private TestService testService;
     @Autowired

@@ -31,7 +31,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("aadl")
 public class AADLController {
-    private Log LOG = LogFactory.getLog(AADLController.class);
+    private static final Log LOG = LogFactory.getLog(AADLController.class);
     private static final int TYPE_ID=1;
     private FileType fileType=null;
 

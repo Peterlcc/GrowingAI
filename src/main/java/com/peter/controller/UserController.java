@@ -36,7 +36,7 @@ import java.util.List;
 @Controller
 @RequestMapping("user")
 public class UserController {
-    private Log LOG = LogFactory.getLog(UserController.class);
+    private static final Log LOG = LogFactory.getLog(UserController.class);
     @Autowired
     private UserService userService;
     @Autowired

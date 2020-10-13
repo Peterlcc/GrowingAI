@@ -23,9 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("cpp")
 public class CPPController {
-    private Log LOG = LogFactory.getLog(CPPController.class);
-    private static final int TYPE_ID=2;
-    private FileType fileType=null;
+    private static final Log LOG = LogFactory.getLog(CPPController.class);
+    private static final int TYPE_ID = 2;
+    private FileType fileType = null;
 
     @Autowired
     private FileService fileService;
@@ -33,7 +33,7 @@ public class CPPController {
     private FileTypeService fileTypeService;
 
     @GetMapping("list")
-    public String list(HttpServletRequest request, Model model){
+    public String list(HttpServletRequest request, Model model) {
         String pcstr = request.getParameter("pc");
         if (pcstr == null || pcstr.equals("")) {
             pcstr = "1";
@@ -46,12 +46,12 @@ public class CPPController {
         int ps = Integer.parseInt(psstr);
         User user = (User) request.getSession().getAttribute("user");
         PageInfo<File> pageInfo = fileService.getFilesByUserId(pc, ps, user.getId(), TYPE_ID);
-        LOG.info("list:"+pageInfo.getList());
+        LOG.info("list:" + pageInfo.getList());
         model.addAttribute("pageInfo", pageInfo);
-        if (fileType==null){
-            fileType=fileTypeService.getById(TYPE_ID);
+        if (fileType == null) {
+            fileType = fileTypeService.getById(TYPE_ID);
         }
-        model.addAttribute("fileType",fileTypeService.getById(TYPE_ID));
+        model.addAttribute("fileType", fileTypeService.getById(TYPE_ID));
         return "user/fileList";
     }
 }

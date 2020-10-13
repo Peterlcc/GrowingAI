@@ -21,26 +21,27 @@ import java.util.Date;
 @RequestMapping("announcement")
 @Controller
 public class AnnouncementController {
-    private Log LOG = LogFactory.getLog(AnnouncementController.class);
+    private static final Log LOG = LogFactory.getLog(AnnouncementController.class);
 
     @Autowired
     private AnnouncementService announcementService;
 
     @PostMapping("list")
     @ResponseBody
-    public String adminAnnouncementList(@RequestParam("draw") int draw, @RequestParam("length") int length, @RequestParam("start") int start){
+    public String adminAnnouncementList(@RequestParam("draw") int draw, @RequestParam("length") int length, @RequestParam("start") int start) {
         int pageCurrent = start / length + 1;
-        int pageSize=length;
+        int pageSize = length;
         PageInfo<Announce> announcementPageInfo = announcementService.getAnnouncements(pageCurrent, pageSize);
         JSONObject result = new JSONObject();
-        result.put("draw",draw);
-        result.put("recordsTotal",announcementPageInfo.getTotal());
-        result.put("recordsFiltered",announcementPageInfo.getTotal());
-        result.put("data",announcementPageInfo.getList());
+        result.put("draw", draw);
+        result.put("recordsTotal", announcementPageInfo.getTotal());
+        result.put("recordsFiltered", announcementPageInfo.getTotal());
+        result.put("data", announcementPageInfo.getList());
         return result.toString();
     }
+
     @GetMapping("list")
-    public String announcementList(HttpServletRequest request,Model model){
+    public String announcementList(HttpServletRequest request, Model model) {
         LOG.info("announcement.list.html requested!");
         String pcstr = request.getParameter("pc");
         if (pcstr == null || pcstr.equals("")) {
@@ -54,41 +55,44 @@ public class AnnouncementController {
         int ps = Integer.parseInt(psstr);
         PageInfo<Announce> pageInfo = announcementService.getAnnouncements(pc, ps);
         pageInfo.getList().forEach(announce -> announce.setContent(null));
-        LOG.info("get projects list,size:"+pageInfo.getList().size());
+        LOG.info("get projects list,size:" + pageInfo.getList().size());
         model.addAttribute("pageInfo", pageInfo);
         return "announcement/list";
     }
+
     @GetMapping("detail/{id}")
-    public String detail(@PathVariable("id")Integer id,Model model){
+    public String detail(@PathVariable("id") Integer id, Model model) {
         LOG.info("announcement.detail.html requested!");
         Announce announce = announcementService.get(id);
-        LOG.info("get announce "+announce.getTitle()+" with id "+announce.getId());
-        model.addAttribute("announce",announce);
+        LOG.info("get announce " + announce.getTitle() + " with id " + announce.getId());
+        model.addAttribute("announce", announce);
         return "announcement/detail";
     }
 
     @PostMapping("announcement")
     @ResponseBody
-    public String save(Announce announce){
-        LOG.info("save announce:"+announce);
+    public String save(Announce announce) {
+        LOG.info("save announce:" + announce);
         announce.setCreateTime(new Date());
         boolean save = announcementService.save(announce);
-        return save?"succeed":"failed";
+        return save ? "succeed" : "failed";
     }
+
     @PostMapping("update")
     @ResponseBody
-    public String update(Announce announce){
-        LOG.info("update announce:"+announce);
+    public String update(Announce announce) {
+        LOG.info("update announce:" + announce);
         announce.setCreateTime(new Date());
         boolean save = announcementService.update(announce);
-        return save?"succeed":"failed";
+        return save ? "succeed" : "failed";
     }
+
     @GetMapping("delete")
     @ResponseBody
-    public String adminDelete(@RequestParam("id") int id){
-        LOG.info("delete result id="+id);
+    public String adminDelete(@RequestParam("id") int id) {
+        LOG.info("delete result id=" + id);
         boolean delete = announcementService.delete(id);
-        return delete?"succeed":"failed";
+        return delete ? "succeed" : "failed";
     }
 
 

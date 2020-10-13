@@ -34,7 +34,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("project")
 public class ProjectController {
-    private Log LOG = LogFactory.getLog(ProjectController.class);
+    private static final Log LOG = LogFactory.getLog(ProjectController.class);
 
     @Autowired
     private ProjectService projectService;

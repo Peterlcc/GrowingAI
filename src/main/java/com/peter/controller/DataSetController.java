@@ -35,55 +35,57 @@ public class DataSetController {
 
     @PostMapping("list")
     @ResponseBody
-    public String adminDatasetList(@RequestParam("draw") int draw, @RequestParam("length") int length, @RequestParam("start") int start){
+    public String adminDatasetList(@RequestParam("draw") int draw, @RequestParam("length") int length, @RequestParam("start") int start) {
         int pageCurrent = start / length + 1;
-        int pageSize=length;
+        int pageSize = length;
         PageInfo<Dataset> datasetPageInfo = datasetService.getDatasets(pageCurrent, pageSize);
         JSONObject result = new JSONObject();
-        result.put("draw",draw);
-        result.put("recordsTotal",datasetPageInfo.getTotal());
-        result.put("recordsFiltered",datasetPageInfo.getTotal());
-        result.put("data",datasetPageInfo.getList());
+        result.put("draw", draw);
+        result.put("recordsTotal", datasetPageInfo.getTotal());
+        result.put("recordsFiltered", datasetPageInfo.getTotal());
+        result.put("data", datasetPageInfo.getList());
         return result.toString();
     }
 
     @GetMapping("delete")
     @ResponseBody
-    public String adminDelete( Integer id){
-        LOG.info("id:"+id);
+    public String adminDelete(Integer id) {
+        LOG.info("id:" + id);
         boolean delete = datasetService.delete(id);
-        return delete?"succeed":"error";
+        return delete ? "succeed" : "error";
     }
+
     @GetMapping("dataset")
     @ResponseBody
-    public Dataset adminGet(Integer id){
-        LOG.info("id:"+id);
+    public Dataset adminGet(Integer id) {
+        LOG.info("id:" + id);
         Dataset dataset = datasetService.get(id);
         dataset.setPath(null);
         return dataset;
     }
+
     @PostMapping("add")
     @ResponseBody
-    public String adminAdd(@RequestParam("dire") MultipartFile[] dire, Dataset dataset){
+    public String adminAdd(@RequestParam("dire") MultipartFile[] dire, Dataset dataset) {
         LOG.info(dataset);
-        if (dire == null || dire.length == 0|| StringUtils.isEmpty(dire[0].getOriginalFilename())) {
+        if (dire == null || dire.length == 0 || StringUtils.isEmpty(dire[0].getOriginalFilename())) {
             LOG.info("files in project to upload is null,upload failed!");
             return "error";
         }
-        Arrays.stream(dire).forEach(dir->{
+        Arrays.stream(dire).forEach(dir -> {
             String originalFilename = dir.getOriginalFilename();
             String name = dir.getName();
             long size = dir.getSize();
-            String line = String.join(",", originalFilename, name, size+"");
+            String line = String.join(",", originalFilename, name, size + "");
             System.out.println(line);
         });
         String datasetRoot = growningAiConfig.getDatasetRoot();
 
         String[] pathNames = dire[0].getOriginalFilename().split("/");
-        dataset.setPath(datasetRoot+ File.separator+pathNames[0]);
+        dataset.setPath(datasetRoot + File.separator + pathNames[0]);
         File datasetPathDir = new File(dataset.getPath());
-        if (datasetPathDir.exists()){
-            LOG.info("dataset path in "+dataset.getPath()+" is existed!");
+        if (datasetPathDir.exists()) {
+            LOG.info("dataset path in " + dataset.getPath() + " is existed!");
             return "error";
         }
         StringBuilder uploadFiles = new StringBuilder();
@@ -100,28 +102,29 @@ public class DataSetController {
         }
 
         boolean add = datasetService.add(dataset);
-        LOG.info("add dataset:"+dataset);
-        return add?"succeed":"error";
+        LOG.info("add dataset:" + dataset);
+        return add ? "succeed" : "error";
     }
+
     @PostMapping("update")
     @ResponseBody
-    public String adminUpdate(@RequestParam("dire") MultipartFile[] dire,Dataset dataset){
+    public String adminUpdate(@RequestParam("dire") MultipartFile[] dire, Dataset dataset) {
         LOG.info(dataset);
         Dataset datasetById = datasetService.get(dataset.getId());
-        if (dataset.equals(datasetById)){
+        if (dataset.equals(datasetById)) {
             LOG.info("dataset info not changed!");
             return "error";
         }
-        if (dire == null || dire.length == 0|| StringUtils.isEmpty(dire[0].getOriginalFilename())) {
+        if (dire == null || dire.length == 0 || StringUtils.isEmpty(dire[0].getOriginalFilename())) {
             LOG.info("files in project to upload is null,upload failed!");
-        }else {
+        } else {
             String datasetRoot = growningAiConfig.getDatasetRoot();
             String[] pathNames = dire[0].getOriginalFilename().split("/");
-            dataset.setPath(datasetRoot+ File.separator+pathNames[0]);
+            dataset.setPath(datasetRoot + File.separator + pathNames[0]);
             File datasetPathDir = new File(dataset.getPath());
-            if (datasetPathDir.exists()){
-                LOG.info("dataset path in "+dataset.getPath()+" is existed!");
-            }else {
+            if (datasetPathDir.exists()) {
+                LOG.info("dataset path in " + dataset.getPath() + " is existed!");
+            } else {
                 StringBuilder uploadFiles = new StringBuilder();
                 uploadFiles.append("upload files:[");
                 for (MultipartFile file : dire) {
@@ -137,6 +140,6 @@ public class DataSetController {
             }
         }
         boolean update = datasetService.update(dataset);
-        return update?"succeed":"error";
+        return update ? "succeed" : "error";
     }
 }

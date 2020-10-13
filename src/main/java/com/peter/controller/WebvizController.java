@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("webviz")
 public class WebvizController {
-    private Log LOG = LogFactory.getLog(WebvizController.class);
+    private static final Log LOG = LogFactory.getLog(WebvizController.class);
 
     @Autowired
     private HttpServletRequest request;

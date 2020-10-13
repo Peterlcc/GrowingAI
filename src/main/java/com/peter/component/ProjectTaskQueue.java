@@ -9,16 +9,16 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 @Component
 public class ProjectTaskQueue {
-    private Log LOG = LogFactory.getLog(ProjectTaskQueue.class);
+    private static final Log LOG = LogFactory.getLog(ProjectTaskQueue.class);
     private ArrayBlockingQueue<Project> tasks=new ArrayBlockingQueue<Project>(100);
     public Project getTask(){
-//        try {
-//            return tasks.size()==0?null:tasks.take();
-//        } catch (InterruptedException e) {
-//            LOG.error(e.getMessage());
-//            throw new RuntimeException(e);
-//        }
-        return tasks.size()==0?null:tasks.peek();
+        try {
+            return tasks.size()==0?null:tasks.take();
+        } catch (InterruptedException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+//        return tasks.size()==0?null:tasks.peek();
     }
     public void addTask(Project project){
         try {

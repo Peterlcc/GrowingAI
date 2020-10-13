@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping("score")
 @Controller
 public class ScoreController {
-    private Log LOG = LogFactory.getLog(ScoreController.class);
+    private static final Log LOG = LogFactory.getLog(ScoreController.class);
     @Autowired
     private ScoreService scoreService;
 
