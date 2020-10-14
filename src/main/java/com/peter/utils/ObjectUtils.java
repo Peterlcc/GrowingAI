@@ -74,7 +74,9 @@ public class ObjectUtils {
 
         List<String> fieldNames = new ArrayList<String>();
         Field[] fields = clazz.getDeclaredFields();
-        Arrays.stream(fields).forEach(field -> fieldNames.add(field.getName()));
+        for (Field field : fields) {
+            fieldNames.add(field.getName());
+        }
         return fieldNames;
     }
 }
