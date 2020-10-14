@@ -19,6 +19,8 @@ public class TestTask {
 
     private int runCount=0;
 
+    private Project project=null;
+
     @Autowired
     private TestService testService;
 
@@ -41,11 +43,12 @@ public class TestTask {
             runCount++;
             if (runCount>=growningAiConfig.getRunSum()){
                 LOG.info("the test task running to long ,need tobe killed!");
+                if (project!=null) taskQueue.addTask(project,true);
                 LinuxCmdUtils.killShell();
             }
             return;
         }
-        Project project = taskQueue.getTask();
+        project = taskQueue.getTask();
         if (project==null) {
             LOG.info("queue is empty!");
             return;

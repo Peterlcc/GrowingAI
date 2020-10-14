@@ -71,8 +71,9 @@ public class TestServiceImpl implements TestService {
         if(LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand,growningAiConfig.getCatkinPath())){
             LOG.info("编译成功");
             //执行测试命令
-            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source "+growningAiConfig.getCatkinPath()+"/devel/setup.sh && sh "+path+File.separator+"shell.sh",growningAiConfig.getCatkinPath());
-            LOG.info("运行测试命令成功");
+            if(LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source "+growningAiConfig.getCatkinPath()+"/devel/setup.sh && sh "+path+File.separator+"shell.sh",growningAiConfig.getCatkinPath())) {
+                LOG.info("运行测试命令成功");
+            }
             return;
         }else {
             LOG.error("编译出错："+project);
@@ -80,10 +81,6 @@ public class TestServiceImpl implements TestService {
             resultService.save(error);
             return;
         }
-    }
-
-    private void switchDataset() {
-
     }
 
     @Override
@@ -111,8 +108,12 @@ public class TestServiceImpl implements TestService {
             LOG.info("编译成功");
             //执行测试命令
 //            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && sh /home/peter/AppStore/GrowningAI/scripts/shell.sh",growningAiConfig.getCatkinPath());
-            LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source "+growningAiConfig.getCatkinPath()+"/devel/setup.sh && sh "+growningAiConfig.getScriptsPath()+File.separator+growningAiConfig.getStartScript(),growningAiConfig.getCatkinPath());
-            LOG.info("运行测试命令成功");
+            if(LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source "+growningAiConfig.getCatkinPath()+"/devel/setup.sh && sh "+growningAiConfig.getScriptsPath()+File.separator+growningAiConfig.getStartScript(),growningAiConfig.getCatkinPath())) {
+                LOG.info("运行测试命令成功");
+            }else{
+                LOG.error("运行测试命令失败");
+                taskQueue.addTask(project,true);
+            }
             runTag.setRunFlag(false);
             return;
         }else {
