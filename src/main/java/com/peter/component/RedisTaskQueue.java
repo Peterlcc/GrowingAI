@@ -1,6 +1,7 @@
 package com.peter.component;
 
 import com.peter.bean.Project;
+import com.peter.utils.RedisUtil;
 
 /**
  * @author lcc

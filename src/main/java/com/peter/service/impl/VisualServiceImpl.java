@@ -1,6 +1,6 @@
 package com.peter.service.impl;
 
-import com.peter.component.RedisUtil;
+import com.peter.utils.RedisUtil;
 import com.peter.service.VisualService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.Set;
 public class VisualServiceImpl implements VisualService {
     private static final String keyPrefix="res_";
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisUtil algorithmRedisUtil;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -33,7 +33,7 @@ public class VisualServiceImpl implements VisualService {
             maxIndex=Math.max(maxIndex,number);
         }
         String key=keyPrefix+maxIndex;
-        List<Object> algorithmDatas = redisUtil.lGet(key, 0, redisUtil.lGetListSize(key) - 1);
+        List<Object> algorithmDatas = algorithmRedisUtil.lGet(key, 0, algorithmRedisUtil.lGetListSize(key) - 1);
 
         return algorithmDatas;
     }

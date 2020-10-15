@@ -1,4 +1,4 @@
-package com.peter.component;
+package com.peter.utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -11,11 +11,14 @@ import java.util.concurrent.TimeUnit;
  * @author lcc
  * @date 2020/10/13 上午11:21
  */
-@Component
 public final class RedisUtil {
-    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
-        // =============================common============================
+
+    public RedisUtil(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
+    // =============================common============================
         /**
          * 指定缓存失效时间
          * @param key 键

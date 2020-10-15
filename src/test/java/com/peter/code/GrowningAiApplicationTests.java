@@ -3,7 +3,7 @@ package com.peter.code;
 import com.peter.bean.Project;
 import com.peter.bean.User;
 import com.peter.component.GrowningAiConfig;
-import com.peter.component.RedisUtil;
+import com.peter.utils.RedisUtil;
 import com.peter.component.TaskQueue;
 import com.peter.service.ProjectService;
 import com.peter.service.UserService;
@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootTest
 class GrowningAiApplicationTests {
@@ -33,7 +34,10 @@ class GrowningAiApplicationTests {
 
 	@Autowired
 	private ProjectService projectService;
-
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
+	@Autowired
+	private RedisTemplate<String, Object> algorithmRedisTemplate;
 	@Test
 	void contextLoads() {
 		String email="123@123.com";
@@ -60,14 +64,31 @@ class GrowningAiApplicationTests {
 		taskQueue.addTask(allSimpleProjects.get(2),false);
 		Project task1 = taskQueue.getTask();
 //		task1.setCreateTime(new Date());
-		System.out.println("task1:"+task1);
-		taskQueue.addTask(task1,true);
-		Project task2 = taskQueue.getTask();
-		System.out.println("task2:"+task2);
-		Project task3 = taskQueue.getTask();
-		System.out.println("task3:"+task3);
-		Project task4 = taskQueue.getTask();
-		System.out.println("task4:"+task4);
+//		System.out.println("task1:"+task1);
+//		taskQueue.addTask(task1,true);
+//		Project task2 = taskQueue.getTask();
+//		System.out.println("task2:"+task2);
+//		Project task3 = taskQueue.getTask();
+//		System.out.println("task3:"+task3);
+//		Project task4 = taskQueue.getTask();
+//		System.out.println("task4:"+task4);
 	}
 
+	@Test
+	void algorithmResultTest(){
+
+		List<Object> objects = redisUtil.lGet("res_0", 0, redisUtil.lGetListSize("res_0"));
+		objects.forEach(o-> System.out.println(o));
+	}
+
+	@Test
+	void redisTemplateTest(){
+		Set<String> keys1 = redisTemplate.keys("*");
+		System.out.println("---------------------");
+		keys1.forEach(key-> System.out.println(key));
+		System.out.println("---------------------");
+		Set<String> keys2 = algorithmRedisTemplate.keys("*");
+		keys2.forEach(key-> System.out.println(key));
+		System.out.println("---------------------");
+	}
 }

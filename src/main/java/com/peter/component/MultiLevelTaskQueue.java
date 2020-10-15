@@ -2,6 +2,7 @@ package com.peter.component;
 
 import com.peter.bean.Project;
 import com.peter.bean.RedisProject;
+import com.peter.utils.RedisUtil;
 
 import java.util.Arrays;
 import java.util.List;
