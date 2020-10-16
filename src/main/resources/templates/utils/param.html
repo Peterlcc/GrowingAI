@@ -81,19 +81,27 @@
 		url: $('#container').attr("url") ,//url
 		success: function (result) {
 			console.log(result);//打印服务端返回的数据(调试用)
-			var data = JSON.parse(result);
+			// var data = JSON.parse(result);
+			var data =result;
 			var startTime=data['start'];
 			var endTime=data['end'];
 			var types=data['types'];
 			var xLabels=data['xLabels'];
 			var items=new Array();
-			data.forEach(function (value, key) {
+			for (var i = 0; i < types.length; i++) {
 				var item=new Object();
-				item['name']=key;
+				item['name']=types[i];
 				item['type']='line';
-				item['data']=value;
+				item['data']=data[types[i]];
 				items.push(item);
-			});
+			}
+			// data.forEach(function (value, key) {
+			// 	var item=new Object();
+			// 	item['name']=key;
+			// 	item['type']='line';
+			// 	item['data']=value;
+			// 	items.push(item);
+			// });
 
 			var dom = document.getElementById("container");
 			var myChart = echarts.init(dom);
@@ -101,7 +109,8 @@
 			option = null;
 			option = {
 				title: {
-					text: '算法折线图('+startTime+'-'+endTime+')'
+					text: '算法折线图',
+					subtext:'时间：('+startTime+'-'+endTime+')'
 				},
 				tooltip: {
 					trigger: 'axis'
