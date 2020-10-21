@@ -40,9 +40,9 @@ public class ResultController {
                 LOG.info("result of project "+result.getProjectId()+" has no dataset!");
                 result.setDatasetId(growningAiConfig.getDefaultDataset());
             }
+            result.setSucceed(true);
+            result.setContext("测试成功");
         }
-        //TODO 设置结果是否成功
-
         if(resultService.save(res)){
             return "保存成功";
         }else {

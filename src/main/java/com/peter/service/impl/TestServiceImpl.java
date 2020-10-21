@@ -7,6 +7,7 @@ import com.peter.mapper.DatasetMapper;
 import com.peter.service.ResultService;
 import com.peter.service.TestService;
 import com.peter.utils.LinuxCmdUtils;
+import com.peter.utils.ResultUtils;
 import com.peter.utils.RunTag;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -54,15 +55,10 @@ public class TestServiceImpl implements TestService {
         String path = dataset.getPath();
         LOG.info("test project with dataset:" + project);
         boolean resultPrepare = prepareForTest(project, dataset);
-        Result error=new Result();
-        error.setDatasetId(dataset.getId());
-        error.setLength(Double.MAX_VALUE);
-        error.setPoints(0);
-        error.setTime(Double.MAX_VALUE);
-        error.setProjectId(project.getId());
         if (!resultPrepare){
-            LOG.error("测试项目"+project.getId()+"准备失败");
-            //TODO 设置错误信息
+            String msg ="测试项目"+project.getId()+"准备失败";
+            LOG.error(msg);
+            Result error = ResultUtils.getError(project.getId(), msg);
             resultService.save(error);
             return;
         }
@@ -76,8 +72,9 @@ public class TestServiceImpl implements TestService {
             }
             return;
         }else {
-            LOG.error("编译出错："+project);
-            //TODO 设置错误信息
+            String msg ="编译出错："+project;
+            LOG.error(msg);
+            Result error = ResultUtils.getError(project.getId(), msg);
             resultService.save(error);
             return;
         }
@@ -86,17 +83,13 @@ public class TestServiceImpl implements TestService {
     @Override
     @Async
     public void testProject(Project project) {
-        Result error=new Result();
-        error.setDatasetId(1);
-        error.setLength(Double.MAX_VALUE);
-        error.setPoints(0);
-        error.setTime(Double.MAX_VALUE);
-        error.setProjectId(project.getId());
+
         LOG.info("test project:" + project);
         boolean resultPrepare = prepareForTest(project, null);
         if (!resultPrepare){
-            LOG.error("测试项目"+project.getId()+"准备失败");
-            //TODO 设置错误信息
+            String msg = "测试项目" + project.getId() + "准备失败";
+            LOG.error(msg);
+            Result error = ResultUtils.getError(project.getId(), msg);
             resultService.save(error);
             runTag.setRunFlag(false);
             return;
@@ -117,8 +110,11 @@ public class TestServiceImpl implements TestService {
             runTag.setRunFlag(false);
             return;
         }else {
-            LOG.error("编译出错："+project);
-            //TODO 设置错误信息
+            String msg = "编译出错："+project;
+            LOG.error(msg);
+            Result error = ResultUtils.getError(project.getId(), msg);
+            resultService.save(error);
+            runTag.setRunFlag(false);
             resultService.save(error);
             runTag.setRunFlag(false);
             return;
