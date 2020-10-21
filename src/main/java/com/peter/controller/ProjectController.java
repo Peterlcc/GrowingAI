@@ -284,4 +284,12 @@ public class ProjectController {
         LOG.info("update project:" + project.toString());
         return update?"succeed":"error";
     }
+
+    @GetMapping("spider/analyze")
+    @ResponseBody
+    public Map<String,List> analyzeSpiderProjects(){
+        Map<String, List> analyze = projectService.spiderAnalyze();
+        LOG.info(analyze);
+        return analyze;
+    }
 }

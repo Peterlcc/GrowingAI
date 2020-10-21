@@ -27,6 +27,9 @@ public class SizeConvertUtil {
     public static long bytesToGB(long len){
         return len/(long) Math.pow(1024,3);
     }
+    public static long bytesToMB(long len){
+        return len/(long) Math.pow(1024,2);
+    }
     public static long mbToGB(long len){
         return len/1024;
     }

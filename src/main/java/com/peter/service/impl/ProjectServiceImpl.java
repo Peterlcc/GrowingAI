@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -146,6 +148,23 @@ public class ProjectServiceImpl implements ProjectService {
         LOG.info("project " + name + " is deleted");
         int i = projectMapper.deleteByPrimaryKey(id);
         return i==1;
+    }
+
+    @Override
+    public Map<String,List> spiderAnalyze() {
+        List<Map<String, Object>> results = projectMapper.spiderAnalyze();
+        Map<String,List> res=new HashMap<>();
+        if (results.size()==0) return null;
+        List<String> dts=new ArrayList<>();
+        List<Object> nums=new ArrayList<>();
+        for (Map<String, Object> result : results) {
+            dts.add((String) result.get("dt"));
+            nums.add(result.get("num"));
+        }
+        res.put("xData",dts);
+        res.put("yData",nums);
+
+        return res;
     }
 
     @Override

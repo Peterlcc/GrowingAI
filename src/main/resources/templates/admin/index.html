@@ -1,145 +1,240 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<div th:replace="commons/baseAdmin::headSettings"></div>
-	<title>后台管理首页</title>
-	<!-- FullCalendar -->
-	<link rel="stylesheet" th:href="@{/adminSource/plugin/fullcalendar/fullcalendar.min.css}" href="assets/plugin/fullcalendar/fullcalendar.min.css">
-	<link rel="stylesheet" th:href="@{/adminSource/plugin/fullcalendar/fullcalendar.print.css}" href="assets/plugin/fullcalendar/fullcalendar.print.css" media='print'>
-	<div th:replace="commons/baseAdmin::cssImport"></div>
+    <div th:replace="commons/baseAdmin::headSettings"></div>
+    <title>后台管理首页</title>
+    <!-- FullCalendar -->
+    <link rel="stylesheet" th:href="@{/adminSource/plugin/fullcalendar/fullcalendar.min.css}"
+          href="assets/plugin/fullcalendar/fullcalendar.min.css">
+    <link rel="stylesheet" th:href="@{/adminSource/plugin/fullcalendar/fullcalendar.print.css}"
+          href="assets/plugin/fullcalendar/fullcalendar.print.css" media='print'>
+    <div th:replace="commons/baseAdmin::cssImport"></div>
 </head>
 
 <body>
 <div th:replace="commons/baseAdmin::leftBar"></div>
 <div th:replace="commons/baseAdmin::navbar"></div>
 <div id="wrapper">
-	<div class="main-content">
-		<div class="row small-spacing">
+    <div class="main-content">
+        <div class="row small-spacing">
 
-			<div class="col-lg-6 col-xs-12">
-				<div class="box-content">
-					<h4 class="box-title text-info">用户访问</h4>
-					<!-- /.box-title -->
+            <div class="col-lg-6 col-xs-12">
+                <div class="box-content">
+                    <h4 class="box-title text-info">用户访问</h4>
+                    <!-- /.box-title -->
 
-					<div class="content widget-stat">
-						<div id="traffic-sparkline-chart-1" class="left-content margin-top-15"></div>
-						<!-- /#traffic-sparkline-chart-1 -->
-						<div class="right-content">
-							<h2 class="counter text-info">278</h2>
-							<!-- /.counter -->
-							<p class="text text-info">今日用户访问</p>
-							<!-- /.text -->
-						</div>
-						<!-- .right-content -->
-					</div>
-					<!-- /.content widget-stat -->
-				</div>
-				<!-- /.box-content -->
-			</div>
-			<!-- /.col-lg-4 col-xs-12 -->
+                    <div class="content widget-stat">
+                        <div id="traffic-sparkline-chart-1" class="left-content margin-top-15"></div>
+                        <!-- /#traffic-sparkline-chart-1 -->
+                        <div class="right-content">
+                            <h2 class="counter text-info">278</h2>
+                            <!-- /.counter -->
+                            <p class="text text-info">今日用户访问</p>
+                            <!-- /.text -->
+                        </div>
+                        <!-- .right-content -->
+                    </div>
+                    <!-- /.content widget-stat -->
+                </div>
+                <!-- /.box-content -->
+            </div>
+            <!-- /.col-lg-4 col-xs-12 -->
 
-			<div class="col-lg-6 col-xs-12">
-				<div class="box-content">
-					<h4 class="box-title text-success">项目测试</h4>
-					<!-- /.box-title -->
+            <div class="col-lg-6 col-xs-12">
+                <div class="box-content">
+                    <h4 class="box-title text-success">项目测试</h4>
+                    <!-- /.box-title -->
 
-					<div class="content widget-stat">
-						<div id="traffic-sparkline-chart-2" class="left-content margin-top-10"></div>
-						<!-- /#traffic-sparkline-chart-2 -->
-						<div class="right-content">
-							<h2 class="counter text-success">36%</h2>
-							<!-- /.counter -->
-							<p class="text text-success">测试成功比例</p>
-							<!-- /.text -->
-						</div>
-						<!-- .right-content -->
-					</div>
-					<!-- /.content widget-stat -->
-				</div>
-				<!-- /.box-content -->
-			</div>
-			<!-- /.col-lg-4 col-xs-12 -->
-
-
-
-			<div class="col-lg-6 col-xs-12">
-				<div class="box-content">
-					<h4 class="box-title">未使用功能</h4>
-					<!-- /.box-title -->
-
-					<div id="bar-morris-chart" class="morris-chart" style="height: 240px"></div>
-					<div class="text-center">
-						<ul class="list-inline morris-chart-detail-list">
-							<li><i class="fa fa-circle"></i>Series A</li>
-							<li><i class="fa fa-circle"></i>Series B</li>
-							<li><i class="fa fa-circle"></i>Series C</li>
-						</ul>
-					</div>
-					<!-- /#bar-morris-chart.morris-chart -->
-				</div>
-				<!-- /.box-content -->
-			</div>
-			<!-- /.col-lg-6 col-xs-12 -->
-
-			<div class="col-lg-6 col-xs-12">
-				<div class="box-content">
-					<h4 class="box-title">内存监控</h4>
-					<!-- /.box-title -->
-
-					<div id="donut-morris-chart" class="morris-chart" style="height: 240px"></div>
-					<div class="text-center">
-						<ul class="list-inline morris-chart-detail-list">
-							<li><i class="fa fa-circle"></i>已使用</li>
-							<li><i class="fa fa-circle"></i>可使用</li>
-							<li><i class="fa fa-circle"></i>交换区</li>
-						</ul>
-					</div>
-					<!-- /#donut-morris-chart.morris-chart -->
-				</div>
-				<!-- /.box-content -->
-			</div>
-			<!-- /.col-lg-6 col-xs-12 -->
-		</div>
-		<!-- /.row -->
+                    <div class="content widget-stat">
+                        <div id="traffic-sparkline-chart-2" class="left-content margin-top-10"></div>
+                        <!-- /#traffic-sparkline-chart-2 -->
+                        <div class="right-content">
+                            <h2 class="counter text-success">36%</h2>
+                            <!-- /.counter -->
+                            <p class="text text-success">测试成功比例</p>
+                            <!-- /.text -->
+                        </div>
+                        <!-- .right-content -->
+                    </div>
+                    <!-- /.content widget-stat -->
+                </div>
+                <!-- /.box-content -->
+            </div>
+            <!-- /.col-lg-4 col-xs-12 -->
 
 
+            <div class="col-lg-6 col-xs-12">
+                <div class="box-content">
+                    <h4 class="box-title">系统爬虫项目统计</h4>
+                    <!-- /.box-title -->
+
+                    <div th:attr="url=@{/project/spider/analyze}" class="col-lg-12" id="container"
+                         style="height: 240px"></div>
+                    <!-- /#bar-morris-chart.morris-chart -->
+                </div>
+                <!-- /.box-content -->
+            </div>
+            <!-- /.col-lg-6 col-xs-12 -->
+
+            <div class="col-lg-6 col-xs-12">
+                <div class="box-content">
+                    <h4 class="box-title">内存监控</h4>
+                    <!-- /.box-title -->
+
+                    <div th:attr="url=@{/admin/status/mem}" class="col-lg-12" id="memory_container"
+                         style="height: 240px"></div>
+                    <!-- /#donut-morris-chart.morris-chart -->
+                </div>
+                <!-- /.box-content -->
+            </div>
+            <!-- /.col-lg-6 col-xs-12 -->
+        </div>
+        <!-- /.row -->
 
 
-		<div th:replace="commons/baseAdmin::footer"></div>
-	</div>
-	<!-- /.main-content -->
+        <div th:replace="commons/baseAdmin::footer"></div>
+    </div>
+    <!-- /.main-content -->
 </div><!--/#wrapper -->
 <div th:replace="commons/baseAdmin::scriptImport"></div>
 <!-- Morris Chart -->
-<script th:src="@{/adminSource/plugin/chart/morris/morris.min.js}" src="assets/plugin/chart/morris/morris.min.js"></script>
-<script th:src="@{/adminSource/plugin/chart/morris/raphael-min.js}" src="assets/plugin/chart/morris/raphael-min.js"></script>
-<script th:src="@{/adminSource/scripts/chart.morris.black.init.min.js}" src="assets/scripts/chart.morris.black.init.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/morris/morris.min.js}"
+        src="assets/plugin/chart/morris/morris.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/morris/raphael-min.js}"
+        src="assets/plugin/chart/morris/raphael-min.js"></script>
 
 <!-- Flot Chart -->
-<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.min.js}" src="assets/plugin/chart/plot/jquery.flot.min.js"></script>
-<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.tooltip.min.js}" src="assets/plugin/chart/plot/jquery.flot.tooltip.min.js"></script>
-<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.categories.min.js}" src="assets/plugin/chart/plot/jquery.flot.categories.min.js"></script>
-<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.pie.min.js}" src="assets/plugin/chart/plot/jquery.flot.pie.min.js"></script>
-<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.stack.min.js}" src="assets/plugin/chart/plot/jquery.flot.stack.min.js"></script>
-<script th:src="@{/adminSource/scripts/chart.flot.black.init.min.js}" src="assets/scripts/chart.flot.black.init.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.min.js}"
+        src="assets/plugin/chart/plot/jquery.flot.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.tooltip.min.js}"
+        src="assets/plugin/chart/plot/jquery.flot.tooltip.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.categories.min.js}"
+        src="assets/plugin/chart/plot/jquery.flot.categories.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.pie.min.js}"
+        src="assets/plugin/chart/plot/jquery.flot.pie.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/plot/jquery.flot.stack.min.js}"
+        src="assets/plugin/chart/plot/jquery.flot.stack.min.js"></script>
+<script th:src="@{/adminSource/scripts/chart.flot.black.init.min.js}"
+        src="assets/scripts/chart.flot.black.init.min.js"></script>
 
 <!-- Sparkline Chart -->
-<script th:src="@{/adminSource/plugin/chart/sparkline/jquery.sparkline.min.js}" src="assets/plugin/chart/sparkline/jquery.sparkline.min.js"></script>
-<script th:src="@{/adminSource/scripts/chart.sparkline.init.min.js}" src="assets/scripts/chart.sparkline.init.min.js"></script>
+<script th:src="@{/adminSource/plugin/chart/sparkline/jquery.sparkline.min.js}"
+        src="assets/plugin/chart/sparkline/jquery.sparkline.min.js"></script>
+<script th:src="@{/adminSource/scripts/chart.sparkline.init.min.js}"
+        src="assets/scripts/chart.sparkline.init.min.js"></script>
 
 <!-- FullCalendar -->
 <script th:src="@{/adminSource/plugin/moment/moment.js}" src="assets/plugin/moment/moment.js"></script>
-<script th:src="@{/adminSource/plugin/fullcalendar/fullcalendar.min.js}" src="assets/plugin/fullcalendar/fullcalendar.min.js"></script>
+<script th:src="@{/adminSource/plugin/fullcalendar/fullcalendar.min.js}"
+        src="assets/plugin/fullcalendar/fullcalendar.min.js"></script>
 <script th:src="@{/adminSource/scripts/fullcalendar.init.js}" src="assets/scripts/fullcalendar.init.js"></script>
 
+<!--echarts-->
+<script type="text/javascript" th:src="@{/js/echarts/echarts.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/echarts/echarts-gl.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/echarts/ecStat.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/echarts/dataTool.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/echarts/china.js}"></script>
+<script type="text/javascript" th:src="@{/js/echarts/world.js}"></script>
+<script type="text/javascript" th:src="@{/js/echarts/bmap.min.js}"></script>
+
 <script>
-	jQuery(document).ready(function () {
-		$("#userHtml").click(function (event) {
-			var link = $("#userHtml").attr("link");
-			console.log(link);
-			$("#wrapper").load(link);
-		});
-	});
+
+    $.ajax({
+        //几个参数需要注意一下
+        type: "GET",//方法类型
+        // dataType: "json",//预期服务器返回的数据类型
+        url: $('#container').attr("url"),//url
+        success: function (result) {
+            var xData = result['xData'];
+            var yData = result['yData'];
+            console.log(xData);//打印服务端返回的数据(调试用)
+            console.log(yData);//打印服务端返回的数据(调试用)
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+            option = null;
+            option = {
+                xAxis: {
+                    type: 'category',
+                    data: xData
+                    // data: ["2019-12", "2020-01","2020-08"]
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: yData,
+                    // data: [1,26,1],
+                    type: 'bar'
+                }]
+            };
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        },
+        error: function () {
+            alert("异常！出问题了");
+        }
+    });
+
+    $.ajax({
+        //几个参数需要注意一下
+        type: "GET",//方法类型
+        // dataType: "json",//预期服务器返回的数据类型
+        url: $('#memory_container').attr("url"),//url
+        success: function (result) {
+            var labels = result['labels'];
+            var datas = result['datas'];
+            console.log(labels);//打印服务端返回的数据(调试用)
+            console.log(datas);//打印服务端返回的数据(调试用)
+            var dom = document.getElementById("memory_container");
+            var myChart = echarts.init(dom);
+            option = null;
+            option = {
+                title: {
+                    text: '内存监控(MB)',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['已使用','未使用']
+                },
+                series: [
+                    {
+                        name: '内存监控数据',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: [
+                            {name:'已使用',value:8055},
+                            {name:'未使用',value:8158}
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        },
+        error: function () {
+            alert("异常！出问题了");
+        }
+    });
+
+
+
 </script>
 </body>
 </html>

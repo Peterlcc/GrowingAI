@@ -3,6 +3,8 @@ package com.peter.mapper;
 import com.peter.bean.Project;
 import com.peter.bean.ProjectExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface ProjectMapper {
@@ -97,4 +99,6 @@ public interface ProjectMapper {
      * @mbggenerated Wed Feb 19 18:54:33 CST 2020
      */
     int updateByPrimaryKey(Project record);
+
+    List<Map<String,Object>> spiderAnalyze();
 }

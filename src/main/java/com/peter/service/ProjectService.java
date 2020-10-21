@@ -19,4 +19,5 @@ public interface ProjectService {
     boolean update(Project project);
     boolean delete(Integer id);
 
+    Map<String,List> spiderAnalyze();
 }

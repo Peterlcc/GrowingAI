@@ -1,7 +1,7 @@
 import redis
 import json
 import time as system_time
-
+'''为算法的数据同步设计的工具类'''
 class RedisUtil:
     '''redis的工具类，需要设置redis的key和主机地址host，port默认6379'''
     def __init__(self,host='127.0.0.1',port=6379,password='',db=1):

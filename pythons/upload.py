@@ -1,7 +1,7 @@
 # -*-coding:utf-8-*-
 import json
 import requests
-
+'''为结果的上传设计的工具类'''
 CONTEXT_URL="http://localhost:8999/growningai"
 LOGIN_URL=CONTEXT_URL+"/admin/login"
 SAVE_URL=CONTEXT_URL+"/result/save"

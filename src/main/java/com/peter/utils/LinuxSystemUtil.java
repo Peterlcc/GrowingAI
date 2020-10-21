@@ -21,14 +21,21 @@ public class LinuxSystemUtil {
         GlobalMemory memory = systemInfo.getHardware().getMemory();
         long totalByte = memory.getTotal();
         long availableByte = memory.getAvailable();
-        VirtualMemory virtualMemory = memory.getVirtualMemory();
-        memoryInfo.put("total",SizeConvertUtil.Convert(totalByte));
-        memoryInfo.put("available",SizeConvertUtil.Convert(availableByte));
-        memoryInfo.put("used",SizeConvertUtil.Convert(totalByte-availableByte));
+//        VirtualMemory virtualMemory = memory.getVirtualMemory();
+//        memoryInfo.put("total",SizeConvertUtil.bytesToMB(totalByte));
+        memoryInfo.put("未使用",SizeConvertUtil.bytesToMB(availableByte));
+        memoryInfo.put("已使用",SizeConvertUtil.bytesToMB(totalByte-availableByte));
 
-        memoryInfo.put("swapTotal",SizeConvertUtil.Convert(virtualMemory.getSwapTotal()));
-        memoryInfo.put("swapAvailable",SizeConvertUtil.Convert(virtualMemory.getSwapUsed()));
-        memoryInfo.put("swapUsed",SizeConvertUtil.Convert(virtualMemory.getSwapTotal()-virtualMemory.getSwapUsed()));
+//        memoryInfo.put("swapTotal",SizeConvertUtil.bytesToMB(virtualMemory.getSwapTotal()));
+//        memoryInfo.put("swapAvailable",SizeConvertUtil.bytesToMB(virtualMemory.getSwapUsed()));
+//        memoryInfo.put("swapUsed",SizeConvertUtil.bytesToMB(virtualMemory.getSwapTotal()-virtualMemory.getSwapUsed()));
         return memoryInfo;
+    }
+
+    public static void main(String[] args) {
+        Map<String, Object> memoryUsed = getMemoryUsed();
+        memoryUsed.forEach((key,value)->{
+            System.out.println(key+"---"+value);
+        });
     }
 }
