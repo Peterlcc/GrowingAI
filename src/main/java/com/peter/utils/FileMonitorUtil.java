@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class FileMonitorUtil extends FileAlterationListenerAdaptor {
     public FileMonitorUtil() {
-        log.info("monitor");
+        log.info("monitoring");
     }
 
     @Override
@@ -47,7 +47,8 @@ public class FileMonitorUtil extends FileAlterationListenerAdaptor {
 
     public static void main(String[] args) throws Exception {
         // 监控目录
-        String rootDir = "/tmp/test";
+//        String rootDir = "/tmp/test";
+        String rootDir = "F:\\tmp\\GrowingAi\\yaml_res";
         // 轮询间隔 3 秒
         long interval = TimeUnit.SECONDS.toMillis(3);
         // 创建过滤器

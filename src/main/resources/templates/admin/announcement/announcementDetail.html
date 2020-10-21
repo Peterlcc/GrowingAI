@@ -65,7 +65,8 @@
 <script th:src="@{/adminSource/plugin/editable-table/mindmup-editabletable.js}" src="assets/plugin/editable-table/mindmup-editabletable.js"></script>
 <!-- TinyMCE -->
 <!-- Plugin Files DON'T INCLUDES THESES FILES IF YOU USE IN THE HOST -->
-<script src="https://cdn.tiny.cloud/1/bw01rsb167uh3pxh9klomnzkg7h4zhgma9otv2nfflmsh05n/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<!--<script src="https://cdn.tiny.cloud/1/bw01rsb167uh3pxh9klomnzkg7h4zhgma9otv2nfflmsh05n/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>-->
+<script th:src="@{/adminSource/plugin/tinymce/tinymce.min.js}" referrerpolicy="origin"></script>
 <script  th:inline="javascript">
 	// tinyMCE.baseURL = "/growningai/adminSource/plugin/tinymce";
 	tinymce.init({
