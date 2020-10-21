@@ -22,11 +22,11 @@ public class VisualServiceImpl implements VisualService {
     private RedisUtil algorithmRedisUtil;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, Object> algorithmRedisTemplate;
 
     @Override
     public List<Object> getLatestAlgorithmDatas() {
-        Set<String> keys = redisTemplate.keys(keyPrefix+"*");
+        Set<String> keys = algorithmRedisTemplate.keys(keyPrefix+"*");
         int maxIndex=-1;
         for (String key : keys) {
             int number = Integer.parseInt(key.substring(4));

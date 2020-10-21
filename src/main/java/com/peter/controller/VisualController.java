@@ -65,7 +65,9 @@ public class VisualController {
             for (String fieldName : fieldNames) {
                 List<Number> list = (List<Number>) result.get(fieldName);
                 try {
-                    list.add((Number) AlgorithmData.class.getDeclaredField(fieldName).get(algorithmData));
+                    Field declaredField = AlgorithmData.class.getDeclaredField(fieldName);
+                    declaredField.setAccessible(true);
+                    list.add((Number) declaredField.get(algorithmData));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
