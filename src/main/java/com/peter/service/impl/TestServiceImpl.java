@@ -104,8 +104,8 @@ public class TestServiceImpl implements TestService {
             if(LinuxCmdUtils.executeLinuxCmdWithPath("source /opt/ros/kinetic/setup.bash && source "+growningAiConfig.getCatkinPath()+"/devel/setup.sh && sh "+growningAiConfig.getScriptsPath()+File.separator+growningAiConfig.getStartScript(),growningAiConfig.getCatkinPath())) {
                 LOG.info("运行测试命令成功");
             }else{
-                LOG.error("运行测试命令失败");
-                taskQueue.addTask(project,true);
+                LOG.error("运行测试命令失败(可能仅仅是命令失败，但是结果获取到了)");
+//                taskQueue.addTask(project,true);
             }
             runTag.setRunFlag(false);
             return;

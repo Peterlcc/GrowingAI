@@ -81,9 +81,9 @@
             <h2 class="card-title" th:text="${project.name}">Post Title</h2>
             <p class="card-text" th:text="${project.description}">项目描述</p>
             <a href="#" th:href="@{'/project/project/'+${project.id}}" class="btn btn-primary">查看详情&rarr;</a>
-            <button onclick="testPro();" th:attr="data=${project.id},url=@{/test/add}" id="addTest" class="btn btn-primary">提交测试&rarr;</button>
+            <button onclick="testPro(this);" th:attr="data=${project.id},url=@{/test/add}" class="btn btn-primary">提交测试&rarr;</button>
 <!--            <a href="#" th:href="@{'/project/test/'+${project.id}}" class="btn btn-primary">手动测试&rarr;</a>-->
-            <button onclick="delPro();" th:attr="data=${project.id},url=@{/user/project}" id="del" class="btn btn-primary">删除&rarr;</button>
+            <button onclick="delPro(this);" th:attr="data=${project.id},url=@{/user/project}" class="btn btn-primary">删除&rarr;</button>
           </div>
         </div>
       </div>
@@ -117,23 +117,25 @@
 
   <script type="text/javascript">
     //异步提交删除请求
-    function delPro() {
+    function delPro(btn) {
       console.log("delpro");
+      // console.log($(btn).attr("url")+" : "+$(btn).attr("data"))
       $.ajax({
         type: "POST",
-        url: $("#del").attr("url"),
-        data: {_method: "DELETE", id: $("#del").attr("data")},
+        url: $(btn).attr("url"),
+        data: {_method: "DELETE", id: $(btn).attr("data")},
         success: function (result) {
           alert(result);
           location.reload();
         }
       });
     }
-    function testPro() {
+    function testPro(btn) {
       console.log("testPro");
+      // console.log($(btn).attr("url")+"?id="+$(btn).attr("data"))
       $.ajax({
         type: "GET",
-        url: $("#addTest").attr("url")+"?id="+$("#addTest").attr("data"),
+        url: $(btn).attr("url")+"?id="+$(btn).attr("data"),
         success: function (result) {
           alert("测试请求已提交，请稍候在详情页查看结果");
         }

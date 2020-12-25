@@ -45,10 +45,10 @@ public class MyXMLReader {
         	for (File f : fs) {
         		if(f.isFile()){
         			//�ļ�
-        			fileCopy(f.getPath(),des+File.separator+f.getName()); //�����ļ������ķ���
+        			fileCopy(f.getPath(),des+"\\"+f.getName()); //�����ļ������ķ���
         		}else if(f.isDirectory()){
         			//�ļ���
-        			copy(f.getPath(),des+File.separator+f.getName());//�������ø��Ʒ���      �ݹ�ĵط�,�Լ������Լ��ķ���,�Ϳ��Ը����ļ��е��ļ�����
+        			copy(f.getPath(),des+"\\"+f.getName());//�������ø��Ʒ���      �ݹ�ĵط�,�Լ������Լ��ķ���,�Ϳ��Ը����ļ��е��ļ�����
         		}
         	}
         

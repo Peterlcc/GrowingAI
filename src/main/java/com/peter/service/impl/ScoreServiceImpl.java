@@ -2,8 +2,11 @@ package com.peter.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.peter.bean.Project;
+import com.peter.bean.ProjectExample;
 import com.peter.bean.Score;
 import com.peter.bean.ScoreExample;
+import com.peter.mapper.ProjectMapper;
 import com.peter.mapper.ScoreMapper;
 import com.peter.service.ProjectService;
 import com.peter.service.ScoreService;
@@ -12,10 +15,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class ScoreServiceImpl implements ScoreService {
@@ -25,7 +27,20 @@ public class ScoreServiceImpl implements ScoreService {
     private ScoreMapper scoreMapper;
 
     @Autowired
+    private ProjectMapper projectMapper;
+
+    @Autowired
     private ProjectService projectService;
+
+    private static Date scoreStartDate=null;
+
+    static {
+        try {
+            scoreStartDate = new SimpleDateFormat("yyyy-MM-dd").parse("2020-09-10");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public PageInfo<Map<String,Object>> getAdminOrderedScores(int pc, int ps) {
@@ -54,6 +69,17 @@ public class ScoreServiceImpl implements ScoreService {
     public PageInfo<Score> getOrderedScores(int pc, int ps) {
         ScoreExample scoreExample = new ScoreExample();
         scoreExample.setOrderByClause("score desc");
+        ScoreExample.Criteria criteria = scoreExample.createCriteria();
+
+        ProjectExample projectExample = new ProjectExample();
+        ProjectExample.Criteria projectExampleCriteria = projectExample.createCriteria();
+        projectExampleCriteria.andCreateTimeGreaterThan(scoreStartDate);
+        List<Project> projects = projectMapper.selectByExample(projectExample);
+        List<Integer> ids=new ArrayList<>();
+        for (Project project : projects) {
+            ids.add(project.getId());
+        }
+        criteria.andProjectIdIn(ids);
         PageHelper.startPage(pc, ps);
         List<Score> scores = scoreMapper.selectByExample(scoreExample);
         LOG.info("getProjectsWithScore pc:"+pc+" ps:"+ps+" size:"+scores.size());

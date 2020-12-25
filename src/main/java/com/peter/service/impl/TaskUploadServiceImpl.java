@@ -15,9 +15,9 @@ public class TaskUploadServiceImpl implements TaskUploadService {
     @Autowired
     private TaskQueue taskQueue;
     @Override
-    @Async
+//    @Async
     public void upload(Project project) {
-        LOG.info("uploading project:"+project+" to blocking queue.");
+        LOG.info("uploading project:"+project+" to queue.");
         if (taskQueue.isFull()){
             LOG.info("task queue is full,method will be blocked with project:"+project);
         }

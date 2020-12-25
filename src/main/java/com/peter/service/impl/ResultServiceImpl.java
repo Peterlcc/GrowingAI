@@ -75,6 +75,7 @@ public class ResultServiceImpl implements ResultService {
             ResultExample resultExample = new ResultExample();
             ResultExample.Criteria criteria = resultExample.createCriteria();
             int projectId = res.get(0).getProjectId();
+            LOG.info("要保存的结果集合："+res);
             //检查结果的projectid是否相等
             for (Result r : res) {
                 if (r.getProjectId() != projectId) {
@@ -86,19 +87,19 @@ public class ResultServiceImpl implements ResultService {
             List<Result> results = resultMapper.selectByExample(resultExample);
             if (results == null || results.size() == 0) {
                 LOG.info("project which id is " + projectId + " has no results,then insert");
-                res.stream().forEach(result -> {
+                for (Result result : res) {
                     resultMapper.insertSelective(result);
-                });
+                }
             } else {
                 LOG.info("project which id is " + projectId + " haven results" + results + " in tables,then delete " +
                         "first!");
-                results.stream().forEach(result -> {
+                for (Result result : results) {
                     resultMapper.deleteByPrimaryKey(result.getId());
-                });
+                }
                 LOG.info("insert new results of project which id is " + projectId);
-                res.stream().forEach(result -> {
+                for (Result result : res) {
                     resultMapper.insertSelective(result);
-                });
+                }
             }
             return true;
         }

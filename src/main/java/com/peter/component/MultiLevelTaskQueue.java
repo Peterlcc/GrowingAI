@@ -32,7 +32,9 @@ public class MultiLevelTaskQueue extends TaskQueue {
         Project project=null;
         for (int i = 0; i < n; i++) {
             if (getTaskSize()!=0){
-                project = (Project) redisUtil.lpop(taskKeys.get(index), 0);
+                RedisProject redisProject = (RedisProject) redisUtil.lpop(taskKeys.get(index), 0);
+                if (redisProject.getRunNumber()<2)
+                    project=redisProject;
                 updateIndex();
                 break;
             }

@@ -18,10 +18,10 @@ public class XML_Reader {
 
 	}
 
-	public static void xmlReader(String aaxl_path,String lib_path,String gen_path,String dir_name) {
+	public static List<modes> xmlReader(String aaxl_path) {
 		List<modes> modes_list=new ArrayList<>();//´æ´¢Ò»¸öxmlÀïµÄËùÓÐÄ£ÐÍ£¨classifier£©
 		try {
-//			File f = new File("E:/basenode.xml"); 
+//			File f = new File("E:/basenode.xml");
 			File f = new File(aaxl_path);
 			DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder=factory.newDocumentBuilder();
@@ -228,151 +228,111 @@ public class XML_Reader {
 //					//System.out.println(s_owned.gettype()+"  "+s_owned.getname()+"  "+s_owned.getkind());
 //					
 //				}
-				List<Property> properties=new ArrayList<Property>();
-				for(int m=0;m<modes_list.size();m++) {
-
-					if(modes_list.get(m).gettype().equals("aadl2:SystemImplementation")){
-						System.out.println("We Are In SystemImplementation.\n");
-						List<owned> sys_owneds=new ArrayList<>();
-						sys_owneds=modes_list.get(m).getowned();
-						for(int n=0;n<sys_owneds.size();n++) {
-							owned sys_owned=sys_owneds.get(n);
 
 
-							/* *
-							 * ½«global_plannerÄÚµÄº¯Êý½âÎö³öÀ´
-							 * ·ÖÎª»ù½ÚµãµÄÏß³ÌÒÔ¼°¼Ì³Ð½ÚµãµÄÏß³Ì
-							 * */
-							if(sys_owned.gettype().equals("ownedProcessSubcomponent")) {
+			}
 
-								gen_code();
-								//
-								System.out.println("\t*It Has A ProcessSubcomponent.\n");
-								int cl_num=sys_owned.getClassifierNum(sys_owned.getpath());
-								System.out.println("\t\tIts CLASSIFIER NUM Is:\t"+cl_num+"\tName Is:"+modes_list.get(cl_num).getname());
-								System.out.println();
-								//
-								List<owned> proc_owneds =modes_list.get(cl_num).getowned();
-								//print_owned(proc_owneds);
-								/*
-								 * */
-								String gen_name=sys_owned.getname();
-								String gen_include_file=get_properties_file(properties,gen_name,"include_file");
-								String gen_version_type=get_properties_file(properties,gen_name,"version_type");
-								String gen_version_bind=get_properties_file(properties,gen_name,"version_bind");
-								String gen_package_name = get_properties_file(properties,gen_name,"package_name");
-								boolean gen_version_bind_type = (gen_version_bind.equals("true") ? true : false);
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return modes_list;
+	}
+	public static void gen_code(List<modes> modes_list,String lib_path,String gen_path,String dir_name) throws IOException {
+		List<Property> properties=new ArrayList<Property>();
+		for(int m=0;m<modes_list.size();m++) {
+
+			if(modes_list.get(m).gettype().equals("aadl2:SystemImplementation")){
+				System.out.println("We Are In SystemImplementation.\n");
+				List<owned> sys_owneds=new ArrayList<>();
+				sys_owneds=modes_list.get(m).getowned();
+				for(int n=0;n<sys_owneds.size();n++) {
+					owned sys_owned=sys_owneds.get(n);
+
+
+					/* *
+					 * ½«global_plannerÄÚµÄº¯Êý½âÎö³öÀ´
+					 * ·ÖÎª»ù½ÚµãµÄÏß³ÌÒÔ¼°¼Ì³Ð½ÚµãµÄÏß³Ì
+					 * */
+					if(sys_owned.gettype().equals("ownedProcessSubcomponent")) {
+
+
+						//
+						System.out.println("\t*It Has A ProcessSubcomponent.\n");
+						int cl_num=sys_owned.getClassifierNum(sys_owned.getpath());
+						System.out.println("\t\tIts CLASSIFIER NUM Is:\t"+cl_num+"\tName Is:"+modes_list.get(cl_num).getname());
+						System.out.println();
+						//
+						List<owned> proc_owneds =modes_list.get(cl_num).getowned();
+						//print_owned(proc_owneds);
+						/*
+						 * */
+						String gen_name=sys_owned.getname();
+						String gen_include_file=get_properties_file(properties,gen_name,"include_file");
+						String gen_version_type=get_properties_file(properties,gen_name,"version_type");
+						String gen_version_bind=get_properties_file(properties,gen_name,"version_bind");
+						String gen_package_name = get_properties_file(properties,gen_name,"package_name");
+						boolean gen_version_bind_type = (gen_version_bind.equals("true") ? true : false);
 //								System.out.println(gen_name+" " + gen_include_file + " " + gen_version_type + " " + gen_version_bind_type);
-								//println(gen_version_type);
-								Gen gen=new Gen(gen_name,gen_include_file,lib_path,dir_name,gen_path);
-								gen.setVersion_bind(gen_version_bind_type);
-								gen.setPackage_name(gen_package_name);
-								if(gen_version_bind_type)
-									gen.setVersion(gen_version_type);
-								/*
-								 * */
+						//println(gen_version_type);
+						Gen gen=new Gen(gen_name,gen_include_file,lib_path,dir_name,gen_path);
+						gen.setVersion_bind(gen_version_bind_type);
+						gen.setPackage_name(gen_package_name);
+						if(gen_version_bind_type)
+							gen.setVersion(gen_version_type);
+						/*
+						 * */
 
-								for (owned s_owned : proc_owneds) {
-									if(s_owned.gettype() == "ownedExtension"){
-										int ex_num = sys_owned.getClassifierNum(s_owned.getpath());
-										System.out.println("\t\tIts extend NUM Is:\t"+ex_num+"\tName Is:"+modes_list.get(ex_num).getname());
-										System.out.println();
+						for (owned s_owned : proc_owneds) {
+							if(s_owned.gettype() == "ownedExtension"){
+								int ex_num = sys_owned.getClassifierNum(s_owned.getpath());
+								System.out.println("\t\tIts extend NUM Is:\t"+ex_num+"\tName Is:"+modes_list.get(ex_num).getname());
+								System.out.println();
 
-										List<owned> extend_owneds =modes_list.get(ex_num).getowned();
-										//print_owned(extend_owneds);
-										System.out.println("\t\tBase global_planner thread:");
-										System.out.println();
+								List<owned> extend_owneds =modes_list.get(ex_num).getowned();
+								//print_owned(extend_owneds);
+								System.out.println("\t\tBase global_planner thread:");
+								System.out.println();
 
-										for (owned ex_owned : extend_owneds){
-											if(ex_owned.gettype() == "ownedThreadSubcomponent"){
+								for (owned ex_owned : extend_owneds){
+									if(ex_owned.gettype() == "ownedThreadSubcomponent"){
 
-												int thread_impl_num = ex_owned.getClassifierNum(ex_owned.getpath());
-												owned thread_owned = modes_list.get(thread_impl_num).getowned().get(0);
-												int thread_type_num = ex_owned.getClassifierNum(thread_owned.getpath());
-												List<owned> ports = modes_list.get(thread_type_num).getowned();
-												boolean use_flag = false;
-												/*
-												 * */
-												String thread_name=modes_list.get(thread_type_num).getname() ;
-												String thread_source_file=get_properties_file(properties,thread_name,"source_file");
-
-												Founction func=new Founction(thread_name,thread_source_file);
-
-												/**/
-												//print_owned(threads);
-												//System.out.println(thread_type_num);
-												//System.out.print("\t\tname:\t" + modes_list.get(thread_type_num).getname());
-												//System.out.print("\ttype:\t");
-												for (owned port : ports) {
-													if(port.getkind().equals("out")) {
-														System.out.print("\t\t\t" + port.getname());
-
-														String founc_ret=port.getname();
-														String ret_type=get_ret_type(ports,thread_name,founc_ret);
-														func.setRet(founc_ret);
-														func.setRetType(ret_type);
-													}
-												}
-												System.out.print("\t" + thread_name + "(");
-												//System.out.print("\tparams:");
-												for (owned port : ports) {
-													if(port.getkind().equals("in")){
-														if(use_flag)
-															System.out.print(", ");
-
-
-														String param_name=port.getname();
-														String param_type=get_param_type(ports,thread_name,param_name);
-														System.out.print(param_type+" ");
-														System.out.print(port.getname());
-
-														func.addParam(param_name,param_type);
-
-														use_flag = true;
-													}
-												}
-												System.out.println(")");
-												gen.addFounction(func);
-											}
-										}
-
-										System.out.println();
-										System.out.println("\t\tExtend global_planner thread:");
-										System.out.println();
-									}
-									if(s_owned.gettype() == "ownedThreadSubcomponent"){
-										int thread_impl_num = s_owned.getClassifierNum(s_owned.getpath());
+										int thread_impl_num = ex_owned.getClassifierNum(ex_owned.getpath());
 										owned thread_owned = modes_list.get(thread_impl_num).getowned().get(0);
-										int thread_type_num = s_owned.getClassifierNum(thread_owned.getpath());
+										int thread_type_num = ex_owned.getClassifierNum(thread_owned.getpath());
 										List<owned> ports = modes_list.get(thread_type_num).getowned();
 										boolean use_flag = false;
-
+										/*
+										 * */
 										String thread_name=modes_list.get(thread_type_num).getname() ;
 										String thread_source_file=get_properties_file(properties,thread_name,"source_file");
+
 										Founction func=new Founction(thread_name,thread_source_file);
 
-//										System.out.println(thread_name + " " + thread_source_file);
+										/**/
 										//print_owned(threads);
 										//System.out.println(thread_type_num);
 										//System.out.print("\t\tname:\t" + modes_list.get(thread_type_num).getname());
 										//System.out.print("\ttype:\t");
 										for (owned port : ports) {
-											if(port.getkind().equals("out"))
+											if(port.getkind().equals("out")) {
 												System.out.print("\t\t\t" + port.getname());
 
-											String founc_ret=port.getname();
-											String ret_type=get_ret_type(ports,thread_name,founc_ret);
-											func.setRet(founc_ret);
-											func.setRetType(ret_type);
+												String founc_ret=port.getname();
+												String ret_type=get_ret_type(ports,thread_name,founc_ret);
+												func.setRet(founc_ret);
+												func.setRetType(ret_type);
+											}
 										}
-										System.out.print("\t" + modes_list.get(thread_type_num).getname() + "(");
+										System.out.print("\t" + thread_name + "(");
 										//System.out.print("\tparams:");
-
 										for (owned port : ports) {
 											if(port.getkind().equals("in")){
-												if(use_flag) {
+												if(use_flag)
 													System.out.print(", ");
-												}
 
 
 												String param_name=port.getname();
@@ -389,53 +349,97 @@ public class XML_Reader {
 										gen.addFounction(func);
 									}
 								}
-								//gen.gen_code();
-								gen.gen_code_different_version();
+
+								System.out.println();
+								System.out.println("\t\tExtend global_planner thread:");
+								System.out.println();
 							}
-							if(sys_owned.gettype().equals("ownedPropertyAssociation")) {
+							if(s_owned.gettype() == "ownedThreadSubcomponent"){
+								int thread_impl_num = s_owned.getClassifierNum(s_owned.getpath());
+								owned thread_owned = modes_list.get(thread_impl_num).getowned().get(0);
+								int thread_type_num = s_owned.getClassifierNum(thread_owned.getpath());
+								List<owned> ports = modes_list.get(thread_type_num).getowned();
+								boolean use_flag = false;
 
-								gen_code();
-								//ÕÒµ½ÊôÐÔÖ¸ÏòµÄclassifier
-								System.out.println("\t*It Has A PropertyAssociation\n");
-								int cl_num=sys_owned.getClassifierNum(sys_owned.getpath());
-								System.out.println("\t\tIts CLASSIFIER NUM Is:\t"+cl_num+"\tName Is:"+modes_list.get(cl_num).getname());
-								System.out.println();
-								//¸ù¾ÝclassifierÕÒµ½ÊôÐÔÖ®Ö¸ÏòµÄsubcomponent
-								List<owned> find_owned =modes_list.get(cl_num).getowned();
-								//print_owned(find_owned);
+								String thread_name=modes_list.get(thread_type_num).getname() ;
+								String thread_source_file=get_properties_file(properties,thread_name,"source_file");
+								Founction func=new Founction(thread_name,thread_source_file);
 
-								int sub_num=sys_owned.getownedSubcomponent_Int(sys_owned.getpath());
-								String sub_name=sys_owned.getownedSubcomponent_String(sys_owned.getpath());
+//										System.out.println(thread_name + " " + thread_source_file);
+								//print_owned(threads);
+								//System.out.println(thread_type_num);
+								//System.out.print("\t\tname:\t" + modes_list.get(thread_type_num).getname());
+								//System.out.print("\ttype:\t");
+								for (owned port : ports) {
+									if(port.getkind().equals("out"))
+										System.out.print("\t\t\t" + port.getname());
 
-								System.out.println("\t\t\tIts SUBCOMPONENT NAME:\t"+find_owned(find_owned,sub_name,sub_num)+"\tSUBCOMPONENT NUM:"+sub_num);
-								System.out.println();
-								//
-								System.out.println("\t\t\tThe\t"+sys_owned.getkind()+ "\tProperty\t"+sys_owned.getname()+"\tBelongs To:\t"+find_owned(find_owned,sub_name,sub_num));
-								System.out.println();
-								//
-								String prop_kind=sys_owned.getkind();
-								String prop_value=sys_owned.getname();
-								String prop_apply_to=find_owned(find_owned,sub_name,sub_num);
-								Property prop=new Property(prop_kind,prop_value,prop_apply_to);
-								properties.add(prop);
-								//List<owned> proc_owneds =modes_list.get(cl_num).getowned();
-								//print_owned(proc_owneds);
+									String founc_ret=port.getname();
+									String ret_type=get_ret_type(ports,thread_name,founc_ret);
+									func.setRet(founc_ret);
+									func.setRetType(ret_type);
+								}
+								System.out.print("\t" + modes_list.get(thread_type_num).getname() + "(");
+								//System.out.print("\tparams:");
+
+								for (owned port : ports) {
+									if(port.getkind().equals("in")){
+										if(use_flag) {
+											System.out.print(", ");
+										}
+
+
+										String param_name=port.getname();
+										String param_type=get_param_type(ports,thread_name,param_name);
+										System.out.print(param_type+" ");
+										System.out.print(port.getname());
+
+										func.addParam(param_name,param_type);
+
+										use_flag = true;
+									}
+								}
+								System.out.println(")");
+								gen.addFounction(func);
 							}
 						}
+						//gen.gen_code();
+						gen.gen_code_different_version();
+					}
+					if(sys_owned.gettype().equals("ownedPropertyAssociation")) {
+
+
+						//ÕÒµ½ÊôÐÔÖ¸ÏòµÄclassifier
+						System.out.println("\t*It Has A PropertyAssociation\n");
+						int cl_num=sys_owned.getClassifierNum(sys_owned.getpath());
+						System.out.println("\t\tIts CLASSIFIER NUM Is:\t"+cl_num+"\tName Is:"+modes_list.get(cl_num).getname());
+						System.out.println();
+						//¸ù¾ÝclassifierÕÒµ½ÊôÐÔÖ®Ö¸ÏòµÄsubcomponent
+						List<owned> find_owned =modes_list.get(cl_num).getowned();
+						//print_owned(find_owned);
+
+						int sub_num=sys_owned.getownedSubcomponent_Int(sys_owned.getpath());
+						String sub_name=sys_owned.getownedSubcomponent_String(sys_owned.getpath());
+
+						System.out.println("\t\t\tIts SUBCOMPONENT NAME:\t"+find_owned(find_owned,sub_name,sub_num)+"\tSUBCOMPONENT NUM:"+sub_num);
+						System.out.println();
+						//
+						System.out.println("\t\t\tThe\t"+sys_owned.getkind()+ "\tProperty\t"+sys_owned.getname()+"\tBelongs To:\t"+find_owned(find_owned,sub_name,sub_num));
+						System.out.println();
+						//
+						String prop_kind=sys_owned.getkind();
+						String prop_value=sys_owned.getname();
+						String prop_apply_to=find_owned(find_owned,sub_name,sub_num);
+						Property prop=new Property(prop_kind,prop_value,prop_apply_to);
+						properties.add(prop);
+						//List<owned> proc_owneds =modes_list.get(cl_num).getowned();
+						//print_owned(proc_owneds);
 					}
 				}
-
 			}
-
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+
 	}
-	public static void gen_code() {}
 
 	/*
 	 * Ò»¸öclassifier¾ÍÊÇÒ»¸öÄ£ÐÍ£¬process»òÕßthread
@@ -563,15 +567,19 @@ public class XML_Reader {
 		}
 		return "";
 	}
+
 	public static void println(String p) {
 		System.out.println(p);
 	}
-	public static void main(String[] args)
-	{
-		String aaxl_path="E:\\basenode.xml";
-		String lib_path="E:\\gen_test";
-		String gen_path="E:\\gen_test";
+	public static void main(String[] args) throws IOException {
+		String aaxl_path="E:\\AADLDATA\\navigation.xml";
+		String lib_path="E:\\AADLDATA\\lib";
+		String gen_path="E:\\AADLDATA\\gen";
 		String dir_name="test";
-		xmlReader(aaxl_path,lib_path,gen_path,dir_name);
+		List<modes> modes_list=xmlReader(aaxl_path);
+		//gen_code(modes_list,lib_path,gen_path,dir_name);
+		GenNavigation gn=new GenNavigation(modes_list,lib_path,gen_path);
+
+//		gn.gen();
 	}
 }

@@ -84,6 +84,7 @@ public class AdminController {
     }
 
     @GetMapping("kill")
+    @ResponseBody
     public String killTask() {
         runTag.setRunFlag(false);
         LinuxCmdUtils.killShell();

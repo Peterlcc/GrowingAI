@@ -23,6 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lcc
@@ -103,13 +105,17 @@ public class AADLController {
         return "user/fileList";
     }
 
-    @DeleteMapping("file")
+//    @DeleteMapping("file")
+    @PostMapping("file")
     @ResponseBody
     public String deleteFile(HttpServletRequest request,@RequestParam("id")Integer id){
         LOG.info("deleteFile , id is:"+id);
         File file = fileService.getById(id);
         try {
-            FileUtils.deleteDirectory(new java.io.File(file.getPath()));
+            if (file.getTypeId()==3)
+                FileUtils.deleteDirectory(new java.io.File(file.getPath()));
+            else
+                FileUtils.forceDelete(new java.io.File(file.getPath()));
         } catch (IOException e) {
             LOG.error(e.getMessage());
         }
@@ -119,10 +125,18 @@ public class AADLController {
     }
     @PostMapping("code")
     @ResponseBody
-    public String codeGenerate(Integer id,HttpServletRequest request){
+    public String codeGenerate(Integer id,String task,String require,String env,HttpServletRequest request){
+        LOG.info("get params:["+String.join(",",task,require,env)+"]");
         User user = (User) request.getSession().getAttribute("user");
         File file = fileService.getById(id);
-        File generated = generatorService.generate(file,user);
+
+        Map<String,String> params=new HashMap<>();
+        params.put("env",env);
+        params.put("require",require);
+        params.put("task",task);
+
+        File generated = generatorService.generate(file,user,params);
+        LOG.info("generated:"+generated);
         fileService.save(generated);
         return "自动生成代码已提交,请稍后到生成项目列表查看";
     }

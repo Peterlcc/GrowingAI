@@ -45,6 +45,7 @@ public class TestTask {
                 LOG.info("the test task running to long ,need tobe killed!");
                 if (project!=null) taskQueue.addTask(project,true);
                 LinuxCmdUtils.killShell();
+                runTag.setRunFlag(false);
             }
             return;
         }

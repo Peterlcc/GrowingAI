@@ -82,7 +82,37 @@
 <!--            <a href="#" th:href="@{'/'+${fileType.name}+'/detail/'+${file.id}}" class="btn btn-primary">查看详情&rarr;</a>-->
 <!--            <a href="#" th:href="@{'/project/test/'+${project.id}}" class="btn btn-primary">手动测试&rarr;</a>-->
             <button onclick="delPro();" th:attr="data=${file.id},url=@{/aadl/file}" id="del" class="btn btn-primary">删除&rarr;</button>
-            <button th:if="${fileType.id==1}" onclick="code();" th:attr="data=${file.id},url=@{/aadl/code}" id="code" class="btn btn-primary">代码生成&rarr;</button>
+
+            <div th:if="${fileType.id==1}" class="m-5">
+              <form id="codeForm" th:action="@{/aadl/code}">
+                <input type="button" onclick="code();" value="代码生成&rarr;" class="btn btn-primary">
+                <input hidden="hidden" name="id" th:value="${file.id}">
+                <div class="form-group">
+                  <label for="taskSelect">任务</label>
+                  <select class="form-control" id="taskSelect" name="task">
+                    <option selected="selected" value="planning">路径规划</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="requireSelect">资源</label>
+                  <select class="form-control" id="requireSelect" name="require">
+                    <option selected="selected" value="time">时间</option>
+                    <option value="length">路径长度</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="envSelect">环境</label>
+                  <select class="form-control" id="envSelect" name="env">
+                    <option selected="selected" value="map1">地图1</option>
+                    <option value="map2">地图2</option>
+                  </select>
+                </div>
+
+              </form>
+            </div>
+
+<!--            <button th:if="${fileType.id==1}" onclick="code();" th:attr="data=${file.id},url=@{/aadl/code}" id="code" class="btn btn-primary">代码生成&rarr;</button>-->
+<!--            <button th:if="${fileType.id==1}" onclick="code();" th:attr="data=${file.id},url=@{/aadl/code}" id="code" class="btn btn-primary">代码生成&rarr;</button>-->
             <button th:if="${fileType.id==2}" onclick="cppDownload();" th:attr="data=${file.id},url=@{/cpp/download}" id="download" class="btn btn-primary">文件下载&rarr;</button>
             <a th:if="${fileType.id==3}" th:href="@{'/pro/download/'+${file.id}}" class="btn btn-primary">文件打包下载&rarr;</a>
           </div>
@@ -115,7 +145,7 @@
   <script type="text/javascript">
     //异步提交删除请求
     function delPro() {
-      console.log("delpro");
+      console.log("delpro"+$("#del").attr("url"));
       $.ajax({
         type: "POST",
         url: $("#del").attr("url"),
@@ -131,8 +161,8 @@
       console.log("code generation");
       $.ajax({
         type: "POST",
-        url: $("#code").attr("url"),
-        data: {id: $("#code").attr("data")},
+        url: $("#codeForm").attr("action"),
+        data: $("#codeForm").serialize(),
         success: function (result) {
           alert(result);
           location.reload();

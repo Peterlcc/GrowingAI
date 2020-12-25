@@ -48,6 +48,7 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectExample example = new ProjectExample();
         ProjectExample.Criteria criteria = example.createCriteria();
         criteria.andNameEqualTo(project.getName());
+        criteria.andUserIdEqualTo(project.getUserId());
         List<Project> list = projectMapper.selectByExample(example);
         if (list == null || list.size() == 0) {
             LOG.info("project to save is not existed! then insert");
