@@ -68,7 +68,7 @@ public class ScoreServiceImpl implements ScoreService {
     @Override
     public PageInfo<Score> getOrderedScores(int pc, int ps) {
         ScoreExample scoreExample = new ScoreExample();
-        scoreExample.setOrderByClause("score desc");
+        scoreExample.setOrderByClause("score asc");
         ScoreExample.Criteria criteria = scoreExample.createCriteria();
 
         ProjectExample projectExample = new ProjectExample();

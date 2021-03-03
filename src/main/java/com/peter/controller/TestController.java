@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("test")
 public class TestController {
@@ -24,33 +27,52 @@ public class TestController {
     private ProjectService projectService;
     @Autowired
     private TaskUploadService taskUploadService;
+
     @GetMapping("cmd")
     @ResponseBody
-    public String testCmd(@RequestParam("cmd")String cmd){
+    public String testCmd(@RequestParam("cmd") String cmd) {
         //编译所有node
-        String compileCommand="source /opt/ros/kinetic/setup.bash && source /home/peter/WorkSpaces/catkin_ws/devel/setup.sh && "+cmd;
-        if(LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand,"/home/peter/WorkSpaces/catkin_ws")){
+        String compileCommand = "source /opt/ros/kinetic/setup.bash && source " +
+                "/home/peter/WorkSpaces/catkin_ws/devel/setup.sh && " + cmd;
+        if (LinuxCmdUtils.executeLinuxCmdWithPath(compileCommand, "/home/peter/WorkSpaces/catkin_ws")) {
             LOG.info("命令运行成功");
-        }else {
+        } else {
             LOG.error("命令运行出错");
         }
-        return "cmd is "+compileCommand;
+        return "cmd is " + compileCommand;
     }
+
     @GetMapping("add")
     @ResponseBody
-    public String add(@RequestParam("id")Integer id){
+    public String add(@RequestParam("id") Integer id) {
         Project project = projectService.getProjectById(id);
-        if (project!=null) {
+        if (project != null) {
             taskUploadService.upload(project);
             return "uploaded";
-        }else {
-            return "project id:"+id+" not found!";
+        } else {
+            return "project id:" + id + " not found!";
         }
+    }
+
+    @GetMapping("addn")
+    @ResponseBody
+    public List<String> addWithNumber(@RequestParam("id") Integer id, @RequestParam("num") Integer num) {
+        List<String> msgs=new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            Project project = projectService.getProjectById(id);
+            if (project != null) {
+                taskUploadService.upload(project);
+                msgs.add( "uploaded");
+            } else {
+                msgs.add("project id:" + id + " not found!");
+            }
+        }
+        return msgs;
     }
 
     @GetMapping("taskSize")
     @ResponseBody
-    public Long getTaskQueueSize(){
+    public Long getTaskQueueSize() {
         return taskUploadService.getProjectsInTask();
     }
 }

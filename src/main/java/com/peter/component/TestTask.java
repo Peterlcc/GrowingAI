@@ -36,7 +36,7 @@ public class TestTask {
      * 0 * * * * * 每分钟
      * 0 0 * * * * 每小时
      */
-    @Scheduled(cron ="${scheduler.cron}")
+//    @Scheduled(cron ="${scheduler.cron}")
     public void testProject() {
         if (runTag.getRunFlag()){
             LOG.info("some task is running!");

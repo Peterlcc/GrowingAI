@@ -83,7 +83,7 @@
         <tr th:each="score: ${pageInfo.list}">
           <td><a th:text="${score.project.name}" th:href="@{'/project/project/'+${score.project.id}}"></a></td>
           <td th:text="${score.score}"></td>
-          <td th:text="${score.project.user.name}"></td>
+          <td th:text="${score.project.user.realName}"></td>
           <td th:text="${#dates.format(score.project.createTime,'yyyy-MM-dd')}"></td>
         </tr>
       </table>
